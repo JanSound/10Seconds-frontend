@@ -20,12 +20,25 @@ const App = () => {
   const [mikePermission, setMikePermission] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
     recordSecs: 0,
-    recordTime: '',
+    recordTime: '00:00:00',
+  });
+  const [playerDuration, setPlayerDuration] = useState({
+    currentPositionSec: 0,
+    currentDurationSec: 0,
+    playTime: '00:00:00',
+    duration: '00:00:00',
   });
 
   const handleStartRecord = async () => {
     if (audioRecorderPlayer) {
       setRecording(true);
+      setPlayerDuration({
+        ...playerDuration,
+        currentPositionSec: 0,
+        currentDurationSec: 0,
+        playTime: '00:00:00',
+        duration: '00:00:00',
+      });
       await audioRecorderPlayer.startRecorder();
     }
     audioRecorderPlayer.addRecordBackListener((e) => {
@@ -46,12 +59,23 @@ const App = () => {
     setRecordDuration({ ...recordDuration, recordSecs: 0 });
   };
 
+  const soundStart = async () => {
+    await audioRecorderPlayer.startPlayer();
+    audioRecorderPlayer.addPlayBackListener((e) => {
+      setPlayerDuration({
+        currentPositionSec: e.currentPosition,
+        currentDurationSec: e.duration,
+        playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+        duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+      });
+    });
+  };
+
   const checkRecordPermission = async () => {
     try {
       await request(PERMISSIONS.IOS.SPEECH_RECOGNITION).then((result) => {
         if (result === 'granted') {
-          setMikePermission(true);
-          console.log('성공');
+          setMikePermission(true); // 권한에 따라 분기처리 해주기
         }
       });
     } catch (e) {
@@ -83,6 +107,14 @@ const App = () => {
             onPress={handleStartRecord}
           ></Button>
         )}
+      </View>
+      <View>
+        <Button title="Play" color="black" onPress={soundStart}></Button>
+      </View>
+      <View style={{ alignItems: 'center' }}>
+        <Text>recordTime : {recordDuration.recordTime}</Text>
+        <Text>duration : {playerDuration.duration}</Text>
+        <Text>playTime : {playerDuration.playTime}</Text>
       </View>
       <View style={styles.footerNavigation}>
         <Button title="tab1"></Button>
