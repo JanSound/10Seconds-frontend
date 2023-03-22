@@ -6,18 +6,26 @@ import {
   SafeAreaView,
   StatusBar,
   Button,
+  Alert,
 } from 'react-native';
 
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
-StatusBar.setBarStyle('light-content');
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import { oauth } from './config/oauth';
 
 import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+
+StatusBar.setBarStyle('light-content');
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 const App = () => {
   const [recording, setRecording] = useState(false);
-  const [mikePermission, setMikePermission] = useState(false);
+  const [RecordPermission, setRecordPermission] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
     recordSecs: 0,
     recordTime: '00:00:00',
@@ -29,8 +37,11 @@ const App = () => {
     duration: '00:00:00',
   });
 
+  const [userInfo, setUserInfo] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const handleStartRecord = async () => {
-    if (audioRecorderPlayer) {
+    if (audioRecorderPlayer && RecordPermission) {
       setRecording(true);
       setPlayerDuration({
         ...playerDuration,
@@ -40,14 +51,16 @@ const App = () => {
         duration: '00:00:00',
       });
       await audioRecorderPlayer.startRecorder();
-    }
-    audioRecorderPlayer.addRecordBackListener((e) => {
-      setRecordDuration({
-        ...recordDuration,
-        recordSecs: e.currentPosition,
-        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+      audioRecorderPlayer.addRecordBackListener((e) => {
+        setRecordDuration({
+          ...recordDuration,
+          recordSecs: e.currentPosition,
+          recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+        });
       });
-    });
+    } else {
+      checkRecordPermission();
+    }
   };
 
   const handleStopRecord = async () => {
@@ -72,20 +85,49 @@ const App = () => {
   };
 
   const checkRecordPermission = async () => {
-    try {
-      await request(PERMISSIONS.IOS.SPEECH_RECOGNITION).then((result) => {
+    await request(PERMISSIONS.IOS.SPEECH_RECOGNITION)
+      .then((result) => {
         if (result === 'granted') {
-          setMikePermission(true); // 권한에 따라 분기처리 해주기
+          setRecordPermission(true); // 권한에 따라 분기처리 해주기
         }
+      })
+      .catch((e) => {
+        console.log(`에러 \n ${e}`);
       });
-    } catch (e) {
-      console.log(`에러 \n ${e}`);
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      const userInfo = await GoogleSignin.signIn();
+      setUserInfo(userInfo);
+      setIsLoggedIn(true);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        Alert.alert('다시 로그인 해주세요😭');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        Alert.alert('이미 로그인이 되어있습니다😎');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        Alert.alert('서비스가 유효하지 않습니다. 다시 시도해 주세요🥺');
+      } else {
+        Alert.alert('Something else went wrong... ', error.toString());
+      }
     }
+  };
+
+  const googleConfigureSignIn = () => {
+    GoogleSignin.configure({
+      webClientId: oauth.GOOGLE_WEB_CLIENT_ID,
+      offlineAccess: false,
+    });
   };
 
   useEffect(() => {
     checkRecordPermission();
-  }, [mikePermission]);
+    googleConfigureSignIn();
+  }, [RecordPermission]);
 
   return (
     <View style={styles.container}>
@@ -108,13 +150,19 @@ const App = () => {
           ></Button>
         )}
       </View>
-      <View>
+      <View style={styles.play}>
         <Button title="Play" color="black" onPress={soundStart}></Button>
       </View>
-      <View style={{ alignItems: 'center' }}>
-        <Text>recordTime : {recordDuration.recordTime}</Text>
-        <Text>duration : {playerDuration.duration}</Text>
-        <Text>playTime : {playerDuration.playTime}</Text>
+      <View style={styles.googleLogin}>
+        {isLoggedIn === false ? (
+          <GoogleSigninButton
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={handleGoogleLogin}
+          />
+        ) : (
+          <Text>{userInfo.user.name}님의 10Seconds</Text>
+        )}
       </View>
       <View style={styles.footerNavigation}>
         <Button title="tab1"></Button>
@@ -149,6 +197,13 @@ const styles = StyleSheet.create({
   body: {
     flex: 4,
     justifyContent: 'center',
+  },
+  play: {
+    flex: 1,
+  },
+  googleLogin: {
+    flex: 1,
+    alignItems: 'center',
   },
   footerNavigation: {
     flex: 0.3,
