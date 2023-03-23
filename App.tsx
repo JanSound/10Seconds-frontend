@@ -18,7 +18,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import { oauth } from './config/oauth';
 
-import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import { PERMISSIONS, request } from 'react-native-permissions';
 
 StatusBar.setBarStyle('light-content');
 
@@ -88,7 +88,8 @@ const App = () => {
     await request(PERMISSIONS.IOS.SPEECH_RECOGNITION)
       .then((result) => {
         if (result === 'granted') {
-          setRecordPermission(true); // 권한에 따라 분기처리 해주기
+          setRecordPermission(true);
+          // 권한에 따라 분기처리
         }
       })
       .catch((e) => {
@@ -98,11 +99,24 @@ const App = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true,
-      });
+      await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      // userInfo : [idToken, serverAuthCode, user {email, name, photo} ]
       setUserInfo(userInfo);
+
+      const result = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        body: JSON.stringify({
+          code: userInfo.serverAuthCode,
+          client_id: oauth.GOOGLE_WEB_CLIENT_ID,
+          client_secret: oauth.GOOGLE_WEB_CLIENT_SECRET,
+          grant_type: 'authorization_code',
+          redirect_uri: oauth.REDIRECT_URI,
+        }),
+      }).then((res) => {
+        return res.json();
+      });
+      // result : ["access_token", "expires_in", "refresh_token", "scope", "token_type", "id_token"]
       setIsLoggedIn(true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -120,7 +134,8 @@ const App = () => {
   const googleConfigureSignIn = () => {
     GoogleSignin.configure({
       webClientId: oauth.GOOGLE_WEB_CLIENT_ID,
-      offlineAccess: false,
+      iosClientId: oauth.GOOGLE_IOS_CLIENT_ID,
+      offlineAccess: true,
     });
   };
 
@@ -161,7 +176,7 @@ const App = () => {
             onPress={handleGoogleLogin}
           />
         ) : (
-          <Text>{userInfo.user.name}님의 10Seconds</Text>
+          <Text>로그인 완료!</Text>
         )}
       </View>
       <View style={styles.footerNavigation}>
