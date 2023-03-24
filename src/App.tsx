@@ -1,4 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { oauth } from '../config/oauth';
+import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import Recording from './Recording';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import {
   StyleSheet,
   Text,
@@ -9,20 +18,10 @@ import {
   Alert,
 } from 'react-native';
 
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { oauth } from './config/oauth';
-
-import { PERMISSIONS, request } from 'react-native-permissions';
-
 StatusBar.setBarStyle('light-content');
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
+
 const App = () => {
   const [recording, setRecording] = useState(false);
   const [RecordPermission, setRecordPermission] = useState(false);
@@ -37,27 +36,32 @@ const App = () => {
     duration: '00:00:00',
   });
 
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleStartRecord = async () => {
-    if (audioRecorderPlayer && RecordPermission) {
-      setRecording(true);
-      setPlayerDuration({
-        ...playerDuration,
-        currentPositionSec: 0,
-        currentDurationSec: 0,
-        playTime: '00:00:00',
-        duration: '00:00:00',
-      });
-      await audioRecorderPlayer.startRecorder();
-      audioRecorderPlayer.addRecordBackListener((e) => {
-        setRecordDuration({
-          ...recordDuration,
-          recordSecs: e.currentPosition,
-          recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+    console.log(RecordPermission);
+    if (RecordPermission) {
+      if (audioRecorderPlayer) {
+        setRecording(true);
+        setPlayerDuration({
+          ...playerDuration,
+          currentPositionSec: 0,
+          currentDurationSec: 0,
+          playTime: '00:00:00',
+          duration: '00:00:00',
         });
-      });
+        await audioRecorderPlayer.startRecorder();
+        audioRecorderPlayer.addRecordBackListener((e) => {
+          setRecordDuration({
+            ...recordDuration,
+            recordSecs: e.currentPosition,
+            recordTime: audioRecorderPlayer.mmssss(
+              Math.floor(e.currentPosition),
+            ),
+          });
+        });
+      }
     } else {
       checkRecordPermission();
     }
@@ -102,6 +106,7 @@ const App = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       // userInfo : [idToken, serverAuthCode, user {email, name, photo} ]
+
       setUserInfo(userInfo);
 
       const result = await fetch('https://oauth2.googleapis.com/token', {
@@ -118,7 +123,7 @@ const App = () => {
       });
       // result : ["access_token", "expires_in", "refresh_token", "scope", "token_type", "id_token"]
       setIsLoggedIn(true);
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         Alert.alert('다시 로그인 해주세요😭');
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -151,19 +156,11 @@ const App = () => {
         <Text style={styles.title}>10Seconds</Text>
       </View>
       <View style={styles.body}>
-        {recording ? (
-          <Button
-            title="Stop"
-            color="black"
-            onPress={handleStopRecord}
-          ></Button>
-        ) : (
-          <Button
-            title="Recording"
-            color="black"
-            onPress={handleStartRecord}
-          ></Button>
-        )}
+        <Recording
+          recording={recording}
+          handleStopRecord={handleStopRecord}
+          handleStartRecord={handleStartRecord}
+        />
       </View>
       <View style={styles.play}>
         <Button title="Play" color="black" onPress={soundStart}></Button>
