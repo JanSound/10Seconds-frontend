@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { oauth } from '../config/oauth';
-import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, request, check } from 'react-native-permissions';
 import Recording from './Recording';
 import {
   GoogleSignin,
@@ -16,6 +16,7 @@ import {
   StatusBar,
   Button,
   Alert,
+  Linking,
 } from 'react-native';
 
 StatusBar.setBarStyle('light-content');
@@ -24,7 +25,7 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const App = () => {
   const [recording, setRecording] = useState(false);
-  const [RecordPermission, setRecordPermission] = useState(false);
+  const [recordPermission, setRecordPermission] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
     recordSecs: 0,
     recordTime: '00:00:00',
@@ -40,30 +41,24 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleStartRecord = async () => {
-    console.log(RecordPermission);
-    if (RecordPermission) {
-      if (audioRecorderPlayer) {
-        setRecording(true);
-        setPlayerDuration({
-          ...playerDuration,
-          currentPositionSec: 0,
-          currentDurationSec: 0,
-          playTime: '00:00:00',
-          duration: '00:00:00',
+    const checkPermission = await checkRecordPermission();
+    if (audioRecorderPlayer && checkPermission === RESULTS.GRANTED) {
+      setRecording(true);
+      setPlayerDuration({
+        ...playerDuration,
+        currentPositionSec: 0,
+        currentDurationSec: 0,
+        playTime: '00:00:00',
+        duration: '00:00:00',
+      });
+      await audioRecorderPlayer.startRecorder();
+      audioRecorderPlayer.addRecordBackListener((e) => {
+        setRecordDuration({
+          ...recordDuration,
+          recordSecs: e.currentPosition,
+          recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
         });
-        await audioRecorderPlayer.startRecorder();
-        audioRecorderPlayer.addRecordBackListener((e) => {
-          setRecordDuration({
-            ...recordDuration,
-            recordSecs: e.currentPosition,
-            recordTime: audioRecorderPlayer.mmssss(
-              Math.floor(e.currentPosition),
-            ),
-          });
-        });
-      }
-    } else {
-      checkRecordPermission();
+      });
     }
   };
 
@@ -87,18 +82,54 @@ const App = () => {
       });
     });
   };
-
-  const checkRecordPermission = async () => {
+  const requestRecordPermission = async () => {
     await request(PERMISSIONS.IOS.SPEECH_RECOGNITION)
       .then((result) => {
-        if (result === 'granted') {
+        if (result === RESULTS.GRANTED) {
           setRecordPermission(true);
-          // 권한에 따라 분기처리
+        } else {
+          setRecordPermission(false);
+          Alert.alert(
+            '마이크 접근 권한 거부',
+            '마이크 접근 권한을 허용해주세요 !',
+            [
+              {
+                text: 'OK',
+                onPress: () => Linking.openSettings(),
+              },
+            ],
+          );
         }
       })
       .catch((e) => {
-        console.log(`에러 \n ${e}`);
+        console.log('권한 request 에러 : ', e);
       });
+  };
+
+  const checkRecordPermission = async () => {
+    const checkPermission = await check(PERMISSIONS.IOS.SPEECH_RECOGNITION)
+      .then((result) => {
+        if (result === RESULTS.GRANTED) {
+          setRecordPermission(true);
+          return result;
+        } else {
+          setRecordPermission(false);
+          Alert.alert(
+            '마이크 접근 권한 거부',
+            '마이크 접근 권한을 허용해주세요 !',
+            [
+              {
+                text: 'OK',
+                onPress: () => Linking.openSettings(),
+              },
+            ],
+          );
+        }
+      })
+      .catch((e) => {
+        console.log('권한 check 에러:', e);
+      });
+    return checkPermission;
   };
 
   const handleGoogleLogin = async () => {
@@ -145,9 +176,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    checkRecordPermission();
+    requestRecordPermission();
     googleConfigureSignIn();
-  }, [RecordPermission]);
+  }, []);
 
   return (
     <View style={styles.container}>
