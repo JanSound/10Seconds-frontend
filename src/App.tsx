@@ -17,7 +17,9 @@ import {
   Button,
   Alert,
   Linking,
+  Image,
 } from 'react-native';
+import Loading from './Loading';
 
 StatusBar.setBarStyle('light-content');
 
@@ -30,6 +32,7 @@ const App = () => {
     recordSecs: 0,
     recordTime: '00:00:00',
   });
+  const [playing, setPlaying] = useState(false);
   const [playerDuration, setPlayerDuration] = useState({
     currentPositionSec: 0,
     currentDurationSec: 0,
@@ -72,6 +75,7 @@ const App = () => {
   };
 
   const soundStart = async () => {
+    setPlaying(true);
     await audioRecorderPlayer.startPlayer();
     audioRecorderPlayer.addPlayBackListener((e) => {
       setPlayerDuration({
@@ -156,13 +160,13 @@ const App = () => {
       setIsLoggedIn(true);
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        Alert.alert('다시 로그인 해주세요😭');
+        return;
       } else if (error.code === statusCodes.IN_PROGRESS) {
         Alert.alert('이미 로그인이 되어있습니다😎');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         Alert.alert('서비스가 유효하지 않습니다. 다시 시도해 주세요🥺');
       } else {
-        Alert.alert('Something else went wrong... ', error.toString());
+        Alert.alert('다시 시도해주세요😭');
       }
     }
   };
@@ -187,6 +191,7 @@ const App = () => {
         <Text style={styles.title}>10Seconds</Text>
       </View>
       <View style={styles.body}>
+        {/* <Loading /> */}
         <Recording
           recording={recording}
           handleStopRecord={handleStopRecord}
@@ -194,8 +199,17 @@ const App = () => {
         />
       </View>
       <View style={styles.play}>
-        <Button title="Play" color="black" onPress={soundStart}></Button>
+        {playerDuration ? (
+          playerDuration.duration === playerDuration.playTime ? (
+            <Button title="Play" color="black" onPress={soundStart}></Button>
+          ) : (
+            <Text style={styles.playing}>playing</Text>
+          )
+        ) : (
+          ''
+        )}
       </View>
+
       <View style={styles.googleLogin}>
         {isLoggedIn === false ? (
           <GoogleSigninButton
@@ -243,6 +257,11 @@ const styles = StyleSheet.create({
   },
   play: {
     flex: 1,
+    alignItems: 'center',
+  },
+  playing: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   googleLogin: {
     flex: 1,
