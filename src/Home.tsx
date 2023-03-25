@@ -42,41 +42,63 @@ const Home = () => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleStartRecord = async () => {
-    const checkPermission = await checkRecordPermission();
-    if (audioRecorderPlayer && checkPermission === RESULTS.GRANTED) {
-      setRecording(true);
-      setPlayerDuration({
-        ...playerDuration,
-        currentPositionSec: 0,
-        currentDurationSec: 0,
-        playTime: '00:00:00',
-        duration: '00:00:00',
-      });
+  const alertMikePermissionDenied = () => {
+    Alert.alert('마이크 접근 권한 거부', '마이크 접근 권한을 허용해주세요 !', [
+      {
+        text: 'OK',
+        onPress: () => Linking.openSettings(),
+      },
+    ]);
+  };
 
-      const dirs = RNFetchBlob.fs.dirs;
-      const path = Platform.select({
-        ios: 'recordVoice.m4a',
-        android: `${dirs.CacheDir}/recordVoice.mp3`,
-      });
-      const uri = await audioRecorderPlayer.startRecorder(path);
-      setRecordingPath(uri);
-      audioRecorderPlayer.addRecordBackListener((e) => {
-        setRecordDuration({
-          ...recordDuration,
-          recordSecs: e.currentPosition,
-          recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+  const handleStartRecord = async () => {
+    try {
+      const checkPermission = await checkRecordPermission();
+      if (audioRecorderPlayer && checkPermission === RESULTS.GRANTED) {
+        setRecording(true);
+        setPlayerDuration({
+          ...playerDuration,
+          currentPositionSec: 0,
+          currentDurationSec: 0,
+          playTime: '00:00:00',
+          duration: '00:00:00',
         });
-      });
+
+        const dirs = RNFetchBlob.fs.dirs;
+        const path = Platform.select({
+          ios: 'recordVoice.m4a',
+          android: `${dirs.CacheDir}/recordVoice.mp3`,
+        });
+        const uri = await audioRecorderPlayer.startRecorder(path);
+        setRecordingPath(uri);
+        audioRecorderPlayer.addRecordBackListener((e) => {
+          setRecordDuration({
+            ...recordDuration,
+            recordSecs: e.currentPosition,
+            recordTime: audioRecorderPlayer.mmssss(
+              Math.floor(e.currentPosition),
+            ),
+          });
+        });
+      }
+    } catch (e) {
+      console.log('녹음 오류 :', e);
+      setRecording(false);
+      alertMikePermissionDenied();
     }
   };
 
   const handleStopRecord = async () => {
-    if (audioRecorderPlayer) {
+    try {
+      if (audioRecorderPlayer) {
+        setRecording(false);
+        await audioRecorderPlayer.stopRecorder();
+        audioRecorderPlayer.removeRecordBackListener();
+        setRecordDuration({ ...recordDuration, recordSecs: 0 });
+      }
+    } catch (e) {
       setRecording(false);
-      await audioRecorderPlayer.stopRecorder();
-      audioRecorderPlayer.removeRecordBackListener();
-      setRecordDuration({ ...recordDuration, recordSecs: 0 });
+      alertMikePermissionDenied();
     }
   };
 
@@ -98,22 +120,10 @@ const Home = () => {
       .then((result) => {
         if (result === RESULTS.GRANTED) {
           setRecordPermission(true);
-        } else {
-          setRecordPermission(false);
-          Alert.alert(
-            '마이크 접근 권한 거부',
-            '마이크 접근 권한을 허용해주세요 !',
-            [
-              {
-                text: 'OK',
-                onPress: () => Linking.openSettings(),
-              },
-            ],
-          );
         }
       })
       .catch((e) => {
-        console.log('권한 request 에러 : ', e);
+        console.log('request API 에러 : ', e);
       });
   };
 
@@ -123,22 +133,10 @@ const Home = () => {
         if (result === RESULTS.GRANTED) {
           setRecordPermission(true);
           return result;
-        } else {
-          setRecordPermission(false);
-          Alert.alert(
-            '마이크 접근 권한 거부',
-            '마이크 접근 권한을 허용해주세요 !',
-            [
-              {
-                text: 'OK',
-                onPress: () => Linking.openSettings(),
-              },
-            ],
-          );
         }
       })
       .catch((e) => {
-        console.log('권한 check 에러:', e);
+        console.log('check API 에러 :', e);
       });
     return checkPermission;
   };
