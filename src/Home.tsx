@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { oauth } from '../config/oauth';
 import { PERMISSIONS, RESULTS, request, check } from 'react-native-permissions';
@@ -17,6 +17,7 @@ import {
   Alert,
   Linking,
   Platform,
+  AppState,
 } from 'react-native';
 import Header from './Header';
 import Footer from './Footer';
@@ -24,6 +25,9 @@ import Footer from './Footer';
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const Home = () => {
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
   const [recording, setRecording] = useState(false);
   const [recordPermission, setRecordPermission] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
@@ -184,6 +188,30 @@ const Home = () => {
       offlineAccess: true,
     });
   };
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        if (audioRecorderPlayer) audioRecorderPlayer.resumePlayer();
+      }
+      if (
+        appState.current === 'active' &&
+        nextAppState.match(/inactive|background/)
+      ) {
+        if (audioRecorderPlayer) audioRecorderPlayer.pausePlayer();
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     requestRecordPermission();
