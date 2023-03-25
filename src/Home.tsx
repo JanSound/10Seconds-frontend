@@ -261,10 +261,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'gray',
   },
-  header: {
-    backgroundColor: 'white',
-    height: 40,
-  },
   body: {
     flex: 4,
     justifyContent: 'center',
