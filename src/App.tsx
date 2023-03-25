@@ -3,6 +3,7 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { oauth } from '../config/oauth';
 import { PERMISSIONS, RESULTS, request, check } from 'react-native-permissions';
 import Recording from './Recording';
+import RNFetchBlob from 'rn-fetch-blob';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -17,7 +18,7 @@ import {
   Button,
   Alert,
   Linking,
-  Image,
+  Platform,
 } from 'react-native';
 import Loading from './Loading';
 
@@ -39,6 +40,7 @@ const App = () => {
     playTime: '00:00:00',
     duration: '00:00:00',
   });
+  const [recordingPath, setRecordingPath] = useState('');
 
   const [userInfo, setUserInfo] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,7 +56,14 @@ const App = () => {
         playTime: '00:00:00',
         duration: '00:00:00',
       });
-      await audioRecorderPlayer.startRecorder();
+
+      const dirs = RNFetchBlob.fs.dirs;
+      const path = Platform.select({
+        ios: 'recordVoice.m4a',
+        android: `${dirs.CacheDir}/recordVoice.mp3`,
+      });
+      const uri = await audioRecorderPlayer.startRecorder(path);
+      setRecordingPath(uri);
       audioRecorderPlayer.addRecordBackListener((e) => {
         setRecordDuration({
           ...recordDuration,
@@ -69,14 +78,15 @@ const App = () => {
     if (audioRecorderPlayer) {
       setRecording(false);
       await audioRecorderPlayer.stopRecorder();
+      audioRecorderPlayer.removeRecordBackListener();
+      setRecordDuration({ ...recordDuration, recordSecs: 0 });
     }
-    audioRecorderPlayer.removeRecordBackListener();
-    setRecordDuration({ ...recordDuration, recordSecs: 0 });
   };
 
   const soundStart = async () => {
     setPlaying(true);
-    await audioRecorderPlayer.startPlayer();
+    await audioRecorderPlayer.startPlayer(recordingPath);
+
     audioRecorderPlayer.addPlayBackListener((e) => {
       setPlayerDuration({
         currentPositionSec: e.currentPosition,
@@ -157,6 +167,7 @@ const App = () => {
         return res.json();
       });
       // result : ["access_token", "expires_in", "refresh_token", "scope", "token_type", "id_token"]
+      // [ access_token 서버로 넘겨서 이중 보안 코드 작성 ]
       setIsLoggedIn(true);
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -225,7 +236,7 @@ const App = () => {
         <Button title="tab1"></Button>
         <Button title="tab2"></Button>
         <Button title="tab3"></Button>
-        <Button title="tab4"></Button>
+        <Button title="설정" onPress={() => Linking.openSettings()}></Button>
       </View>
     </View>
   );
