@@ -1,4 +1,5 @@
-import React, { Text, View } from 'react-native';
+import React from 'react';
+import { Text, View } from 'react-native';
 import { Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
