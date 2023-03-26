@@ -6,7 +6,7 @@ import Footer from '../Footer';
 const BeatListScreen = ({ navigation }: any) => {
   return (
     <>
-      <EditHeader />
+      <EditHeader navigation={navigation} />
       <View style={styles.beatListContainer}>
         <Image source={require('../assets/images/drum.png')} />
       </View>

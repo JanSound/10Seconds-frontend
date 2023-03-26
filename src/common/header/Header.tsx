@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
 import GuideBtn from '../button/GuideBtn';
 import MenuBtn from '../button/MenuBtn';
 
@@ -11,7 +18,9 @@ const Header = ({ navigation }: any) => {
       <SafeAreaView style={{ backgroundColor: 'black' }}></SafeAreaView>
       <View style={styles.tabBar}>
         <GuideBtn />
-        <Text style={styles.title}>10Seconds</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.title}>10Seconds</Text>
+        </TouchableOpacity>
         <MenuBtn navigation={navigation} />
       </View>
     </View>

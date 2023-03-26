@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, SafeAreaView, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import EditBtn from '../button/EditBtn';
 
 const EditHeader = ({ navigation }: any) => {
@@ -8,7 +14,9 @@ const EditHeader = ({ navigation }: any) => {
       <SafeAreaView style={{ backgroundColor: 'black' }}></SafeAreaView>
       <View style={styles.tabBar}>
         <EditBtn />
-        <Text style={styles.title}>10Seconds</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.title}>10Seconds</Text>
+        </TouchableOpacity>
         <View style={styles.whiteSpace}></View>
       </View>
     </View>
