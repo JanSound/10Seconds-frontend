@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, SafeAreaView, Text, StyleSheet } from 'react-native';
+import EditBtn from './EditBtn';
 
 const EditHeader = ({ navigation }: any) => {
   return (
     <View>
       <SafeAreaView style={{ backgroundColor: 'black' }}></SafeAreaView>
       <View style={styles.tabBar}>
-        {/* <GuideBtn /> */}
+        <EditBtn />
         <Text style={styles.title}>10Seconds</Text>
-        {/* <MenuBtn navigation={navigation} /> */}
+        <View style={styles.whiteSpace}></View>
       </View>
     </View>
   );
@@ -25,6 +26,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  whiteSpace: {
+    width: 50,
+    height: 50,
   },
 });
 
