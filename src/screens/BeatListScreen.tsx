@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
 
@@ -12,18 +12,28 @@ const BeatListScreen = ({ navigation }: any) => {
     { name: 'beat 5' },
     { name: 'beat 6' },
     { name: 'beat 7' },
+    { name: 'beat 8' },
+    { name: 'beat 9' },
+    { name: 'beat 0' },
+    { name: 'beat 1' },
+    { name: 'beat 3' },
+    { name: 'beat 4' },
+    { name: 'beat 5' },
+    { name: 'beat 6' },
+    { name: 'beat 2' },
+    { name: 'beat 3' },
   ]);
   return (
     <>
       <EditHeader navigation={navigation} />
       <View style={styles.beatListContainer}>
-        <View style={styles.beatList}>
+        <ScrollView contentContainerStyle={styles.beatList}>
           {beats.map((beat: { name: string }) => (
             <View style={styles.beat}>
-              <Text>{beat.name}</Text>
+              <Text style={styles.beatContent}>{beat.name}</Text>
             </View>
           ))}
-        </View>
+        </ScrollView>
       </View>
       <Footer navigation={navigation} />
     </>
@@ -36,7 +46,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
   },
   beatList: {
-    flex: 1,
     alignItems: 'center',
   },
   beat: {
