@@ -6,7 +6,7 @@ const GuideBtn = () => {
     <TouchableOpacity>
       <Image
         style={styles.guide}
-        source={require('./assets/images/guide.png')}
+        source={require('../../assets/images/guide.png')}
       />
     </TouchableOpacity>
   );

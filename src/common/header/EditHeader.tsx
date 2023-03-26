@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, SafeAreaView, Text, StyleSheet } from 'react-native';
-import EditBtn from './EditBtn';
+import EditBtn from '../button/EditBtn';
 
 const EditHeader = ({ navigation }: any) => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
-import GuideBtn from './GuideBtn';
-import MenuBtn from './MenuBtn';
+import GuideBtn from '../button/GuideBtn';
+import MenuBtn from '../button/MenuBtn';
 
 StatusBar.setBarStyle('light-content');
 

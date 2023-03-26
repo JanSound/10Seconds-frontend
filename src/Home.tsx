@@ -19,7 +19,7 @@ import {
   Platform,
   AppState,
 } from 'react-native';
-import Header from './Header';
+import Header from './common/header/Header';
 import Footer from './Footer';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();

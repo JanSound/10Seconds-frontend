@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import Footer from '../Footer';
-import Header from '../Header';
+import Header from '../common/header/Header';
 
 const SelectScreen = ({ navigation }: any) => {
   return (

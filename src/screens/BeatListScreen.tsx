@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import EditHeader from '../EditHeader';
+import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
 
 const BeatListScreen = ({ navigation }: any) => {

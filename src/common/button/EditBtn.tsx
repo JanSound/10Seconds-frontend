@@ -6,7 +6,7 @@ const EditBtn = () => {
     <TouchableOpacity>
       <Image
         style={styles.guide}
-        source={require('./assets/images/edit.png')}
+        source={require('../../assets/images/edit.png')}
       />
     </TouchableOpacity>
   );

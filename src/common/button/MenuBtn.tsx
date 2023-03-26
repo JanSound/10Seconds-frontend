@@ -12,7 +12,7 @@ const MenuBtn = ({ navigation }: any) => {
     >
       <Image
         style={styles.menuBtnImage}
-        source={require('./assets/images/hamburger.png')}
+        source={require('../../assets/images/hamburger.png')}
       />
     </TouchableOpacity>
   );
