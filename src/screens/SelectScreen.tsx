@@ -26,7 +26,6 @@ const SelectScreen = ({ navigation }: any) => {
           style={styles.drum}
           source={require('../assets/images/drum.png')}
         />
-
         <Text style={{ fontWeight: 'bold', fontSize: 30 }}>drum</Text>
       </TouchableOpacity>
 

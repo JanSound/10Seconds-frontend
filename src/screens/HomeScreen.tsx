@@ -2,17 +2,15 @@ import React from 'react';
 import { View, Text, Button } from 'react-native';
 import Footer from '../Footer';
 import Header from '../Header';
+import Home from '../Home';
 
 const HomeScreen = ({ navigation }: any) => {
   return (
-    <View>
+    <>
       <Header navigation={navigation} />
-      <Button
-        title="select page 열기"
-        onPress={() => navigation.navigate('Select')}
-      ></Button>
-      <Footer />
-    </View>
+      <Home />
+      <Footer navigation={navigation} />
+    </>
   );
 };
 

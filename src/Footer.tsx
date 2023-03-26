@@ -1,10 +1,13 @@
 import React from 'react';
 import { View, Button, StyleSheet, Linking } from 'react-native';
 
-const Footer = () => {
+const Footer = ({ navigation }: any) => {
   return (
     <View style={styles.footerNavigation}>
-      <Button title="tab1"></Button>
+      <Button
+        title="Record"
+        onPress={() => navigation.navigate('Home')}
+      ></Button>
       <Button title="tab2"></Button>
       <Button title="tab3"></Button>
       <Button title="설정" onPress={() => Linking.openSettings()}></Button>
@@ -14,7 +17,7 @@ const Footer = () => {
 
 const styles = StyleSheet.create({
   footerNavigation: {
-    flex: 0.3,
+    flex: 0.1,
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-around',

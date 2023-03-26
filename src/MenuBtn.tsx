@@ -8,7 +8,7 @@ const MenuBtn = ({ navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.menuBtn}
-      onPress={() => navigation.navigate('Select')}
+      onPress={() => navigation.navigate('BeatList')}
     >
       <Image
         style={styles.menuBtnImage}

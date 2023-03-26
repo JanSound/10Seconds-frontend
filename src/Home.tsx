@@ -220,7 +220,6 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header />
       <View style={styles.body}>
         <Recording
           recording={recording}
@@ -251,7 +250,6 @@ const Home = () => {
           <Text>로그인 완료!</Text>
         )}
       </View>
-      <Footer />
     </View>
   );
 };
@@ -276,12 +274,6 @@ const styles = StyleSheet.create({
   googleLogin: {
     flex: 1,
     alignItems: 'center',
-  },
-  footerNavigation: {
-    flex: 0.3,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
   },
 });
 
