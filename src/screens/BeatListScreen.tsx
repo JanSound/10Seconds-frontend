@@ -1,15 +1,37 @@
 import PlayBtn from '../common/button/PlayBtn';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  Image,
+  ImageSourcePropType,
+} from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
 
+interface IInstrument {
+  [key: string]: ImageSourcePropType;
+}
+interface IBeat {
+  id: string;
+  name: string;
+  instType: string;
+}
+
+const instrument: IInstrument = {
+  base: require('../assets/images/base.png'),
+  piano: require('../assets/images/piano.png'),
+  drum: require('../assets/images/drum.png'),
+};
+
 const BeatListScreen = ({ navigation }: any) => {
   const [beats, setBeats] = useState([
-    { id: 'beat url', name: 'beat name', instType: 'base' },
-    { id: 'beat url2', name: 'beat name2', instType: 'piano' },
-    { id: 'beat url3', name: 'beat name3', instType: 'drum' },
+    { id: 'beat url', name: '베이스 좡좡', instType: 'base' },
+    { id: 'beat url2', name: '피아노 딩동댕', instType: 'piano' },
+    { id: 'beat url3', name: '드럼 둥둥', instType: 'drum' },
   ]);
 
   useEffect(() => {
@@ -20,25 +42,16 @@ const BeatListScreen = ({ navigation }: any) => {
       <EditHeader navigation={navigation} />
       <View style={styles.beatListContainer}>
         <ScrollView contentContainerStyle={styles.beatList}>
-          {beats.map(
-            (
-              beat: {
-                id: string;
-                name: string;
-                instType: string;
-              },
-              index,
-            ) => (
-              <View style={styles.beat} key={index}>
-                <PlayBtn beatId={beat.id} instType={beat.instType} />
-                <Text style={styles.beatContent}>{beat.name}</Text>
-                <Image
-                  style={{ width: 50, height: 50 }}
-                  source={require('../assets/images/base.png')}
-                ></Image>
-              </View>
-            ),
-          )}
+          {beats.map((beat: IBeat, index) => (
+            <View style={styles.beat} key={index}>
+              <PlayBtn beatId={beat.id} instType={beat.instType} />
+              <Text style={styles.beatContent}>{beat.name}</Text>
+              <Image
+                style={{ width: 50, height: 50 }}
+                source={instrument[beat.instType]}
+              ></Image>
+            </View>
+          ))}
         </ScrollView>
       </View>
       <Footer navigation={navigation} />
