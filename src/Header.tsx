@@ -5,14 +5,14 @@ import MenuBtn from './MenuBtn';
 
 StatusBar.setBarStyle('light-content');
 
-const Header = () => {
+const Header = ({ navigation }: any) => {
   return (
     <View>
       <SafeAreaView style={{ backgroundColor: 'black' }}></SafeAreaView>
       <View style={styles.tabBar}>
         <GuideBtn />
         <Text style={styles.title}>10Seconds</Text>
-        <MenuBtn />
+        <MenuBtn navigation={navigation} />
       </View>
     </View>
   );

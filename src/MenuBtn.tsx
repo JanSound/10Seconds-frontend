@@ -4,9 +4,12 @@ import { Dimensions, View, Text, TouchableOpacity, Image } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 
-const MenuBtn = () => {
+const MenuBtn = ({ navigation }: any) => {
   return (
-    <TouchableOpacity style={styles.menuBtn}>
+    <TouchableOpacity
+      style={styles.menuBtn}
+      onPress={() => navigation.navigate('Select')}
+    >
       <Image
         style={styles.menuBtnImage}
         source={require('./assets/images/hamburger.png')}
