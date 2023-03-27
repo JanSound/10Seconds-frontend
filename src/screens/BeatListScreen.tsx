@@ -1,4 +1,4 @@
-import PlayBtn from '../common/button/PlayBtn';
+import SelectPlayBtn from '../common/button/SelectPlayBtn';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import {
@@ -45,7 +45,7 @@ const BeatListScreen = ({ navigation }: any) => {
         <ScrollView contentContainerStyle={styles.beatList}>
           {beats.map((beat: IBeat, index) => (
             <View style={styles.beat} key={index}>
-              <PlayBtn
+              <SelectPlayBtn
                 beatId={beat.id}
                 instType={beat.instType}
                 navigation={navigation}

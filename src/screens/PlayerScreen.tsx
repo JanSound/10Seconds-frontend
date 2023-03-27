@@ -8,8 +8,7 @@ import {
   ImageSourcePropType,
   Image,
 } from 'react-native';
-import PlayBtn from '@/common/button/PlayBtn';
-
+import BeatPlayBtn from '@/common/button/BeatPlayBtn';
 interface IInstrument {
   [key: string]: ImageSourcePropType;
 }
@@ -22,6 +21,7 @@ const instrument: IInstrument = {
 
 const PlayerScreen = (props: any) => {
   const { route, navigation } = props;
+
   return (
     <>
       <Header navigation={navigation} />
@@ -30,6 +30,7 @@ const PlayerScreen = (props: any) => {
           style={styles.instrumentImage}
           source={instrument[route.params.instType]}
         />
+        <BeatPlayBtn />
       </View>
       <Footer />
     </>
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   instrumentImage: {
     width: 100,
     height: 100,
-    margin: 10,
+    margin: 20,
   },
 });
 export default PlayerScreen;
