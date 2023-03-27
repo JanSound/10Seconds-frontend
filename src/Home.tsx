@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import config from '../config/config';
 import { PERMISSIONS, RESULTS, request, check } from 'react-native-permissions';
-import Recording from './Recording';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -23,6 +22,8 @@ import Footer from './Footer';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
+import Loading from './Loading';
+import RecordBtn from './common/button/RecordBtn';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -284,11 +285,14 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <View style={styles.body}>
-        <Recording
-          recording={recording}
-          handleStopRecord={handleStopRecord}
-          handleStartRecord={handleStartRecord}
-        />
+        {recording ? (
+          <Loading handleStopRecord={handleStopRecord} />
+        ) : (
+          <RecordBtn
+            recording={recording}
+            handleStartRecord={handleStartRecord}
+          />
+        )}
         <Button
           color="white"
           title="s3로 보내기"

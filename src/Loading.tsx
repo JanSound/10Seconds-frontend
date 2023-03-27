@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
-const Loading = () => {
+const Loading = ({ handleStopRecord }: any) => {
   return (
     <View>
       <View>
@@ -11,7 +11,7 @@ const Loading = () => {
           size={200}
           width={10}
           fill={100}
-          onAnimationComplete={() => console.log('onAnimationComplete')}
+          onAnimationComplete={() => handleStopRecord()}
           backgroundColor="white"
           tintColor="black"
           duration={10000}
