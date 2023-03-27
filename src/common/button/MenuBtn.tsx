@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Dimensions, View, Text, TouchableOpacity, Image } from 'react-native';
+import { Dimensions, TouchableOpacity, Image } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 

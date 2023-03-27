@@ -17,10 +17,6 @@ import {
   Platform,
   AppState,
 } from 'react-native';
-import Header from './common/header/Header';
-import Footer from './Footer';
-import axios from 'axios';
-import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
 import Loading from './Loading';
 import RecordBtn from './common/button/RecordBtn';
@@ -146,7 +142,7 @@ const Home = () => {
     return checkPermission;
   };
 
-  const handleGoogleLogin = async () => {
+  const requestGoogleLogin = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
@@ -316,7 +312,7 @@ const Home = () => {
           <GoogleSigninButton
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
-            onPress={handleGoogleLogin}
+            onPress={requestGoogleLogin}
           />
         ) : (
           <Text>로그인 완료!</Text>

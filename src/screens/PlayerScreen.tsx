@@ -1,13 +1,7 @@
 import Header from '@/common/header/Header';
 import Footer from '../Footer';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageSourcePropType,
-  Image,
-} from 'react-native';
+import { StyleSheet, View, ImageSourcePropType, Image } from 'react-native';
 import BeatPlayBtn from '@/common/button/BeatPlayBtn';
 interface IInstrument {
   [key: string]: ImageSourcePropType;
