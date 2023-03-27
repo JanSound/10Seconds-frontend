@@ -20,6 +20,7 @@ import {
 import RNFS from 'react-native-fs';
 import Loading from './Loading';
 import RecordBtn from './common/button/RecordBtn';
+import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -311,18 +312,10 @@ const Home = () => {
           ''
         )}
       </View>
-
-      <View style={styles.googleLogin}>
-        {isLoggedIn === false ? (
-          <GoogleSigninButton
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={requestGoogleLogin}
-          />
-        ) : (
-          <Text>로그인 완료!</Text>
-        )}
-      </View>
+      <GoogleSignInBtn
+        isLoggedIn={isLoggedIn}
+        requestGoogleLogin={requestGoogleLogin}
+      />
     </View>
   );
 };
@@ -343,10 +336,6 @@ const styles = StyleSheet.create({
   playing: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  googleLogin: {
-    flex: 1,
-    alignItems: 'center',
   },
 });
 
