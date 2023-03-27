@@ -231,8 +231,56 @@ const Home = () => {
       .then((res) => res.json())
       .catch((e) => console.log('presigned url post 에러 :', e));
     const preUrl = result['presigned_url'];
+    uploadRecordToS3(preUrl);
   };
 
+  const uploadRecordToS3 = async (preUrl: string) => {
+    const upload = (response: any) => {
+      const jobId = response.jobId;
+      console.log('UPLOAD HAS BEGUN! JobId: ' + jobId);
+    };
+
+    const uploadProgress = (response: any) => {
+      const percentage = Math.floor(
+        (response.totalBytesSent / response.totalBytesExpectedToSend) * 100,
+      );
+      console.log('UPLOAD IS ' + percentage + '% DONE!');
+    };
+
+    const files = [
+      {
+        name: 'recordVoice.m4a',
+        filename: 'recordVoice.m4a',
+        filepath: recordingPath,
+        filetype: 'audio/x-m4a',
+      },
+    ];
+
+    RNFS.uploadFiles({
+      toUrl: preUrl,
+      files: files,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'audio/x-m4a',
+      },
+      fields: {
+        hello: 'world',
+      },
+      begin: upload,
+      progress: uploadProgress,
+    })
+      .promise.then((response) => {
+        if (response.statusCode == 200) {
+          console.log(response);
+          console.log('FILES UPLOADED!!!');
+        } else {
+          console.log('SERVER ERROR!!!');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.body}>
