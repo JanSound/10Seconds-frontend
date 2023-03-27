@@ -1,12 +1,17 @@
 import React from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-const PlayBtn = (props: { beatId: string; instType: string }) => {
-  const { beatId, instType } = props;
+const PlayBtn = (props: {
+  beatId: string;
+  instType: string;
+  navigation: any;
+}) => {
+  const { beatId, instType, navigation } = props;
+  const handlePlayBtn = (instType: string) => {
+    navigation.navigate('Player', { instType: instType });
+  };
   return (
-    // navigation.navigate('Play')
-    // 재생화면으로 이동
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => handlePlayBtn(instType)}>
       <Image
         style={styles.guide}
         source={require('../../assets/images/play.png')}

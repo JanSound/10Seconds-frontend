@@ -37,6 +37,7 @@ const BeatListScreen = ({ navigation }: any) => {
   useEffect(() => {
     // s3에 저장된 user의 비트리스트를 가져온다
   }, []);
+
   return (
     <>
       <EditHeader navigation={navigation} />
@@ -44,7 +45,11 @@ const BeatListScreen = ({ navigation }: any) => {
         <ScrollView contentContainerStyle={styles.beatList}>
           {beats.map((beat: IBeat, index) => (
             <View style={styles.beat} key={index}>
-              <PlayBtn beatId={beat.id} instType={beat.instType} />
+              <PlayBtn
+                beatId={beat.id}
+                instType={beat.instType}
+                navigation={navigation}
+              />
               <Text style={styles.beatContent}>{beat.name}</Text>
               <Image
                 style={{ width: 50, height: 50 }}
