@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import { oauth } from '../config/oauth';
+import config from '../config/config';
 import { PERMISSIONS, RESULTS, request, check } from 'react-native-permissions';
 import Recording from './Recording';
-import RNFetchBlob from 'rn-fetch-blob';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -21,6 +20,9 @@ import {
 } from 'react-native';
 import Header from './common/header/Header';
 import Footer from './Footer';
+import axios from 'axios';
+import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -68,10 +70,8 @@ const Home = () => {
           duration: '00:00:00',
         });
 
-        const dirs = RNFetchBlob.fs.dirs;
         const path = Platform.select({
           ios: 'recordVoice.m4a',
-          android: `${dirs.CacheDir}/recordVoice.mp3`,
         });
         const uri = await audioRecorderPlayer.startRecorder(path);
         setRecordingPath(uri);
@@ -157,10 +157,10 @@ const Home = () => {
         method: 'POST',
         body: JSON.stringify({
           code: userInfo.serverAuthCode,
-          client_id: oauth.GOOGLE_WEB_CLIENT_ID,
-          client_secret: oauth.GOOGLE_WEB_CLIENT_SECRET,
+          client_id: config.oauth.GOOGLE_WEB_CLIENT_ID,
+          client_secret: config.oauth.GOOGLE_WEB_CLIENT_SECRET,
           grant_type: 'authorization_code',
-          redirect_uri: oauth.REDIRECT_URI,
+          redirect_uri: config.oauth.REDIRECT_URI,
         }),
       }).then((res) => {
         return res.json();
@@ -183,8 +183,8 @@ const Home = () => {
 
   const googleConfigureSignIn = () => {
     GoogleSignin.configure({
-      webClientId: oauth.GOOGLE_WEB_CLIENT_ID,
-      iosClientId: oauth.GOOGLE_IOS_CLIENT_ID,
+      webClientId: config.oauth.GOOGLE_WEB_CLIENT_ID,
+      iosClientId: config.oauth.GOOGLE_IOS_CLIENT_ID,
       offlineAccess: true,
     });
   };
@@ -218,6 +218,21 @@ const Home = () => {
     googleConfigureSignIn();
   }, []);
 
+  const uploadRecordFile = async () => {
+    const result = await fetch(
+      'http://ec2-54-180-95-225.ap-northeast-2.compute.amazonaws.com:8001/api/v1/beats/generate-presigned-url',
+      {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+        },
+      },
+    )
+      .then((res) => res.json())
+      .catch((e) => console.log('presigned url post 에러 :', e));
+    const preUrl = result['presigned_url'];
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.body}>
@@ -226,6 +241,11 @@ const Home = () => {
           handleStopRecord={handleStopRecord}
           handleStartRecord={handleStartRecord}
         />
+        <Button
+          color="white"
+          title="s3로 보내기"
+          onPress={uploadRecordFile}
+        ></Button>
       </View>
       <View style={styles.play}>
         {playerDuration ? (
