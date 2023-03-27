@@ -186,7 +186,7 @@ const Home = () => {
     });
   };
 
-  useEffect(() => {
+  const checkCurrentScreen = () => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (
         appState.current.match(/inactive|background/) &&
@@ -205,6 +205,11 @@ const Home = () => {
       setAppStateVisible(appState.current);
     });
 
+    return subscription;
+  };
+
+  useEffect(() => {
+    const subscription = checkCurrentScreen();
     return () => {
       subscription.remove();
     };
