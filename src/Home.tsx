@@ -24,7 +24,8 @@ import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const Home = () => {
+const Home = (props: any) => {
+  const { navigation } = props;
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
@@ -43,7 +44,12 @@ const Home = () => {
   });
   const [recordingPath, setRecordingPath] = useState('');
 
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    idToken: '',
+    serverAuthCode: '',
+    email: '',
+    name: '',
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const alertMikePermissionDenied = () => {
@@ -97,6 +103,7 @@ const Home = () => {
         await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setRecordDuration({ ...recordDuration, recordSecs: 0 });
+        navigation.navigate('Select');
       }
     } catch (e) {
       setRecording(false);
@@ -147,9 +154,13 @@ const Home = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      // userInfo : [idToken, serverAuthCode, user {email, name, photo} ]
-
-      setUserInfo(userInfo);
+      // userInfo : [idToken, serverAuthCode, scopes, user {email, name, photo} ]
+      setUserInfo({
+        idToken: userInfo.idToken!,
+        serverAuthCode: userInfo.serverAuthCode!,
+        email: userInfo.user.email,
+        name: userInfo.user.name!,
+      });
 
       const result = await fetch('https://oauth2.googleapis.com/token', {
         method: 'POST',
@@ -314,6 +325,7 @@ const Home = () => {
       </View>
       <GoogleSignInBtn
         isLoggedIn={isLoggedIn}
+        userInfo={userInfo}
         requestGoogleLogin={requestGoogleLogin}
       />
     </View>

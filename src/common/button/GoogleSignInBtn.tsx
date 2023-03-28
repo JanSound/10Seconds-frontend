@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { View, Text } from 'react-native';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 const GoogleSignInBtn = (props: any) => {
-  const { isLoggedIn, requestGoogleLogin } = props;
+  const { isLoggedIn, userInfo, requestGoogleLogin } = props;
   return (
     <View style={styles.googleLogin}>
       {isLoggedIn === false ? (
@@ -13,7 +13,7 @@ const GoogleSignInBtn = (props: any) => {
           onPress={requestGoogleLogin}
         />
       ) : (
-        <Text>로그인 완료!</Text>
+        <Text>{userInfo.name}님 로그인 완료!</Text>
       )}
     </View>
   );
