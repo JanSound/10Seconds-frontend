@@ -5,32 +5,33 @@ import Header from '../common/header/Header';
 
 const SelectScreen = ({ navigation }: any) => {
   return (
-    <View style={styles.instrumentContainer}>
+    <>
       <Header />
-      <TouchableOpacity style={styles.baseContainer}>
-        <Image
-          style={styles.base}
-          source={require('../assets/images/base.png')}
-        />
-        <Text style={{ fontWeight: 'bold', fontSize: 30 }}>base</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.pianoContainer}>
-        <Image
-          style={styles.piano}
-          source={require('../assets/images/piano.png')}
-        />
-        <Text style={{ fontWeight: 'bold', fontSize: 30 }}>piano</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.drumContainer}>
-        <Image
-          style={styles.drum}
-          source={require('../assets/images/drum.png')}
-        />
-        <Text style={{ fontWeight: 'bold', fontSize: 30 }}>drum</Text>
-      </TouchableOpacity>
-
+      <View style={styles.instrumentContainer}>
+        <TouchableOpacity style={styles.baseContainer}>
+          <Image
+            style={styles.base}
+            source={require('../assets/images/base.png')}
+          />
+          <Text style={{ fontWeight: 'bold', fontSize: 30 }}>base</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.pianoContainer}>
+          <Image
+            style={styles.piano}
+            source={require('../assets/images/piano.png')}
+          />
+          <Text style={{ fontWeight: 'bold', fontSize: 30 }}>piano</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.drumContainer}>
+          <Image
+            style={styles.drum}
+            source={require('../assets/images/drum.png')}
+          />
+          <Text style={{ fontWeight: 'bold', fontSize: 30 }}>drum</Text>
+        </TouchableOpacity>
+      </View>
       <Footer />
-    </View>
+    </>
   );
 };
 

@@ -7,7 +7,7 @@ const HomeScreen = ({ navigation }: any) => {
   return (
     <>
       <Header navigation={navigation} />
-      <Home />
+      <Home navigation={navigation} />
       <Footer navigation={navigation} />
     </>
   );
