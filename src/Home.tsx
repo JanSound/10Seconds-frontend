@@ -295,7 +295,7 @@ const Home = () => {
             handleStartRecord={handleStartRecord}
           />
         )}
-        <Button
+        {/* <Button
           color="white"
           title="s3로 보내기"
           onPress={uploadRecordFile}
@@ -310,7 +310,7 @@ const Home = () => {
           )
         ) : (
           ''
-        )}
+        )} */}
       </View>
       <GoogleSignInBtn
         isLoggedIn={isLoggedIn}
