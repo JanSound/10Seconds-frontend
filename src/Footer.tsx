@@ -8,8 +8,7 @@ const Footer = ({ navigation }: any) => {
         title="Record"
         onPress={() => navigation.navigate('Home')}
       ></Button>
-      <Button title="tab2"></Button>
-      <Button title="tab3"></Button>
+      <Button title="Home"></Button>
       <Button title="설정" onPress={() => Linking.openSettings()}></Button>
     </View>
   );
