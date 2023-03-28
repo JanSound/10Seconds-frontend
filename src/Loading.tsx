@@ -1,14 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 const Loading = ({ handleStopRecord }: any) => {
   return (
     <View>
-      <View>
+      <View style={styles.recordingLoadingContainer}>
         <AnimatedCircularProgress
-          size={200}
+          size={300}
           width={10}
           fill={100}
           onAnimationComplete={() => handleStopRecord()}
@@ -19,8 +19,8 @@ const Loading = ({ handleStopRecord }: any) => {
         >
           {(fill) => (
             <Image
-              source={require('./assets/images/record_image.jpeg')}
-              style={{ width: 200, height: 200, borderRadius: 100 }}
+              source={require('./assets/images/recordingOn.png')}
+              style={styles.recordingImage}
             />
           )}
         </AnimatedCircularProgress>
@@ -28,5 +28,15 @@ const Loading = ({ handleStopRecord }: any) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  recordingLoadingContainer: {
+    alignItems: 'center',
+  },
+  recordingImage: {
+    width: 120,
+    height: 210,
+  },
+});
 
 export default Loading;

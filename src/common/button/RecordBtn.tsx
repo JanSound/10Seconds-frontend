@@ -1,5 +1,12 @@
 import React from 'react';
-import { Button, View } from 'react-native';
+import {
+  Text,
+  Button,
+  TouchableOpacity,
+  View,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -9,13 +16,26 @@ const RecordBtn = (props: any) => {
 
   return (
     <View>
-      <Button
-        title="Start Recording"
-        color="black"
+      <TouchableOpacity
+        style={styles.recordingContainer}
         onPress={handleStartRecord}
-      ></Button>
+      >
+        <Image
+          style={styles.recordingImage}
+          source={require('../../assets/images/recordingOff.png')}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
+const styles = StyleSheet.create({
+  recordingContainer: {
+    alignItems: 'center',
+  },
+  recordingImage: {
+    width: 110,
+    height: 210,
+  },
+});
 export default RecordBtn;
