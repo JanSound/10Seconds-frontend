@@ -12,8 +12,8 @@ const Loading = ({ handleStopRecord }: any) => {
           width={10}
           fill={100}
           onAnimationComplete={() => handleStopRecord()}
-          backgroundColor="white"
-          tintColor="black"
+          backgroundColor="black"
+          tintColor="red"
           duration={10000}
           rotation={0}
         >
