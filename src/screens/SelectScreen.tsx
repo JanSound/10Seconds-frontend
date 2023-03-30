@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import Footer from '../Footer';
 import Header from '../common/header/Header';
+import TitleHeader from '@/common/header/TitleHeader';
 
 interface IInstrument {
   [key: string]: string;
@@ -37,7 +38,7 @@ const SelectScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <Header />
+      <TitleHeader />
       <View style={styles.instrumentContainer}>
         <TouchableOpacity
           style={styles.baseContainer}

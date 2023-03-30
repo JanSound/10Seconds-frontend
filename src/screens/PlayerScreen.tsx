@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import BeatPlayBtn from '@/common/button/BeatPlayBtn';
+import BeatListHeader from '@/common/header/BeatListHeader';
 interface IInstrument {
   [key: string]: ImageSourcePropType;
 }
@@ -21,10 +22,9 @@ const instrument: IInstrument = {
 
 const PlayerScreen = (props: any) => {
   const { route, navigation } = props;
-
   return (
     <>
-      <Header navigation={navigation} />
+      <BeatListHeader navigation={navigation} />
       <View style={styles.playerContainer}>
         <Image
           style={styles.instrumentImage}
