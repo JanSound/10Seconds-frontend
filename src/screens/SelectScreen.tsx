@@ -38,7 +38,7 @@ const SelectScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <TitleHeader />
+      <TitleHeader navigation={navigation} />
       <View style={styles.instrumentContainer}>
         <TouchableOpacity
           style={styles.baseContainer}
