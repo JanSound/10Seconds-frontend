@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,11 +13,17 @@ import MenuBtn from '../button/MenuBtn';
 StatusBar.setBarStyle('light-content');
 
 const Header = ({ navigation }: any) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible((visible) => !visible);
+    console.log(isModalVisible);
+  };
   return (
     <View>
       <SafeAreaView style={{ backgroundColor: 'black' }}></SafeAreaView>
       <View style={styles.tabBar}>
-        <GuideBtn />
+        <GuideBtn toggleModal={toggleModal} />
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.title}>10Seconds</Text>
         </TouchableOpacity>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-const GuideBtn = () => {
+const GuideBtn = (props: any) => {
+  const { toggleModal } = props;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={toggleModal}>
       <Image
         style={styles.guide}
         source={require('../../assets/images/guide.png')}

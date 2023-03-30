@@ -21,6 +21,7 @@ import RNFS from 'react-native-fs';
 import Loading from './Loading';
 import RecordBtn from './common/button/RecordBtn';
 import GoogleSignInBtn from './common/button/GoogleSignInBtn';
+import GuideModal from './common/modal/GuideModal';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -297,6 +298,7 @@ const Home = (props: any) => {
   };
   return (
     <View style={styles.container}>
+      <GuideModal />
       <View style={styles.body}>
         {recording ? (
           <Loading handleStopRecord={handleStopRecord} />
