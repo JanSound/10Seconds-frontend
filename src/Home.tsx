@@ -26,7 +26,7 @@ import GuideModal from './common/modal/GuideModal';
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const Home = (props: any) => {
-  const { navigation } = props;
+  const { navigation, isModalVisible } = props;
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
@@ -296,9 +296,10 @@ const Home = (props: any) => {
         console.log(err);
       });
   };
+
   return (
     <View style={styles.container}>
-      <GuideModal />
+      {isModalVisible && <GuideModal />}
       <View style={styles.body}>
         {recording ? (
           <Loading handleStopRecord={handleStopRecord} />

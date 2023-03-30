@@ -12,13 +12,8 @@ import MenuBtn from '../button/MenuBtn';
 
 StatusBar.setBarStyle('light-content');
 
-const Header = ({ navigation }: any) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible((visible) => !visible);
-    console.log(isModalVisible);
-  };
+const Header = (props: any) => {
+  const { toggleModal, navigation } = props;
   return (
     <View>
       <SafeAreaView style={{ backgroundColor: 'black' }}></SafeAreaView>

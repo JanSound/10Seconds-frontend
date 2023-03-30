@@ -18,22 +18,23 @@ const GuideModal = () => {
 const styles = StyleSheet.create({
   modalContainer: {
     zIndex: 1,
+    top: 10,
   },
   dialog: {
     width: 50,
     height: 50,
     backgroundColor: 'white',
-    marginLeft: 20,
+    marginLeft: 30,
     marginTop: 20,
     transform: [{ rotate: '45deg' }],
   },
   textContainer: {
     position: 'absolute',
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 20,
     width: '90%',
-    fontSize: 30,
-    left: 8,
+    height: 560,
+    left: 10,
     top: 30,
     shadowColor: '#000',
     shadowOffset: {
