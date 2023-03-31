@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 interface IInstrument {
   [key: string]: ImageSourcePropType;
@@ -34,6 +35,11 @@ const BeatListScreen = ({ navigation }: any) => {
     { id: 'beat url3', name: '드럼 둥둥', instType: 'drum' },
   ]);
 
+  const [isChecked, setIsChecked] = useState(false);
+  const isSelected = () => {
+    setIsChecked(!isChecked);
+  };
+
   useEffect(() => {
     // s3에 저장된 user의 비트리스트를 가져온다
   }, []);
@@ -45,6 +51,13 @@ const BeatListScreen = ({ navigation }: any) => {
         <ScrollView contentContainerStyle={styles.beatList}>
           {beats.map((beat: IBeat, index) => (
             <View style={styles.beat} key={index}>
+              <BouncyCheckbox
+                size={25}
+                fillColor="red"
+                unfillColor="#FFFFFF"
+                iconStyle={{ borderColor: 'red' }}
+                onPress={isSelected}
+              />
               <SelectPlayBtn
                 beatId={beat.id}
                 instType={beat.instType}
