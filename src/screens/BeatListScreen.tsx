@@ -18,10 +18,16 @@ const BeatListScreen = ({ navigation }: any) => {
     { id: 'beat url3', name: '드럼 둥둥', instType: 'drum' },
   ]);
 
+  const [isEditing, setIsEditing] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const isSelected = (id: string) => {
+  const handleIsChecked = (id: string) => {
     console.log(id);
     setIsChecked(!isChecked);
+  };
+
+  const handleIsEditing = () => {
+    console.log(isEditing);
+    setIsEditing(!isEditing);
   };
 
   useEffect(() => {
@@ -30,7 +36,7 @@ const BeatListScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <EditHeader navigation={navigation} />
+      <EditHeader navigation={navigation} handleIsEditing={handleIsEditing} />
       <View style={styles.beatListContainer}>
         <ScrollView contentContainerStyle={styles.beatList}>
           {beats.map((beat: IBeat, index) => (
@@ -38,7 +44,8 @@ const BeatListScreen = ({ navigation }: any) => {
               beat={beat}
               key={index}
               navigation={navigation}
-              isSelected={isSelected}
+              handleIsChecked={handleIsChecked}
+              isEditing={isEditing}
             />
           ))}
         </ScrollView>

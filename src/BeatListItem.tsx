@@ -19,16 +19,20 @@ const instrument: IInstrument = {
 };
 
 const BeatListItem = (props: any) => {
-  const { isSelected, navigation, beat } = props;
+  const { handleIsChecked, navigation, beat, isEditing } = props;
   return (
     <View style={styles.beat}>
-      <BouncyCheckbox
-        size={25}
-        fillColor="red"
-        unfillColor="#FFFFFF"
-        iconStyle={{ borderColor: 'red' }}
-        onPress={() => isSelected(beat.id)}
-      />
+      {isEditing ? (
+        <BouncyCheckbox
+          size={25}
+          fillColor="red"
+          unfillColor="#FFFFFF"
+          iconStyle={{ borderColor: 'red' }}
+          onPress={() => handleIsChecked(beat.id)}
+        />
+      ) : (
+        <View />
+      )}
       <SelectPlayBtn
         beatId={beat.id}
         instType={beat.instType}

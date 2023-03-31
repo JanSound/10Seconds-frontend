@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import EditBtn from '../button/EditBtn';
 
-const EditHeader = ({ navigation }: any) => {
+const EditHeader = (props: any) => {
+  const { navigation, handleIsEditing } = props;
   return (
     <View>
       <SafeAreaView style={{ backgroundColor: 'black' }}></SafeAreaView>
       <View style={styles.tabBar}>
-        <EditBtn />
+        <EditBtn handleIsEditing={handleIsEditing} />
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.title}>10Seconds</Text>
         </TouchableOpacity>
