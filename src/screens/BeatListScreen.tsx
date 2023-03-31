@@ -1,32 +1,15 @@
-import SelectPlayBtn from '../common/button/SelectPlayBtn';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Image,
-  ImageSourcePropType,
-} from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import BeatListItem from '@/BeatListItem';
 
-interface IInstrument {
-  [key: string]: ImageSourcePropType;
-}
 interface IBeat {
   id: string;
   name: string;
   instType: string;
 }
-
-const instrument: IInstrument = {
-  base: require('../assets/images/base.png'),
-  piano: require('../assets/images/piano.png'),
-  drum: require('../assets/images/drum.png'),
-};
 
 const BeatListScreen = ({ navigation }: any) => {
   const [beats, setBeats] = useState([
@@ -50,25 +33,12 @@ const BeatListScreen = ({ navigation }: any) => {
       <View style={styles.beatListContainer}>
         <ScrollView contentContainerStyle={styles.beatList}>
           {beats.map((beat: IBeat, index) => (
-            <View style={styles.beat} key={index}>
-              <BouncyCheckbox
-                size={25}
-                fillColor="red"
-                unfillColor="#FFFFFF"
-                iconStyle={{ borderColor: 'red' }}
-                onPress={isSelected}
-              />
-              <SelectPlayBtn
-                beatId={beat.id}
-                instType={beat.instType}
-                navigation={navigation}
-              />
-              <Text style={styles.beatContent}>{beat.name}</Text>
-              <Image
-                style={{ width: 50, height: 50 }}
-                source={instrument[beat.instType]}
-              ></Image>
-            </View>
+            <BeatListItem
+              beat={beat}
+              key={index}
+              navigation={navigation}
+              isSelected={isSelected}
+            />
           ))}
         </ScrollView>
       </View>
@@ -84,23 +54,6 @@ const styles = StyleSheet.create({
   },
   beatList: {
     alignItems: 'center',
-  },
-  beat: {
-    width: 300,
-    height: 70,
-    margin: 10,
-    padding: 10,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    borderColor: 'black',
-    borderWidth: 3,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-
-    flexDirection: 'row',
-  },
-  beatContent: {
-    fontSize: 20,
   },
 });
 
