@@ -1,25 +1,40 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Button } from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
 import BeatList from '@/BeatList';
 
 const BeatListScreen = ({ navigation }: any) => {
   const [beats, setBeats] = useState([
-    { id: 'beat url', name: '베이스 좡좡', instType: 'base' },
-    { id: 'beat url2', name: '피아노 딩동댕', instType: 'piano' },
-    { id: 'beat url3', name: '드럼 둥둥', instType: 'drum' },
+    { id: 'beat url', name: '베이스 좡좡', instType: 'base', checked: false },
+    {
+      id: 'beat url2',
+      name: '피아노 딩동댕',
+      instType: 'piano',
+      checked: false,
+    },
+    { id: 'beat url3', name: '드럼 둥둥', instType: 'drum', checked: false },
   ]);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const handleIsChecked = (id: string) => {
-    setIsChecked(!isChecked);
+    setBeats(
+      beats.map((beat) => {
+        return beat.id === id ? { ...beat, checked: !beat.checked } : beat;
+      }),
+    );
+
+    // setIsChecked(!isChecked);
   };
 
   const handleIsEditing = () => {
     setIsEditing(!isEditing);
+  };
+
+  const handleDeleteBeats = () => {
+    console.log(beats);
+    setBeats(beats.filter((beat) => beat.checked === false));
   };
 
   useEffect(() => {
@@ -30,6 +45,7 @@ const BeatListScreen = ({ navigation }: any) => {
     <>
       <EditHeader navigation={navigation} handleIsEditing={handleIsEditing} />
       <View style={styles.beatListContainer}>
+        <Button title="delete" onPress={handleDeleteBeats} />
         <ScrollView contentContainerStyle={styles.beatList}>
           <BeatList
             beats={beats}
