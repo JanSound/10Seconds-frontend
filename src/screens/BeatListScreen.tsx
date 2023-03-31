@@ -4,12 +4,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
 import BeatListItem from '@/BeatListItem';
-
-interface IBeat {
-  id: string;
-  name: string;
-  instType: string;
-}
+import BeatList from '@/BeatList';
 
 const BeatListScreen = ({ navigation }: any) => {
   const [beats, setBeats] = useState([
@@ -39,15 +34,12 @@ const BeatListScreen = ({ navigation }: any) => {
       <EditHeader navigation={navigation} handleIsEditing={handleIsEditing} />
       <View style={styles.beatListContainer}>
         <ScrollView contentContainerStyle={styles.beatList}>
-          {beats.map((beat: IBeat, index) => (
-            <BeatListItem
-              beat={beat}
-              key={index}
-              navigation={navigation}
-              handleIsChecked={handleIsChecked}
-              isEditing={isEditing}
-            />
-          ))}
+          <BeatList
+            beats={beats}
+            navigation={navigation}
+            isEditing={isEditing}
+            handleIsChecked={handleIsChecked}
+          />
         </ScrollView>
       </View>
       <Footer navigation={navigation} />
