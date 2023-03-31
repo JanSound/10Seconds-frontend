@@ -19,7 +19,8 @@ const BeatListScreen = ({ navigation }: any) => {
   ]);
 
   const [isChecked, setIsChecked] = useState(false);
-  const isSelected = () => {
+  const isSelected = (id: string) => {
+    console.log(id);
     setIsChecked(!isChecked);
   };
 

@@ -27,7 +27,7 @@ const BeatListItem = (props: any) => {
         fillColor="red"
         unfillColor="#FFFFFF"
         iconStyle={{ borderColor: 'red' }}
-        onPress={isSelected}
+        onPress={() => isSelected(beat.id)}
       />
       <SelectPlayBtn
         beatId={beat.id}
