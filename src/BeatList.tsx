@@ -9,7 +9,6 @@ interface IBeat {
 
 const BeatList = (props: any) => {
   const { beats, navigation, isEditing, handleIsChecked } = props;
-  console.log(beats);
   return (
     <>
       {beats.map((beat: IBeat, index: number) => (

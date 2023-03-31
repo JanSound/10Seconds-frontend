@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
-import BeatListItem from '@/BeatListItem';
 import BeatList from '@/BeatList';
 
 const BeatListScreen = ({ navigation }: any) => {
@@ -16,12 +15,10 @@ const BeatListScreen = ({ navigation }: any) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const handleIsChecked = (id: string) => {
-    console.log(id);
     setIsChecked(!isChecked);
   };
 
   const handleIsEditing = () => {
-    console.log(isEditing);
     setIsEditing(!isEditing);
   };
 
