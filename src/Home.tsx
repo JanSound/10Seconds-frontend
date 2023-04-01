@@ -22,6 +22,7 @@ import RecordLoading from './RecordLoading';
 import RecordBtn from './common/button/RecordBtn';
 import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 import GuideModal from './common/modal/GuideModal';
+import ConvertLoading from './ConvertLoading';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -30,6 +31,7 @@ const Home = (props: any) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
+  const [isRecorded, setIsRecorded] = useState(false);
   const [recording, setRecording] = useState(false);
   const [recordPermission, setRecordPermission] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
@@ -104,7 +106,8 @@ const Home = (props: any) => {
         await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setRecordDuration({ ...recordDuration, recordSecs: 0 });
-        navigation.navigate('Select');
+        setIsRecorded(true);
+        // navigation.navigate('Select');
       }
     } catch (e) {
       setRecording(false);
@@ -303,6 +306,8 @@ const Home = (props: any) => {
       <View style={styles.body}>
         {recording ? (
           <RecordLoading handleStopRecord={handleStopRecord} />
+        ) : isRecorded ? (
+          <ConvertLoading navigation={navigation} />
         ) : (
           <RecordBtn
             recording={recording}

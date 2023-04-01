@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
-const Loading = ({ handleStopRecord }: any) => {
+const RecordLoading = ({ handleStopRecord }: any) => {
   return (
     <View>
       <View style={styles.recordingLoadingContainer}>
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Loading;
+export default RecordLoading;
