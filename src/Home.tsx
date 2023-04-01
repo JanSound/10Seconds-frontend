@@ -18,7 +18,7 @@ import {
   AppState,
 } from 'react-native';
 import RNFS from 'react-native-fs';
-import Loading from './Loading';
+import RecordLoading from './RecordLoading';
 import RecordBtn from './common/button/RecordBtn';
 import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 import GuideModal from './common/modal/GuideModal';
@@ -302,7 +302,7 @@ const Home = (props: any) => {
       {isModalVisible && <GuideModal />}
       <View style={styles.body}>
         {recording ? (
-          <Loading handleStopRecord={handleStopRecord} />
+          <RecordLoading handleStopRecord={handleStopRecord} />
         ) : (
           <RecordBtn
             recording={recording}
