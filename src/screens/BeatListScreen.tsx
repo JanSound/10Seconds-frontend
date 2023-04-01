@@ -27,6 +27,18 @@ const BeatListScreen = ({ navigation }: any) => {
     );
   };
 
+  const [allChecked, setAllChecked] = useState(false);
+  const handleSelectAll = () => {
+    setBeats(
+      beats.map((beat) => {
+        return allChecked === false
+          ? { ...beat, checked: true }
+          : { ...beat, checked: false };
+      }),
+    );
+    setAllChecked(!allChecked);
+  };
+
   const handleIsEditing = () => {
     setIsEditing(!isEditing);
   };
@@ -44,6 +56,7 @@ const BeatListScreen = ({ navigation }: any) => {
       <EditHeader navigation={navigation} handleIsEditing={handleIsEditing} />
       <View style={styles.beatListContainer}>
         <Button title="delete" onPress={handleDeleteBeats} />
+        <Button title="select All" onPress={handleSelectAll} />
         <ScrollView contentContainerStyle={styles.beatList}>
           <BeatList
             beats={beats}
