@@ -4,6 +4,7 @@ import { StyleSheet, View, ScrollView, Button } from 'react-native';
 import EditHeader from '../common/header/EditHeader';
 import Footer from '../Footer';
 import BeatList from '@/BeatList';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 const BeatListScreen = ({ navigation }: any) => {
   const [beats, setBeats] = useState([
@@ -24,8 +25,6 @@ const BeatListScreen = ({ navigation }: any) => {
         return beat.id === id ? { ...beat, checked: !beat.checked } : beat;
       }),
     );
-
-    // setIsChecked(!isChecked);
   };
 
   const handleIsEditing = () => {
@@ -33,7 +32,6 @@ const BeatListScreen = ({ navigation }: any) => {
   };
 
   const handleDeleteBeats = () => {
-    console.log(beats);
     setBeats(beats.filter((beat) => beat.checked === false));
   };
 
