@@ -31,7 +31,7 @@ const Home = (props: any) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
-  const [isRecorded, setIsRecorded] = useState(false);
+  const [converting, setConverting] = useState(false);
   const [recording, setRecording] = useState(false);
   const [recordPermission, setRecordPermission] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
@@ -106,7 +106,7 @@ const Home = (props: any) => {
         await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setRecordDuration({ ...recordDuration, recordSecs: 0 });
-        setIsRecorded(true);
+        setConverting(true);
         // navigation.navigate('Select');
       }
     } catch (e) {
@@ -306,8 +306,11 @@ const Home = (props: any) => {
       <View style={styles.body}>
         {recording ? (
           <RecordLoading handleStopRecord={handleStopRecord} />
-        ) : isRecorded ? (
-          <ConvertLoading navigation={navigation} />
+        ) : converting ? (
+          <ConvertLoading
+            navigation={navigation}
+            setConverting={setConverting}
+          />
         ) : (
           <RecordBtn
             recording={recording}
