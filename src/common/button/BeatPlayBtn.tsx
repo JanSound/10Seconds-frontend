@@ -6,7 +6,10 @@ const BeatPlayBtn = () => {
     <>
       <TouchableOpacity style={styles.playBtnContainer}>
         <View style={styles.play}></View>
-        <Image style={styles.playBtn} source={require('./playBtn.png')} />
+        <Image
+          style={styles.playBtn}
+          source={require('../../assets/images/playBtn.png')}
+        />
       </TouchableOpacity>
     </>
   );

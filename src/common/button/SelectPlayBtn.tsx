@@ -12,12 +12,7 @@ const SelectPlayBtn = (props: {
     navigation.navigate('Player', { beatId: beatId, instType: instType });
   };
   return (
-    <TouchableOpacity onPress={() => playBeat(instType)}>
-      <Image
-        style={styles.play}
-        source={require('../../assets/images/play.png')}
-      />
-    </TouchableOpacity>
+    <TouchableOpacity onPress={() => playBeat(instType)}></TouchableOpacity>
   );
 };
 
