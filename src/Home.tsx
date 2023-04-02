@@ -21,6 +21,7 @@ import RecordBtn from './common/button/RecordBtn';
 import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 import GuideModal from './common/modal/GuideModal';
 import ConvertLoading from './ConvertLoading';
+import LinearGradient from 'react-native-linear-gradient';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -299,7 +300,7 @@ const Home = (props: any) => {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
       <View style={styles.body}>
         {recording ? (
@@ -337,14 +338,15 @@ const Home = (props: any) => {
         userInfo={userInfo}
         requestGoogleLogin={requestGoogleLogin}
       />
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'gray',
+    // backgroundColor: 'gray',
+    background: 'linear-gradient(180deg, #4FACF9 0%, #3A83F4 100%)',
   },
   body: {
     flex: 4,
