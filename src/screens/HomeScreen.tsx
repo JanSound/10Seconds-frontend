@@ -4,15 +4,19 @@ import Header from '../common/header/Header';
 import Home from '../Home';
 
 const HomeScreen = ({ navigation }: any) => {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleModal = () => {
-    setModalVisible((visible) => !visible);
+    setIsModalVisible((visible) => !visible);
   };
   return (
     <>
       <Header navigation={navigation} toggleModal={toggleModal} />
-      <Home navigation={navigation} isModalVisible={isModalVisible} />
+      <Home
+        navigation={navigation}
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+      />
       <Footer navigation={navigation} />
     </>
   );
