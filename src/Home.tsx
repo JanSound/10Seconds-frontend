@@ -14,6 +14,7 @@ import {
   Linking,
   Platform,
   AppState,
+  Text,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import RecordLoading from './RecordLoading';
@@ -303,6 +304,7 @@ const Home = (props: any) => {
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
       <View style={styles.body}>
+        <Text style={styles.mainText}>눌러서 녹음하기</Text>
         {recording ? (
           <RecordLoading handleStopRecord={handleStopRecord} />
         ) : converting ? (
@@ -345,12 +347,18 @@ const Home = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'gray',
-    background: 'linear-gradient(180deg, #4FACF9 0%, #3A83F4 100%)',
   },
   body: {
     flex: 4,
     justifyContent: 'center',
+  },
+  mainText: {
+    color: 'white',
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 35,
+    lineHeight: 50,
+    textAlign: 'center',
+    marginBottom: 30,
   },
   play: {
     flex: 1,
