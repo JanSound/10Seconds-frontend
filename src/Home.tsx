@@ -308,22 +308,30 @@ const Home = (props: any) => {
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
       <View style={styles.body}>
-        <Text style={styles.mainText}>눌러서 녹음하기</Text>
         {recording ? (
-          <RecordLoading
-            handleStopRecord={handleStopRecord}
-            recordDuration={recordDuration}
-          />
+          <>
+            <Text style={styles.mainText}>녹음중. . .</Text>
+            <RecordLoading
+              handleStopRecord={handleStopRecord}
+              recordDuration={recordDuration}
+            />
+          </>
         ) : converting ? (
-          <ConvertLoading
-            navigation={navigation}
-            setConverting={setConverting}
-          />
+          <>
+            <Text style={styles.mainText}>변환중. . .</Text>
+            <ConvertLoading
+              navigation={navigation}
+              setConverting={setConverting}
+            />
+          </>
         ) : (
-          <RecordBtn
-            recording={recording}
-            handleStartRecord={handleStartRecord}
-          />
+          <>
+            <Text style={styles.mainText}>눌러서 녹음하기</Text>
+            <RecordBtn
+              recording={recording}
+              handleStartRecord={handleStartRecord}
+            />
+          </>
         )}
         {/* <Button
           color="white"

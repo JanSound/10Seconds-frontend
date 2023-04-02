@@ -11,7 +11,7 @@ const ConvertLoading = (props: any) => {
     }, 2000);
   });
   return (
-    <View>
+    <View style={styles.spinnerContainer}>
       <ActivityIndicator
         style={{ transform: [{ scaleX: 6 }, { scaleY: 6 }] }}
         size="large"
@@ -21,6 +21,10 @@ const ConvertLoading = (props: any) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  spinnerContainer: {
+    marginTop: 100,
+  },
+});
 
 export default ConvertLoading;
