@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import RecordBtn from './common/button/RecordBtn';
 
-const RecordLoading = ({ handleStopRecord }: any) => {
+const RecordLoading = (props: any) => {
+  const { handleStopRecord, recordDuration } = props;
   return (
     <View>
       <View style={styles.recordingLoadingContainer}>
@@ -12,18 +14,14 @@ const RecordLoading = ({ handleStopRecord }: any) => {
           width={10}
           fill={100}
           onAnimationComplete={() => handleStopRecord()}
-          backgroundColor="black"
+          backgroundColor="#4FACF9"
           tintColor="red"
           duration={10000}
           rotation={0}
         >
-          {(fill) => (
-            <Image
-              source={require('./assets/images/recordingOn.png')}
-              style={styles.recordingImage}
-            />
-          )}
+          {(fill) => <RecordBtn />}
         </AnimatedCircularProgress>
+        <Text style={styles.recordingTime}>{recordDuration.recordTime}</Text>
       </View>
     </View>
   );
@@ -33,9 +31,12 @@ const styles = StyleSheet.create({
   recordingLoadingContainer: {
     alignItems: 'center',
   },
-  recordingImage: {
-    width: 120,
-    height: 210,
+  recordingTime: {
+    width: 300,
+    marginTop: 20,
+    fontSize: 30,
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

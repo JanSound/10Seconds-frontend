@@ -28,6 +28,7 @@ import LinearGradient from 'react-native-linear-gradient';
 StatusBar.setBarStyle('light-content');
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
+audioRecorderPlayer.setSubscriptionDuration(0.08);
 
 const Home = (props: any) => {
   const { navigation, isModalVisible, setIsModalVisible } = props;
@@ -309,7 +310,10 @@ const Home = (props: any) => {
       <View style={styles.body}>
         <Text style={styles.mainText}>눌러서 녹음하기</Text>
         {recording ? (
-          <RecordLoading handleStopRecord={handleStopRecord} />
+          <RecordLoading
+            handleStopRecord={handleStopRecord}
+            recordDuration={recordDuration}
+          />
         ) : converting ? (
           <ConvertLoading
             navigation={navigation}
