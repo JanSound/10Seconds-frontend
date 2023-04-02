@@ -17,7 +17,10 @@ const GoogleSignInBtn = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  googleLogin: {},
+  googleLogin: {
+    alignItems: 'center',
+    flex: 1,
+  },
 });
 
 export default GoogleSignInBtn;
