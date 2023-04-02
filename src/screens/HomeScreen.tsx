@@ -11,13 +11,11 @@ const HomeScreen = ({ navigation }: any) => {
   };
   return (
     <>
-      <Header navigation={navigation} toggleModal={toggleModal} />
       <Home
         navigation={navigation}
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
       />
-      <Footer navigation={navigation} />
     </>
   );
 };

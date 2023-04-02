@@ -15,6 +15,7 @@ import {
   Platform,
   AppState,
   Text,
+  StatusBar,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import RecordLoading from './RecordLoading';
@@ -23,6 +24,8 @@ import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 import GuideModal from './common/modal/GuideModal';
 import ConvertLoading from './ConvertLoading';
 import LinearGradient from 'react-native-linear-gradient';
+
+StatusBar.setBarStyle('light-content');
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 

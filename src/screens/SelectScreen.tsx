@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import Footer from '../Footer';
 import Header from '../common/header/Header';
 import TitleHeader from '@/common/header/TitleHeader';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface IInstrument {
   [key: string]: string;
@@ -38,8 +39,13 @@ const SelectScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <TitleHeader navigation={navigation} />
-      <View style={styles.instrumentContainer}>
+      <LinearGradient
+        colors={['#4FACF9', '#3A83F4']}
+        style={styles.instrumentContainer}
+      >
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.description}>악기를 선택해주세요</Text>
+        </View>
         <TouchableOpacity
           style={styles.baseContainer}
           onPress={() => playBeat('base')}
@@ -48,7 +54,7 @@ const SelectScreen = ({ navigation }: any) => {
             style={styles.base}
             source={require('../assets/images/base.png')}
           />
-          <Text style={{ fontWeight: 'bold', fontSize: 30 }}>base</Text>
+          <Text style={styles.instTypeText}>base</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.pianoContainer}
@@ -58,7 +64,7 @@ const SelectScreen = ({ navigation }: any) => {
             style={styles.piano}
             source={require('../assets/images/piano.png')}
           />
-          <Text style={{ fontWeight: 'bold', fontSize: 30 }}>piano</Text>
+          <Text style={styles.instTypeText}>piano</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.drumContainer}
@@ -68,10 +74,9 @@ const SelectScreen = ({ navigation }: any) => {
             style={styles.drum}
             source={require('../assets/images/drum.png')}
           />
-          <Text style={{ fontWeight: 'bold', fontSize: 30 }}>drum</Text>
+          <Text style={styles.instTypeText}>drum</Text>
         </TouchableOpacity>
-      </View>
-      <Footer />
+      </LinearGradient>
     </>
   );
 };
@@ -79,17 +84,30 @@ const SelectScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   instrumentContainer: {
     flex: 1,
-    backgroundColor: 'gray',
+  },
+  descriptionContainer: {},
+  description: {
+    color: 'white',
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 35,
+    lineHeight: 50,
+    textAlign: 'center',
+    marginTop: 50,
   },
   baseContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  instTypeText: {
+    color: 'white',
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 20,
+    marginTop: 10,
+  },
   base: {
     width: 150,
     height: 150,
-    marginBottom: 10,
   },
   pianoContainer: {
     flex: 1,
