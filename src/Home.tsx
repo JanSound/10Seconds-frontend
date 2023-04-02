@@ -9,9 +9,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {
   StyleSheet,
-  Text,
   View,
-  Button,
   Alert,
   Linking,
   Platform,
@@ -23,7 +21,6 @@ import RecordBtn from './common/button/RecordBtn';
 import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 import GuideModal from './common/modal/GuideModal';
 import ConvertLoading from './ConvertLoading';
-import GestureRecognizer from 'react-native-swipe-gestures';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -301,39 +298,24 @@ const Home = (props: any) => {
       });
   };
 
-  const onSwipeDown = (gestureState: any) => {
-    console.log(gestureState);
-    setIsModalVisible(false);
-  };
-
-  const onSwipeUp = (gestureState: any) => {
-    console.log(gestureState);
-    setIsModalVisible(true);
-  };
-
   return (
     <View style={styles.container}>
-      <GestureRecognizer
-        style={{ flex: 1 }}
-        onSwipeUp={(state) => onSwipeUp(state)}
-        onSwipeDown={(state) => onSwipeDown(state)}
-      >
-        {isModalVisible && <GuideModal />}
-        <View style={styles.body}>
-          {recording ? (
-            <RecordLoading handleStopRecord={handleStopRecord} />
-          ) : converting ? (
-            <ConvertLoading
-              navigation={navigation}
-              setConverting={setConverting}
-            />
-          ) : (
-            <RecordBtn
-              recording={recording}
-              handleStartRecord={handleStartRecord}
-            />
-          )}
-          {/* <Button
+      {isModalVisible && <GuideModal />}
+      <View style={styles.body}>
+        {recording ? (
+          <RecordLoading handleStopRecord={handleStopRecord} />
+        ) : converting ? (
+          <ConvertLoading
+            navigation={navigation}
+            setConverting={setConverting}
+          />
+        ) : (
+          <RecordBtn
+            recording={recording}
+            handleStartRecord={handleStartRecord}
+          />
+        )}
+        {/* <Button
           color="white"
           title="s3로 보내기"
           onPress={uploadRecordFile}
@@ -349,13 +331,12 @@ const Home = (props: any) => {
         ) : (
           ''
         )} */}
-        </View>
-        <GoogleSignInBtn
-          isLoggedIn={isLoggedIn}
-          userInfo={userInfo}
-          requestGoogleLogin={requestGoogleLogin}
-        />
-      </GestureRecognizer>
+      </View>
+      <GoogleSignInBtn
+        isLoggedIn={isLoggedIn}
+        userInfo={userInfo}
+        requestGoogleLogin={requestGoogleLogin}
+      />
     </View>
   );
 };
