@@ -8,7 +8,8 @@ const GoogleSignInBtn = (props: any) => {
     <View style={styles.googleLogin}>
       {isLoggedIn === false ? (
         <GoogleSigninButton
-          size={GoogleSigninButton.Size.Wide}
+          style={{ borderRadius: 30 }}
+          size={GoogleSigninButton.Size.Icon}
           color={GoogleSigninButton.Color.Dark}
           onPress={requestGoogleLogin}
         />
