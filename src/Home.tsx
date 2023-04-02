@@ -338,11 +338,15 @@ const Home = (props: any) => {
           ''
         )} */}
       </View>
-      <GoogleSignInBtn
-        isLoggedIn={isLoggedIn}
-        userInfo={userInfo}
-        requestGoogleLogin={requestGoogleLogin}
-      />
+      {isLoggedIn === false ? (
+        <GoogleSignInBtn
+          isLoggedIn={isLoggedIn}
+          userInfo={userInfo}
+          requestGoogleLogin={requestGoogleLogin}
+        />
+      ) : (
+        <View />
+      )}
     </LinearGradient>
   );
 };

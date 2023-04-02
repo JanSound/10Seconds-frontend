@@ -6,25 +6,18 @@ const GoogleSignInBtn = (props: any) => {
   const { isLoggedIn, userInfo, requestGoogleLogin } = props;
   return (
     <View style={styles.googleLogin}>
-      {isLoggedIn === false ? (
-        <GoogleSigninButton
-          style={{ borderRadius: 30 }}
-          size={GoogleSigninButton.Size.Icon}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={requestGoogleLogin}
-        />
-      ) : (
-        <Text>{userInfo.name}님 로그인 완료!</Text>
-      )}
+      <GoogleSigninButton
+        style={{ borderRadius: 30 }}
+        size={GoogleSigninButton.Size.Icon}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={requestGoogleLogin}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  googleLogin: {
-    flex: 1,
-    alignItems: 'center',
-  },
+  googleLogin: {},
 });
 
 export default GoogleSignInBtn;
