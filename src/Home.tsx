@@ -331,25 +331,10 @@ const Home = (props: any) => {
         ) : (
           <>
             <Text style={styles.mainText}>눌러서 녹음하기</Text>
-            {/* <RecordBtn
+            <RecordBtn
               recording={recording}
               handleStartRecord={handleStartRecord}
-            /> */}
-            <View>
-              <TouchableOpacity
-                style={styles.recordingContainer}
-                onPress={handleStartRecord}
-              >
-                <View style={styles.recordBtnContainer}>
-                  <View style={styles.recordBtn}>
-                    <LinearGradient
-                      colors={['#FF7F37', '#FF4E36']}
-                      style={styles.recordBtnCenter}
-                    ></LinearGradient>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
+            />
           </>
         )}
         {/* <Button
@@ -383,32 +368,6 @@ const Home = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  recordingContainer: {
-    alignItems: 'center',
-  },
-  recordBtnContainer: {
-    width: 300,
-    height: 300,
-    backgroundColor: '#4FACF9',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 500,
-  },
-  recordBtn: {
-    width: 200,
-    height: 200,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 500,
-  },
-  recordBtnCenter: {
-    width: 100,
-    height: 100,
-    backgroundColor: 'red',
-    alignItems: 'center',
-    borderRadius: 50,
-  },
   container: {
     flex: 1,
   },
