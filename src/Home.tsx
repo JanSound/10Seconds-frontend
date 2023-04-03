@@ -24,6 +24,7 @@ import GoogleSignInBtn from './common/button/GoogleSignInBtn';
 import GuideModal from './common/modal/GuideModal';
 import ConvertLoading from './ConvertLoading';
 import LinearGradient from 'react-native-linear-gradient';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 StatusBar.setBarStyle('light-content');
 
@@ -71,7 +72,7 @@ const Home = (props: any) => {
   const handleStartRecord = async () => {
     try {
       const checkPermission = await checkRecordPermission();
-      if (audioRecorderPlayer && checkPermission === RESULTS.GRANTED) {
+      if (checkPermission === RESULTS.GRANTED) {
         setRecording(true);
         setPlayerDuration({
           ...playerDuration,
@@ -95,9 +96,11 @@ const Home = (props: any) => {
             ),
           });
         });
+      } else {
+        alertMikePermissionDenied();
       }
     } catch (e) {
-      console.log('녹음 오류 :', e);
+      console.log('녹음 에러 :', e);
       setRecording(false);
       alertMikePermissionDenied();
     }
@@ -149,8 +152,8 @@ const Home = (props: any) => {
       .then((result) => {
         if (result === RESULTS.GRANTED) {
           setRecordPermission(true);
-          return result;
         }
+        return result;
       })
       .catch((e) => {
         console.log('check API 에러 :', e);
@@ -327,10 +330,25 @@ const Home = (props: any) => {
         ) : (
           <>
             <Text style={styles.mainText}>눌러서 녹음하기</Text>
-            <RecordBtn
+            {/* <RecordBtn
               recording={recording}
               handleStartRecord={handleStartRecord}
-            />
+            /> */}
+            <View>
+              <TouchableOpacity
+                style={styles.recordingContainer}
+                onPress={handleStartRecord}
+              >
+                <View style={styles.recordBtnContainer}>
+                  <View style={styles.recordBtn}>
+                    <LinearGradient
+                      colors={['#FF7F37', '#FF4E36']}
+                      style={styles.recordBtnCenter}
+                    ></LinearGradient>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
           </>
         )}
         {/* <Button
@@ -364,6 +382,32 @@ const Home = (props: any) => {
 };
 
 const styles = StyleSheet.create({
+  recordingContainer: {
+    alignItems: 'center',
+  },
+  recordBtnContainer: {
+    width: 300,
+    height: 300,
+    backgroundColor: '#4FACF9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 500,
+  },
+  recordBtn: {
+    width: 200,
+    height: 200,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 500,
+  },
+  recordBtnCenter: {
+    width: 100,
+    height: 100,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    borderRadius: 50,
+  },
   container: {
     flex: 1,
   },
