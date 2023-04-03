@@ -312,8 +312,6 @@ const Home = (props: any) => {
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
- 
-
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
@@ -378,7 +376,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   body: {
-    flex: 4,
+    flex: 3.5,
     justifyContent: 'center',
   },
   mainText: {

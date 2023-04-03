@@ -26,8 +26,6 @@ const BeatListModal = () => {
     },
   ]);
 
-  //   const fadeAnim = useRef(new Animated.Value(0)).current;
-
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds
@@ -78,8 +76,9 @@ const BeatListModal = () => {
 
 const styles = StyleSheet.create({
   beatListContainer: {
+    flex: 1.5,
     backgroundColor: 'white',
-    height: 250,
+    // height: 500,
     borderRadius: 30,
     top: 200,
   },
