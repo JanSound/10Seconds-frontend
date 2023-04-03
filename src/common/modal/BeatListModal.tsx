@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const BeatListModal = () => {
+  const [beats, setBeats] = useState([
+    {
+      id: 'beat url 1',
+      name: 'beat name 1',
+      instType: 'base',
+    },
+    {
+      id: 'beat url 2',
+      name: 'beat name 2',
+      instType: 'piano',
+    },
+    {
+      id: 'beat url 3',
+      name: 'beat name 3',
+      instType: 'drum',
+    },
+  ]);
   return (
     <View style={styles.beatListContainer}>
       <View style={styles.titleContainer}>
@@ -10,6 +27,24 @@ const BeatListModal = () => {
           <Text style={styles.editBtnText}>편집</Text>
         </TouchableOpacity>
       </View>
+      {beats.map((beat) => {
+        return (
+          <View
+            style={{
+              height: 60,
+              paddingLeft: 20,
+              justifyContent: 'center',
+              borderBottomColor: 'black',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            }}
+          >
+            <Text style={{ fontSize: 20, fontFamily: 'NotoSansKR-Bold' }}>
+              {beat.name}
+            </Text>
+            <Text style={{ fontSize: 15 }}>{beat.instType}</Text>
+          </View>
+        );
+      })}
     </View>
   );
 };
@@ -31,6 +66,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 20,
     fontFamily: 'NotoSansKR-Bold',
+    paddingLeft: 20,
   },
   editBtn: {
     backgroundColor: '#4FACF9',
