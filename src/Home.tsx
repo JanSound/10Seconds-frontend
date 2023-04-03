@@ -25,6 +25,7 @@ import GuideModal from './common/modal/GuideModal';
 import ConvertLoading from './ConvertLoading';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import BeatListModal from './common/modal/BeatListModal';
 
 StatusBar.setBarStyle('light-content');
 
@@ -375,7 +376,7 @@ const Home = (props: any) => {
           requestGoogleLogin={requestGoogleLogin}
         />
       ) : (
-        <View />
+        <BeatListModal />
       )}
     </LinearGradient>
   );
