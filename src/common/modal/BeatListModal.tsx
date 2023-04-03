@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
 
 const BeatListModal = () => {
   const [beats, setBeats] = useState([
@@ -19,8 +25,28 @@ const BeatListModal = () => {
       instType: 'drum',
     },
   ]);
+
+  //   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const [animation, setAnimation] = useState(new Animated.Value(0));
+  const fadeIn = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(animation, {
+      toValue: -200,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  useEffect(() => {
+    fadeIn();
+  }, []);
+
+  const animationStyles = {
+    transform: [{ translateY: animation }],
+  };
   return (
-    <View style={styles.beatListContainer}>
+    <Animated.View style={[styles.beatListContainer, animationStyles]}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>내음악</Text>
         <TouchableOpacity style={styles.editBtn}>
@@ -37,6 +63,7 @@ const BeatListModal = () => {
               borderBottomColor: 'black',
               borderBottomWidth: StyleSheet.hairlineWidth,
             }}
+            key={beat.id}
           >
             <Text style={{ fontSize: 20, fontFamily: 'NotoSansKR-Bold' }}>
               {beat.name}
@@ -45,7 +72,7 @@ const BeatListModal = () => {
           </View>
         );
       })}
-    </View>
+    </Animated.View>
   );
 };
 
@@ -54,6 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 250,
     borderRadius: 30,
+    top: 200,
   },
   titleContainer: {
     flexDirection: 'row',

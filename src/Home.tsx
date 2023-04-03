@@ -16,6 +16,8 @@ import {
   AppState,
   Text,
   StatusBar,
+  Button,
+  Animated,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import RecordLoading from './RecordLoading';
@@ -307,6 +309,10 @@ const Home = (props: any) => {
         console.log(err);
       });
   };
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+ 
 
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
