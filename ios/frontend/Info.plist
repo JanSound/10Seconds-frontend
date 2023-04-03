@@ -55,7 +55,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to use your microphone. Your record wont be shared without your permission.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NotoSansKR-Regular.otf</string>
