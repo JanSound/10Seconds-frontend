@@ -91,17 +91,21 @@ const BeatListModal = () => {
           handleEditBtnClick={handleEditBtnClick}
         />
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: 130,
-          paddingBottom: 5,
-          justifyContent: 'space-evenly',
-        }}
-      >
-        <DeleteBtn />
-        <MergeBtn />
-      </View>
+      {isEditing ? (
+        <View
+          style={{
+            flexDirection: 'row',
+            width: 130,
+            paddingBottom: 5,
+            justifyContent: 'space-evenly',
+          }}
+        >
+          <DeleteBtn />
+          <MergeBtn />
+        </View>
+      ) : (
+        <View />
+      )}
 
       {beats.map((beat) => {
         return (
