@@ -28,6 +28,8 @@ import ConvertLoading from './ConvertLoading';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import BeatListModal from './common/modal/BeatListModal';
+import Converting from './Converting';
+import Recording from './Recording';
 
 StatusBar.setBarStyle('light-content');
 
@@ -317,25 +319,12 @@ const Home = (props: any) => {
       {isModalVisible && <GuideModal />}
       <View style={styles.body}>
         {recording ? (
-          <>
-            <Text style={styles.mainText}>녹음중. . .</Text>
-            <View style={styles.recordBody}>
-              <RecordLoading
-                handleStopRecord={handleStopRecord}
-                recordDuration={recordDuration}
-              />
-            </View>
-          </>
+          <Recording
+            recordDuration={recordDuration}
+            handleStopRecord={handleStopRecord}
+          />
         ) : converting ? (
-          <>
-            <Text style={styles.mainText}>변환중. . .</Text>
-            <View style={styles.recordBody}>
-              <ConvertLoading
-                navigation={navigation}
-                setConverting={setConverting}
-              />
-            </View>
-          </>
+          <Converting navigation={navigation} setConverting={setConverting} />
         ) : (
           <>
             <Text style={styles.mainText}>눌러서 녹음하기</Text>
