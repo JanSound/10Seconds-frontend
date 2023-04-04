@@ -7,9 +7,8 @@ const BeatListCheckBox = (props: any) => {
     <>
       <BouncyCheckbox
         size={25}
-        fillColor="red"
-        unfillColor="#FFFFFF"
-        iconStyle={{ borderColor: 'red' }}
+        fillColor="#4FACF9"
+        unfillColor="white"
         isChecked={beat.checked}
         disableBuiltInState
         onPress={() => handleIsChecked(beat.id)}
