@@ -84,10 +84,17 @@ const BeatListModal = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>내음악</Text>
         <TouchableOpacity style={styles.editBtn} onPress={handleEditBtnClick}>
-          <Image
-            style={styles.editBtnImage}
-            source={require('../../assets/images/edit.png')}
-          />
+          {isEditing ? (
+            <Image
+              style={styles.editBtnImage}
+              source={require('../../assets/images/return.png')}
+            />
+          ) : (
+            <Image
+              style={styles.editBtnImage}
+              source={require('../../assets/images/edit.png')}
+            />
+          )}
         </TouchableOpacity>
       </View>
       {beats.map((beat) => {
