@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   downloadBtn: {
     width: 343,
-    height: 56,
+    height: 65,
     backgroundColor: '#224B9B',
     borderRadius: 100,
     alignItems: 'center',
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   googleSignInBtn: {
     position: 'absolute',
     right: 30,
-    bottom: 190,
+    bottom: 185,
     zIndex: 1,
   },
 });
