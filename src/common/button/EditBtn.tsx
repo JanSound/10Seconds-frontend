@@ -2,22 +2,34 @@ import React from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 const EditBtn = (props: any) => {
-  const { handleIsEditing } = props;
+  const { isEditing, handleEditBtnClick } = props;
   return (
-    <TouchableOpacity onPress={() => handleIsEditing()}>
-      <Image
-        style={styles.guide}
-        source={require('../../assets/images/edit.png')}
-      />
+    <TouchableOpacity style={styles.editBtn} onPress={handleEditBtnClick}>
+      {isEditing ? (
+        <Image
+          style={styles.editBtnImage}
+          source={require('../../assets/images/return.png')}
+        />
+      ) : (
+        <Image
+          style={styles.editBtnImage}
+          source={require('../../assets/images/edit.png')}
+        />
+      )}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  guide: {
+  editBtn: {
+    borderRadius: 10,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editBtnImage: {
     width: 30,
     height: 30,
-    marginLeft: 10,
   },
 });
 export default EditBtn;

@@ -8,6 +8,7 @@ import {
   Animated,
   Image,
 } from 'react-native';
+import EditBtn from '../button/EditBtn';
 
 const BeatListModal = () => {
   const [beats, setBeats] = useState([
@@ -83,19 +84,10 @@ const BeatListModal = () => {
     <Animated.View style={[styles.beatListContainer, animationStyles]}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>내음악</Text>
-        <TouchableOpacity style={styles.editBtn} onPress={handleEditBtnClick}>
-          {isEditing ? (
-            <Image
-              style={styles.editBtnImage}
-              source={require('../../assets/images/return.png')}
-            />
-          ) : (
-            <Image
-              style={styles.editBtnImage}
-              source={require('../../assets/images/edit.png')}
-            />
-          )}
-        </TouchableOpacity>
+        <EditBtn
+          isEditing={isEditing}
+          handleEditBtnClick={handleEditBtnClick}
+        />
       </View>
       {beats.map((beat) => {
         return (
@@ -132,16 +124,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'NotoSansKR-Bold',
     paddingLeft: 20,
-  },
-  editBtn: {
-    borderRadius: 10,
-    marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  editBtnImage: {
-    width: 30,
-    height: 30,
   },
 });
 
