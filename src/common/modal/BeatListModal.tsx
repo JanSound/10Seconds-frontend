@@ -1,3 +1,4 @@
+import BeatListItem from './BeatListItem';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -52,23 +53,7 @@ const BeatListModal = () => {
         </TouchableOpacity>
       </View>
       {beats.map((beat) => {
-        return (
-          <View
-            style={{
-              height: 60,
-              paddingLeft: 20,
-              justifyContent: 'center',
-              borderBottomColor: 'black',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-            }}
-            key={beat.id}
-          >
-            <Text style={{ fontSize: 20, fontFamily: 'NotoSansKR-Bold' }}>
-              {beat.name}
-            </Text>
-            <Text style={{ fontSize: 15 }}>{beat.instType}</Text>
-          </View>
-        );
+        return <BeatListItem beat={beat} key={beat.id} />;
       })}
     </Animated.View>
   );
