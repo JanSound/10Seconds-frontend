@@ -9,6 +9,8 @@ import {
   Image,
 } from 'react-native';
 import EditBtn from '../button/EditBtn';
+import DeleteBtn from '../button/DeleteBtn';
+import MergeBtn from '../button/MergeBtn';
 
 const BeatListModal = () => {
   const [beats, setBeats] = useState([
@@ -97,32 +99,8 @@ const BeatListModal = () => {
           justifyContent: 'space-evenly',
         }}
       >
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'red',
-            borderRadius: 20,
-            width: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
-            삭제
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#4FACF9',
-            borderRadius: 20,
-            width: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
-            병합
-          </Text>
-        </TouchableOpacity>
+        <DeleteBtn />
+        <MergeBtn />
       </View>
 
       {beats.map((beat) => {
