@@ -89,6 +89,42 @@ const BeatListModal = () => {
           handleEditBtnClick={handleEditBtnClick}
         />
       </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: 130,
+          paddingBottom: 5,
+          justifyContent: 'space-evenly',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'red',
+            borderRadius: 20,
+            width: 40,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
+            삭제
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#4FACF9',
+            borderRadius: 20,
+            width: 40,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
+            병합
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       {beats.map((beat) => {
         return (
           <BeatListItem
@@ -108,7 +144,6 @@ const styles = StyleSheet.create({
   beatListContainer: {
     flex: 1.5,
     backgroundColor: 'white',
-    // height: 500,
     borderRadius: 30,
     top: 200,
   },
@@ -117,8 +152,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
-    borderBottomColor: 'black',
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   titleText: {
     fontSize: 20,

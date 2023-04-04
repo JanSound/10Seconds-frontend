@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderBottomColor: 'black',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'black',
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   beatName: { fontSize: 20, fontFamily: 'NotoSansKR-Bold' },
   beatInstType: {
