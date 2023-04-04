@@ -65,6 +65,10 @@ const BeatListModal = () => {
     );
   };
 
+  const handleDeleteBeats = () => {
+    setBeats(beats.filter((beat) => beat.checked === false));
+  };
+
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds
@@ -93,7 +97,7 @@ const BeatListModal = () => {
           }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <DeleteBtn />
+            <DeleteBtn handleDeleteBeats={handleDeleteBeats} />
             <MergeBtn />
           </View>
 
