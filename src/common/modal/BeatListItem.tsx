@@ -6,16 +6,16 @@ const defaultColor = 'black';
 const clickedColor = '#4FACF9';
 
 const BeatListItem = (props: any) => {
-  const { isEditing, beat, handleIsChecked } = props;
-  const [isClicked, setIsClicked] = useState(false);
+  const { isEditing, beat, handleIsChecked, handleBeatClick } = props;
 
-  const handleBeatClick = () => {
-    setIsClicked(!isClicked);
-  };
   return (
     <TouchableOpacity
       style={styles.beatContainer}
-      onPress={() => handleIsChecked(beat.id)}
+      onPress={
+        isEditing
+          ? () => handleIsChecked(beat.id)
+          : () => handleBeatClick(beat.id)
+      }
     >
       <View>
         {isEditing ? (
@@ -28,7 +28,7 @@ const BeatListItem = (props: any) => {
         <Text
           style={[
             styles.beatName,
-            { color: isClicked ? defaultColor : clickedColor },
+            { color: beat.clicked ? clickedColor : defaultColor },
           ]}
         >
           {beat.name}
@@ -36,7 +36,7 @@ const BeatListItem = (props: any) => {
         <Text
           style={[
             styles.beatInstType,
-            { color: isClicked ? defaultColor : clickedColor },
+            { color: beat.clicked ? clickedColor : defaultColor },
           ]}
         >
           {beat.instType}

@@ -38,7 +38,15 @@ const BeatListModal = () => {
     setIsEditing(!isEditing);
     setBeats(
       beats.map((beat) => {
-        return { ...beat, checked: false };
+        return { ...beat, checked: false, clicked: false };
+      }),
+    );
+  };
+
+  const handleIsChecked = (id: string) => {
+    setBeats(
+      beats.map((beat) => {
+        return beat.id === id ? { ...beat, checked: !beat.checked } : beat;
       }),
     );
   };
@@ -50,13 +58,7 @@ const BeatListModal = () => {
       }),
     );
   };
-  const handleIsChecked = (id: string) => {
-    setBeats(
-      beats.map((beat) => {
-        return beat.id === id ? { ...beat, checked: !beat.checked } : beat;
-      }),
-    );
-  };
+
 
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const fadeIn = () => {
@@ -89,6 +91,7 @@ const BeatListModal = () => {
             beat={beat}
             key={beat.id}
             handleIsChecked={handleIsChecked}
+            handleBeatClick={handleBeatClick}
             isEditing={isEditing}
           />
         );
