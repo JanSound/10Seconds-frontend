@@ -115,18 +115,26 @@ const BeatListModal = () => {
           />
         </View>
       )}
-
-      {beats.map((beat) => {
-        return (
-          <BeatListItem
-            beat={beat}
-            key={beat.id}
-            handleIsChecked={handleIsChecked}
-            handleBeatClick={handleBeatClick}
-            isEditing={isEditing}
-          />
-        );
-      })}
+      {beats.length === 0 ? (
+        <View style={{ alignItems: 'center', marginTop: 20, opacity: 0.3 }}>
+          <Text style={{ fontSize: 16, marginBottom: 10 }}>
+            아직 내 음악이 없네요
+          </Text>
+          <Text style={{ fontSize: 16 }}>첫 노래를 녹음해보세요 !</Text>
+        </View>
+      ) : (
+        beats.map((beat) => {
+          return (
+            <BeatListItem
+              beat={beat}
+              key={beat.id}
+              handleIsChecked={handleIsChecked}
+              handleBeatClick={handleBeatClick}
+              isEditing={isEditing}
+            />
+          );
+        })
+      )}
     </Animated.View>
   );
 };
