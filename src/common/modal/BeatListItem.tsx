@@ -1,13 +1,35 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+const defaultColor = 'black';
+const clickedColor = '#4FACF9';
 
 const BeatListItem = (props: any) => {
   const { beat } = props;
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleBeatClick = () => {
+    setIsClicked(!isClicked);
+  };
   return (
-    <View style={styles.beatContainer}>
-      <Text style={styles.beatName}>{beat.name}</Text>
-      <Text style={styles.beatInstType}>{beat.instType}</Text>
-    </View>
+    <TouchableOpacity style={styles.beatContainer} onPress={handleBeatClick}>
+      <Text
+        style={[
+          styles.beatName,
+          { color: isClicked ? defaultColor : clickedColor },
+        ]}
+      >
+        {beat.name}
+      </Text>
+      <Text
+        style={[
+          styles.beatInstType,
+          { color: isClicked ? defaultColor : clickedColor },
+        ]}
+      >
+        {beat.instType}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
