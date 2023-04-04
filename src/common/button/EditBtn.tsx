@@ -7,8 +7,8 @@ const EditBtn = (props: any) => {
     <TouchableOpacity style={styles.editBtn} onPress={handleEditBtnClick}>
       {isEditing ? (
         <Image
-          style={styles.editBtnImage}
-          source={require('../../assets/images/return.png')}
+          style={[styles.editBtnImage, { width: 20, height: 20 }]}
+          source={require('../../assets/images/close.png')}
         />
       ) : (
         <Image
