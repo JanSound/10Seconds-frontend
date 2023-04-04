@@ -14,18 +14,49 @@ const BeatListModal = () => {
       id: 'beat url 1',
       name: 'beat name 1',
       instType: 'base',
+      checked: false,
+      clicked: false,
     },
     {
       id: 'beat url 2',
       name: 'beat name 2',
       instType: 'piano',
+      checked: false,
+      clicked: false,
     },
     {
       id: 'beat url 3',
       name: 'beat name 3',
       instType: 'drum',
+      checked: false,
+      clicked: false,
     },
   ]);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditBtnClick = () => {
+    setIsEditing(!isEditing);
+    setBeats(
+      beats.map((beat) => {
+        return { ...beat, checked: false };
+      }),
+    );
+  };
+
+  const handleBeatClick = (id: string) => {
+    setBeats(
+      beats.map((beat) => {
+        return beat.id === id ? { ...beat, clicked: !beat.clicked } : beat;
+      }),
+    );
+  };
+  const handleIsChecked = (id: string) => {
+    setBeats(
+      beats.map((beat) => {
+        return beat.id === id ? { ...beat, checked: !beat.checked } : beat;
+      }),
+    );
+  };
 
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const fadeIn = () => {
@@ -48,12 +79,19 @@ const BeatListModal = () => {
     <Animated.View style={[styles.beatListContainer, animationStyles]}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>내음악</Text>
-        <TouchableOpacity style={styles.editBtn}>
+        <TouchableOpacity style={styles.editBtn} onPress={handleEditBtnClick}>
           <Text style={styles.editBtnText}>편집</Text>
         </TouchableOpacity>
       </View>
       {beats.map((beat) => {
-        return <BeatListItem beat={beat} key={beat.id} />;
+        return (
+          <BeatListItem
+            beat={beat}
+            key={beat.id}
+            handleIsChecked={handleIsChecked}
+            isEditing={isEditing}
+          />
+        );
       })}
     </Animated.View>
   );
