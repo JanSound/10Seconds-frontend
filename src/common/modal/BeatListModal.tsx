@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Animated,
+  Image,
 } from 'react-native';
 
 const BeatListModal = () => {
@@ -83,7 +84,10 @@ const BeatListModal = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>내음악</Text>
         <TouchableOpacity style={styles.editBtn} onPress={handleEditBtnClick}>
-          <Text style={styles.editBtnText}>편집</Text>
+          <Image
+            style={styles.editBtnImage}
+            source={require('../../assets/images/edit.png')}
+          />
         </TouchableOpacity>
       </View>
       {beats.map((beat) => {
@@ -123,15 +127,14 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   editBtn: {
-    backgroundColor: '#4FACF9',
     borderRadius: 10,
-    width: 50,
+    marginRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  editBtnText: {
-    color: 'white',
-    fontFamily: 'NotoSansKR-Bold',
+  editBtnImage: {
+    width: 30,
+    height: 30,
   },
 });
 
