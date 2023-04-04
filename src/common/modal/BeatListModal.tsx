@@ -54,11 +54,12 @@ const BeatListModal = () => {
   const handleBeatClick = (id: string) => {
     setBeats(
       beats.map((beat) => {
-        return beat.id === id ? { ...beat, clicked: !beat.clicked } : beat;
+        return beat.id === id
+          ? { ...beat, clicked: true }
+          : { ...beat, clicked: false };
       }),
     );
   };
-
 
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const fadeIn = () => {
