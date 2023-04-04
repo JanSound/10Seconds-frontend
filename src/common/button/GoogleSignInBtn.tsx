@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { View, Text } from 'react-native';
-import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+
 const GoogleSignInBtn = (props: any) => {
   const { isLoggedIn, userInfo, requestGoogleLogin } = props;
+
   return (
     <View style={styles.googleLogin}>
-      <GoogleSigninButton
-        style={{ borderRadius: 30 }}
-        size={GoogleSigninButton.Size.Icon}
-        color={GoogleSigninButton.Color.Dark}
+      <TouchableOpacity
+        style={styles.googleSigninButton}
         onPress={requestGoogleLogin}
-      />
+      >
+        <Image source={require('../../assets/images/google.png')} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -20,6 +21,14 @@ const styles = StyleSheet.create({
   googleLogin: {
     alignItems: 'center',
     flex: 1.5,
+  },
+  googleSigninButton: {
+    backgroundColor: 'white',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
   },
 });
 
