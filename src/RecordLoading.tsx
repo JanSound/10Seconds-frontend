@@ -10,13 +10,13 @@ const RecordLoading = (props: any) => {
     <View>
       <View style={styles.recordingLoadingContainer}>
         <AnimatedCircularProgress
-          size={300}
+          size={250}
           width={10}
           fill={100}
           onAnimationComplete={() => handleStopRecord()}
           backgroundColor="#4FACF9"
           tintColor="red"
-          duration={10000}
+          duration={1000}
           rotation={0}
         >
           {(fill) => <RecordBtn />}

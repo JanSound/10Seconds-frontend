@@ -319,26 +319,32 @@ const Home = (props: any) => {
         {recording ? (
           <>
             <Text style={styles.mainText}>녹음중. . .</Text>
-            <RecordLoading
-              handleStopRecord={handleStopRecord}
-              recordDuration={recordDuration}
-            />
+            <View style={styles.recordBody}>
+              <RecordLoading
+                handleStopRecord={handleStopRecord}
+                recordDuration={recordDuration}
+              />
+            </View>
           </>
         ) : converting ? (
           <>
             <Text style={styles.mainText}>변환중. . .</Text>
-            <ConvertLoading
-              navigation={navigation}
-              setConverting={setConverting}
-            />
+            <View style={styles.recordBody}>
+              <ConvertLoading
+                navigation={navigation}
+                setConverting={setConverting}
+              />
+            </View>
           </>
         ) : (
           <>
             <Text style={styles.mainText}>눌러서 녹음하기</Text>
-            <RecordBtn
-              recording={recording}
-              handleStartRecord={handleStartRecord}
-            />
+            <View style={styles.recordBody}>
+              <RecordBtn
+                recording={recording}
+                handleStartRecord={handleStartRecord}
+              />
+            </View>
           </>
         )}
         {/* <Button
@@ -378,6 +384,9 @@ const styles = StyleSheet.create({
   body: {
     flex: 3.5,
     justifyContent: 'center',
+  },
+  recordBody: {
+    flex: 0.5,
   },
   mainText: {
     color: 'white',
