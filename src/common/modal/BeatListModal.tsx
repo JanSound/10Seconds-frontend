@@ -84,27 +84,32 @@ const BeatListModal = () => {
   };
   return (
     <Animated.View style={[styles.beatListContainer, animationStyles]}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>내음악</Text>
-        <EditBtn
-          isEditing={isEditing}
-          handleEditBtnClick={handleEditBtnClick}
-        />
-      </View>
       {isEditing ? (
         <View
           style={{
             flexDirection: 'row',
-            width: 130,
-            paddingBottom: 5,
-            justifyContent: 'space-evenly',
+            padding: 15,
+            justifyContent: 'space-between',
           }}
         >
-          <DeleteBtn />
-          <MergeBtn />
+          <View style={{ flexDirection: 'row' }}>
+            <DeleteBtn />
+            <MergeBtn />
+          </View>
+
+          <EditBtn
+            isEditing={isEditing}
+            handleEditBtnClick={handleEditBtnClick}
+          />
         </View>
       ) : (
-        <View />
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>내음악</Text>
+          <EditBtn
+            isEditing={isEditing}
+            handleEditBtnClick={handleEditBtnClick}
+          />
+        </View>
       )}
 
       {beats.map((beat) => {
