@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import Footer from '../Footer';
-import Header from '../common/header/Header';
-import Home from '../Home';
+import Home from '../components/Home';
 
 const HomeScreen = ({ navigation }: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);

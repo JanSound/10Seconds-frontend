@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import RecordBtn from './common/button/RecordBtn';
+import RecordBtn from '../common/button/RecordBtn';
 
 const RecordLoading = (props: any) => {
   const { handleStopRecord, recordDuration } = props;

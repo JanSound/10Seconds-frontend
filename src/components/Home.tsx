@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import config from '../config/config';
+import config from '../../config/config';
 import { PERMISSIONS, RESULTS, request, check } from 'react-native-permissions';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {
@@ -16,18 +15,14 @@ import {
   AppState,
   Text,
   StatusBar,
-  Button,
   Animated,
 } from 'react-native';
 import RNFS from 'react-native-fs';
-import RecordLoading from './RecordLoading';
-import RecordBtn from './common/button/RecordBtn';
-import GoogleSignInBtn from './common/button/GoogleSignInBtn';
-import GuideModal from './common/modal/GuideModal';
-import ConvertLoading from './ConvertLoading';
+import RecordBtn from '../common/button/RecordBtn';
+import GoogleSignInBtn from '../common/button/GoogleSignInBtn';
+import GuideModal from '../common/modal/GuideModal';
 import LinearGradient from 'react-native-linear-gradient';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import BeatListModal from './common/modal/BeatListModal';
+import BeatListModal from '../common/modal/BeatListModal';
 import Converting from './Converting';
 import Recording from './Recording';
 
@@ -311,8 +306,6 @@ const Home = (props: any) => {
         console.log(err);
       });
   };
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
