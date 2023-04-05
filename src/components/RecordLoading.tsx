@@ -15,7 +15,7 @@ const RecordLoading = (props: any) => {
           onAnimationComplete={() => handleStopRecord()}
           backgroundColor="#4FACF9"
           tintColor="red"
-          duration={1000}
+          duration={10000}
           rotation={0}
         >
           {(fill) => <RecordBtn />}

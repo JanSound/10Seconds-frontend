@@ -307,7 +307,6 @@ const Home = (props: any) => {
         console.log(err);
       });
   };
-  console.log(playing);
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
