@@ -13,7 +13,7 @@ import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
 
 const BeatListModal = (props: any) => {
-  const { audioRecorderPlayer, setPlaying } = props;
+  const { audioRecorderPlayer, setPlaying, isEditing, setIsEditing } = props;
   const [beats, setBeats] = useState([
     {
       id: 'beat url 1',
@@ -43,7 +43,7 @@ const BeatListModal = (props: any) => {
       clicked: false,
     },
   ]);
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
 
   const handleEditBtnClick = () => {
     setIsEditing(!isEditing);

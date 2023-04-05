@@ -307,6 +307,9 @@ const Home = (props: any) => {
         console.log(err);
       });
   };
+
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
@@ -325,21 +328,51 @@ const Home = (props: any) => {
               {playing ? (
                 <PauseBtn />
               ) : (
-                <RecordBtn
-                  recording={recording}
-                  handleStartRecord={handleStartRecord}
-                />
+                <>
+                  <RecordBtn
+                    recording={recording}
+                    handleStartRecord={handleStartRecord}
+                  />
+                  {isEditing && (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        marginTop: 20,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: 320,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <View
+                          style={{
+                            width: 150,
+                            height: 100,
+                            backgroundColor: '#91D8FA',
+                            borderRadius: 20,
+                          }}
+                        ></View>
+                        <View
+                          style={{
+                            width: 150,
+                            height: 100,
+                            backgroundColor: '#91D8FA',
+                            borderRadius: 20,
+                          }}
+                        ></View>
+                      </View>
+                    </View>
+                  )}
+                </>
               )}
             </View>
           </>
         )}
-        {/* <Button
-          color="white"
-          title="s3로 보내기"
-          onPress={uploadRecordFile}
-        ></Button>
       </View>
-      <View style={styles.play}>
+      {/* <View style={styles.play}>
         {playerDuration ? (
           playerDuration.duration === playerDuration.playTime ? (
             <Button title="Play" color="black" onPress={soundStart}></Button>
@@ -349,7 +382,7 @@ const Home = (props: any) => {
         ) : (
           ''
         )} */}
-      </View>
+
       {isLoggedIn === false ? (
         <GoogleSignInBtn
           isLoggedIn={isLoggedIn}
@@ -358,6 +391,8 @@ const Home = (props: any) => {
         />
       ) : (
         <BeatListModal
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
           setPlaying={setPlaying}
           audioRecorderPlayer={audioRecorderPlayer}
         />
