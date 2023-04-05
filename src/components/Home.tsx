@@ -26,6 +26,7 @@ import BeatListModal from '../common/modal/BeatListModal';
 import Converting from './Converting';
 import Recording from './Recording';
 import PauseBtn from '@/common/button/PauseBtn';
+import MergeBeatComponent from './MergeBeatComponent';
 
 StatusBar.setBarStyle('light-content');
 
@@ -333,39 +334,7 @@ const Home = (props: any) => {
                     recording={recording}
                     handleStartRecord={handleStartRecord}
                   />
-                  {isEditing && (
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        marginTop: 20,
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: 320,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}
-                      >
-                        <View
-                          style={{
-                            width: 150,
-                            height: 100,
-                            backgroundColor: '#91D8FA',
-                            borderRadius: 20,
-                          }}
-                        ></View>
-                        <View
-                          style={{
-                            width: 150,
-                            height: 100,
-                            backgroundColor: '#91D8FA',
-                            borderRadius: 20,
-                          }}
-                        ></View>
-                      </View>
-                    </View>
-                  )}
+                  {isEditing && <MergeBeatComponent />}
                 </>
               )}
             </View>
