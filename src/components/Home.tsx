@@ -353,7 +353,10 @@ const Home = (props: any) => {
           requestGoogleLogin={requestGoogleLogin}
         />
       ) : (
-        <BeatListModal />
+        <BeatListModal
+          setPlaying={setPlaying}
+          audioRecorderPlayer={audioRecorderPlayer}
+        />
       )}
     </LinearGradient>
   );

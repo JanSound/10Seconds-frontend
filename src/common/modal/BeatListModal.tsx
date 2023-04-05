@@ -12,12 +12,15 @@ import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
 
-const BeatListModal = () => {
+const BeatListModal = (props: any) => {
+  const { audioRecorderPlayer, setPlaying } = props;
   const [beats, setBeats] = useState([
     {
       id: 'beat url 1',
       name: 'beat name 1',
       instType: 'base',
+      playTime: '00:00:00',
+      duration: '00:00:00',
       checked: false,
       clicked: false,
     },
@@ -25,6 +28,8 @@ const BeatListModal = () => {
       id: 'beat url 2',
       name: 'beat name 2',
       instType: 'piano',
+      playTime: '00:00:00',
+      duration: '00:00:00',
       checked: false,
       clicked: false,
     },
@@ -32,6 +37,8 @@ const BeatListModal = () => {
       id: 'beat url 3',
       name: 'beat name 3',
       instType: 'drum',
+      playTime: '00:00:00',
+      duration: '00:00:00',
       checked: false,
       clicked: false,
     },
@@ -55,6 +62,25 @@ const BeatListModal = () => {
     );
   };
 
+  const soundStart = async (id: string) => {
+    setPlaying(true);
+    await audioRecorderPlayer.startPlayer(id);
+
+    audioRecorderPlayer.addPlayBackListener((e: any) => {
+      beats.map((beat) =>
+        beat.id === id
+          ? {
+              ...beat,
+              playTime: audioRecorderPlayer.mmssss(
+                Math.floor(e.currentPosition),
+              ),
+              duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+            }
+          : beat,
+      );
+    });
+  };
+
   const handleBeatClick = (id: string) => {
     setBeats(
       beats.map((beat) => {
@@ -63,6 +89,7 @@ const BeatListModal = () => {
           : { ...beat, clicked: false };
       }),
     );
+    soundStart(id);
   };
 
   const handleDeleteBeats = () => {
