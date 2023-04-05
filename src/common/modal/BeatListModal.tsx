@@ -47,6 +47,7 @@ const BeatListModal = (props: any) => {
 
   const handleEditBtnClick = () => {
     setIsEditing(!isEditing);
+    setPlaying(false);
     setBeats(
       beats.map((beat) => {
         return { ...beat, checked: false, clicked: false };

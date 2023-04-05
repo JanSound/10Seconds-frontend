@@ -25,6 +25,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import BeatListModal from '../common/modal/BeatListModal';
 import Converting from './Converting';
 import Recording from './Recording';
+import PauseBtn from '@/common/button/PauseBtn';
 
 StatusBar.setBarStyle('light-content');
 
@@ -306,7 +307,7 @@ const Home = (props: any) => {
         console.log(err);
       });
   };
-
+  console.log(playing);
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
@@ -322,10 +323,14 @@ const Home = (props: any) => {
           <>
             <Text style={styles.mainText}>눌러서 녹음하기</Text>
             <View style={styles.recordBody}>
-              <RecordBtn
-                recording={recording}
-                handleStartRecord={handleStartRecord}
-              />
+              {playing ? (
+                <PauseBtn />
+              ) : (
+                <RecordBtn
+                  recording={recording}
+                  handleStartRecord={handleStartRecord}
+                />
+              )}
             </View>
           </>
         )}
