@@ -29,16 +29,16 @@ const styles = StyleSheet.create({
     borderRadius: 500,
   },
   pauseBtnOne: {
-    width: 10,
+    width: 20,
     height: 90,
     backgroundColor: 'white',
     marginRight: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 30,
   },
   pauseBtnTwo: {
-    width: 10,
+    width: 20,
     height: 90,
+    borderRadius: 30,
     backgroundColor: 'white',
   },
 });
