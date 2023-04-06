@@ -363,6 +363,7 @@ const Home = (props: any) => {
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           setPlaying={setPlaying}
+          playerDuration={playerDuration}
           audioRecorderPlayer={audioRecorderPlayer}
         />
       )}

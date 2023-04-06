@@ -13,7 +13,13 @@ import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
 
 const BeatListModal = (props: any) => {
-  const { audioRecorderPlayer, setPlaying, isEditing, setIsEditing } = props;
+  const {
+    audioRecorderPlayer,
+    setPlaying,
+    isEditing,
+    setIsEditing,
+    playerDuration,
+  } = props;
   const [beats, setBeats] = useState([
     {
       id: 'beat url 1',
@@ -91,6 +97,15 @@ const BeatListModal = (props: any) => {
       }),
     );
     soundStart(id);
+    setTimeout(
+      () =>
+        setBeats(
+          beats.map((beat) => {
+            return beat.id === id ? { ...beat, clicked: false } : beat;
+          }),
+        ),
+      playerDuration.duration,
+    );
   };
 
   const handleDeleteBeats = () => {
