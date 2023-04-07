@@ -98,12 +98,14 @@ const BeatListModal = (props: any) => {
     );
     soundStart(id);
     setTimeout(
-      () =>
+      () => {
+        setPlaying(false);
         setBeats(
           beats.map((beat) => {
             return beat.id === id ? { ...beat, clicked: false } : beat;
           }),
-        ),
+        );
+      },
       // playerDuration.duration,
       2000,
     );
