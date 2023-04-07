@@ -334,7 +334,6 @@ const Home = (props: any) => {
                     recording={recording}
                     handleStartRecord={handleStartRecord}
                   />
-                  {isEditing && <MergeBeatComponent />}
                 </>
               )}
             </View>

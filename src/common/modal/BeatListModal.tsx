@@ -104,7 +104,8 @@ const BeatListModal = (props: any) => {
             return beat.id === id ? { ...beat, clicked: false } : beat;
           }),
         ),
-      playerDuration.duration,
+      // playerDuration.duration,
+      2000,
     );
   };
 
