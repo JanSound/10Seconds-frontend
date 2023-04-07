@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import BeatPlayBtn from '../button/BeatPlayBtn';
 import BeatPlaySmallBtn from '../button/BeatPlaySmallBtn';
 import BeatListCheckBox from '../checkbox/BeatListCheckBox';
-
-const defaultColor = 'black';
-const clickedColor = '#4FACF9';
+import BeatListItemText from './BeatListItemText';
 
 const BeatListItem = (props: any) => {
   const { isEditing, beat, handleIsChecked, handleBeatClick } = props;
@@ -19,38 +16,17 @@ const BeatListItem = (props: any) => {
           : () => handleBeatClick(beat.id)
       }
     >
-      <View style={{ flexDirection: 'row' }}>
-        {isEditing ? (
-          <BeatListCheckBox beat={beat} handleIsChecked={handleIsChecked} />
-        ) : (
-          <View />
-        )}
-        <View>
-          <Text
-            style={[
-              styles.beatName,
-              { color: beat.clicked ? clickedColor : defaultColor },
-            ]}
-          >
-            {beat.name}
-          </Text>
-          <Text
-            style={[
-              styles.beatInstType,
-              { color: beat.clicked ? clickedColor : defaultColor },
-            ]}
-          >
-            {beat.instType}
-          </Text>
-        </View>
-      </View>
-      <View>
-        {isEditing ? (
+      {isEditing ? (
+        <>
+          <View style={{ flexDirection: 'row' }}>
+            <BeatListCheckBox beat={beat} handleIsChecked={handleIsChecked} />
+            <BeatListItemText beat={beat} />
+          </View>
           <BeatPlaySmallBtn beat={beat} handleBeatClick={handleBeatClick} />
-        ) : (
-          <View />
-        )}
-      </View>
+        </>
+      ) : (
+        <BeatListItemText beat={beat} />
+      )}
     </TouchableOpacity>
   );
 };
@@ -62,7 +38,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: 10,
     marginRight: 10,
     borderTopColor: 'black',
     borderTopWidth: StyleSheet.hairlineWidth,
