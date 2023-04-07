@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   googleSignInBtn: {
     position: 'absolute',
     right: 30,
-    bottom: 185,
+    bottom: 210,
     zIndex: 1,
   },
 });
