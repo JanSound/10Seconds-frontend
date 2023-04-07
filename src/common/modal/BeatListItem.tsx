@@ -44,9 +44,12 @@ const BeatListItem = (props: any) => {
           </Text>
         </View>
       </View>
-
       <View>
-        <BeatPlaySmallBtn />
+        {isEditing ? (
+          <BeatPlaySmallBtn beat={beat} handleBeatClick={handleBeatClick} />
+        ) : (
+          <View />
+        )}
       </View>
     </TouchableOpacity>
   );
