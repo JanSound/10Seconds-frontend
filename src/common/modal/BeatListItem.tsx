@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import BeatPlayBtn from '../button/BeatPlayBtn';
+import BeatPlaySmallBtn from '../button/BeatPlaySmallBtn';
 import BeatListCheckBox from '../checkbox/BeatListCheckBox';
 
 const defaultColor = 'black';
@@ -17,30 +19,34 @@ const BeatListItem = (props: any) => {
           : () => handleBeatClick(beat.id)
       }
     >
-      <View>
+      <View style={{ flexDirection: 'row' }}>
         {isEditing ? (
           <BeatListCheckBox beat={beat} handleIsChecked={handleIsChecked} />
         ) : (
           <View />
         )}
+        <View>
+          <Text
+            style={[
+              styles.beatName,
+              { color: beat.clicked ? clickedColor : defaultColor },
+            ]}
+          >
+            {beat.name}
+          </Text>
+          <Text
+            style={[
+              styles.beatInstType,
+              { color: beat.clicked ? clickedColor : defaultColor },
+            ]}
+          >
+            {beat.instType}
+          </Text>
+        </View>
       </View>
+
       <View>
-        <Text
-          style={[
-            styles.beatName,
-            { color: beat.clicked ? clickedColor : defaultColor },
-          ]}
-        >
-          {beat.name}
-        </Text>
-        <Text
-          style={[
-            styles.beatInstType,
-            { color: beat.clicked ? clickedColor : defaultColor },
-          ]}
-        >
-          {beat.instType}
-        </Text>
+        <BeatPlaySmallBtn />
       </View>
     </TouchableOpacity>
   );
@@ -51,8 +57,10 @@ const styles = StyleSheet.create({
     height: 60,
     paddingLeft: 20,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10,
     borderTopColor: 'black',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
