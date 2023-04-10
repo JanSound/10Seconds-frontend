@@ -360,6 +360,7 @@ const Home = (props: any) => {
       ) : (
         <BeatListModal
           isEditing={isEditing}
+          playing={playing}
           setIsEditing={setIsEditing}
           setPlaying={setPlaying}
           playerDuration={playerDuration}

@@ -15,6 +15,7 @@ import MergeBtn from '../button/MergeBtn';
 const BeatListModal = (props: any) => {
   const {
     audioRecorderPlayer,
+    playing,
     setPlaying,
     isEditing,
     setIsEditing,
@@ -88,16 +89,9 @@ const BeatListModal = (props: any) => {
     });
   };
 
+  let timerId: any;
   const handleBeatClick = (id: string) => {
-    setBeats(
-      beats.map((beat) => {
-        return beat.id === id
-          ? { ...beat, clicked: true }
-          : { ...beat, clicked: false };
-      }),
-    );
-    soundStart(id);
-    setTimeout(
+    timerId = setTimeout(
       () => {
         setPlaying(false);
         setBeats(
@@ -109,6 +103,17 @@ const BeatListModal = (props: any) => {
       // playerDuration.duration,
       2000,
     );
+    if (playing === true) {
+      if (timerId) clearTimeout(timerId);
+    }
+    setBeats(
+      beats.map((beat) => {
+        return beat.id === id
+          ? { ...beat, clicked: true }
+          : { ...beat, clicked: false };
+      }),
+    );
+    soundStart(id);
   };
 
   const handleDeleteBeats = () => {
