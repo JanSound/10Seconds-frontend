@@ -12,6 +12,16 @@ import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
 
+interface IBeat {
+  id: string;
+  name: string;
+  instType: string;
+  playTime: string;
+  duration: string;
+  checked: boolean;
+  clicked: boolean;
+}
+
 const BeatListModal = (props: any) => {
   const {
     audioRecorderPlayer,
