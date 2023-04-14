@@ -1,16 +1,12 @@
-import Header from '@/common/header/Header';
-import Footer from '../Footer';
 import React from 'react';
 import {
   StyleSheet,
   View,
   ImageSourcePropType,
-  Image,
   TouchableOpacity,
   Text,
 } from 'react-native';
 import BeatPlayBtn from '@/common/button/BeatPlayBtn';
-import BeatListHeader from '@/common/header/BeatListHeader';
 import LinearGradient from 'react-native-linear-gradient';
 import GoogleSignInBtn from '@/common/button/GoogleSignInBtn';
 interface IInstrument {

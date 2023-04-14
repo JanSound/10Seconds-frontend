@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import Footer from '../Footer';
-import Header from '../common/header/Header';
-import TitleHeader from '@/common/header/TitleHeader';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface IInstrument {
