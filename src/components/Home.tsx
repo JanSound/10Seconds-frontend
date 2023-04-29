@@ -16,6 +16,7 @@ import {
   Text,
   StatusBar,
   Animated,
+  Button,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import RecordBtn from '../common/button/RecordBtn';
@@ -27,6 +28,7 @@ import Converting from './Converting';
 import Recording from './Recording';
 import PauseBtn from '@/common/button/PauseBtn';
 import MergeBeatComponent from './MergeBeatComponent';
+import Sound from 'react-native-sound';
 
 StatusBar.setBarStyle('light-content');
 
@@ -61,6 +63,9 @@ const Home = (props: any) => {
     name: '',
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  let timerId: number | NodeJS.Timeout | undefined;
 
   const alertMikePermissionDenied = () => {
     Alert.alert('마이크 접근 권한 거부', '마이크 접근 권한을 허용해주세요 !', [
@@ -75,6 +80,7 @@ const Home = (props: any) => {
     try {
       const checkPermission = await checkRecordPermission();
       if (checkPermission === RESULTS.GRANTED) {
+        startStop();
         setRecording(true);
         setPlayerDuration({
           ...playerDuration,
@@ -112,11 +118,11 @@ const Home = (props: any) => {
     try {
       if (audioRecorderPlayer) {
         setRecording(false);
+        clearTimeout(timerId);
         await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setRecordDuration({ ...recordDuration, recordSecs: 0 });
         setConverting(true);
-        // navigation.navigate('Select');
       }
     } catch (e) {
       setRecording(false);
@@ -309,7 +315,31 @@ const Home = (props: any) => {
       });
   };
 
-  const [isEditing, setIsEditing] = useState(false);
+  const music1 = 'https://daveceddia.com/freebies/react-metronome/click1.wav';
+  const music2 = 'https://daveceddia.com/freebies/react-metronome/click2.wav';
+  const [metro, setMetro] = useState({
+    bpm: 100,
+    beatsPerMeasure: 4,
+  });
+  const num = useRef(0);
+
+  const playClick = () => {
+    num.current = (num.current + 1) % 4;
+    if (num.current % metro.beatsPerMeasure === 0) {
+      audioRecorderPlayer.startPlayer(music2);
+    } else {
+      audioRecorderPlayer.startPlayer(music1);
+    }
+  };
+  const startStop = () => {
+    num.current = 0;
+    timerId = setTimeout(function run() {
+      let startTime = new Date().getTime();
+      playClick();
+      let lastTime = new Date().getTime();
+      setTimeout(run, 500 + (lastTime - startTime));
+    }, 0);
+  };
 
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
@@ -350,7 +380,7 @@ const Home = (props: any) => {
         ) : (
           ''
         )} */}
-
+      {/* <Button onPress={startStop} title="start"></Button> */}
       {isLoggedIn === false ? (
         <GoogleSignInBtn
           isLoggedIn={isLoggedIn}

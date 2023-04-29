@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   description: {
     color: 'white',
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 35,
+    fontSize: 30,
     lineHeight: 50,
     textAlign: 'center',
     marginTop: 50,
