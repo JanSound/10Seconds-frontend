@@ -28,12 +28,31 @@ import Converting from './Converting';
 import Recording from './Recording';
 import PauseBtn from '@/common/button/PauseBtn';
 import MergeBeatComponent from './MergeBeatComponent';
-import Sound from 'react-native-sound';
+import AWS from 'aws-sdk';
+import RNFetchBlob from 'rn-fetch-blob';
+import axios from 'axios';
+import { Buffer } from 'buffer';
 
 StatusBar.setBarStyle('light-content');
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 audioRecorderPlayer.setSubscriptionDuration(0.08);
+
+const ACCESS_KEY = config.aws.MY_AWS_ACCESS_KEY;
+const SECRET_ACCESS_KEY = config.aws.MY_AWS_SECRET_KEY;
+const REGION = config.aws.MY_AWS_S3_BUCKET_REGION;
+const S3_BUCKET = config.aws.MY_AWS_S3_BUCKET;
+
+AWS.config.update({
+  region: REGION,
+  accessKeyId: ACCESS_KEY,
+  secretAccessKey: SECRET_ACCESS_KEY,
+});
+
+const myBucket = new AWS.S3({
+  params: { Bucket: S3_BUCKET },
+  region: REGION,
+});
 
 const Home = (props: any) => {
   const { navigation, isModalVisible, setIsModalVisible } = props;
@@ -80,7 +99,7 @@ const Home = (props: any) => {
     try {
       const checkPermission = await checkRecordPermission();
       if (checkPermission === RESULTS.GRANTED) {
-        startStop();
+        // startStop();
         setRecording(true);
         setPlayerDuration({
           ...playerDuration,
@@ -91,7 +110,7 @@ const Home = (props: any) => {
         });
 
         const path = Platform.select({
-          ios: 'recordVoice.m4a',
+          ios: 'record.m4a',
         });
         const uri = await audioRecorderPlayer.startRecorder(path);
         setRecordingPath(uri);
@@ -132,6 +151,7 @@ const Home = (props: any) => {
 
   const soundStart = async () => {
     setPlaying(true);
+    // await audioRecorderPlayer.startPlayer(recordingPath);
     await audioRecorderPlayer.startPlayer(recordingPath);
 
     audioRecorderPlayer.addPlayBackListener((e) => {
@@ -251,101 +271,80 @@ const Home = (props: any) => {
     googleConfigureSignIn();
   }, []);
 
-  const uploadRecordFile = async () => {
-    const result = await fetch(
-      'http://ec2-54-180-95-225.ap-northeast-2.compute.amazonaws.com:8001/api/v1/beats/generate-presigned-url',
-      {
-        method: 'POST',
-        headers: {
-          accept: 'application/json',
-        },
-      },
-    )
-      .then((res) => res.json())
-      .catch((e) => console.log('presigned url post 에러 :', e));
-    const preUrl = result['presigned_url'];
-    uploadRecordToS3(preUrl);
-  };
+  // const uploadRecordFile = async () => {
+  //   const result = await fetch(
+  //     'http://ec2-54-180-95-225.ap-northeast-2.compute.amazonaws.com:8001/api/v1/beats/generate-presigned-url',
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         accept: 'application/json',
+  //       },
+  //     },
+  //   )
+  //     .then((res) => res.json())
+  //     .catch((e) => console.log('presigned url post 에러 :', e));
+  //   const preUrl = result['presigned_url'];
+  //   uploadRecordToS3(preUrl);
+  // };
 
-  const uploadRecordToS3 = async (preUrl: string) => {
-    const upload = (response: any) => {
-      const jobId = response.jobId;
-      console.log('UPLOAD HAS BEGUN! JobId: ' + jobId);
-    };
-
-    const uploadProgress = (response: any) => {
-      const percentage = Math.floor(
-        (response.totalBytesSent / response.totalBytesExpectedToSend) * 100,
-      );
-      console.log('UPLOAD IS ' + percentage + '% DONE!');
-    };
-
-    const files = [
-      {
-        name: 'recordVoice.m4a',
-        filename: 'recordVoice.m4a',
-        filepath: recordingPath,
-        filetype: 'audio/x-m4a',
-      },
-    ];
-
-    RNFS.uploadFiles({
-      toUrl: preUrl,
-      files: files,
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'audio/x-m4a',
-      },
-      fields: {
-        hello: 'world',
-      },
-      begin: upload,
-      progress: uploadProgress,
-    })
-      .promise.then((response) => {
-        if (response.statusCode == 200) {
-          console.log(response);
-          console.log('FILES UPLOADED!!!');
-        } else {
-          console.log('SERVER ERROR!!!');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const music1 = 'https://daveceddia.com/freebies/react-metronome/click1.wav';
-  const music2 = 'https://daveceddia.com/freebies/react-metronome/click2.wav';
-  const [metro, setMetro] = useState({
-    bpm: 100,
-    beatsPerMeasure: 4,
-  });
-  const num = useRef(0);
-
-  const playClick = () => {
-    num.current = (num.current + 1) % 4;
-    if (num.current % metro.beatsPerMeasure === 0) {
-      audioRecorderPlayer.startPlayer(music2);
-    } else {
-      audioRecorderPlayer.startPlayer(music1);
+  const uploadRecordToS3 = async () => {};
+  const uploadFile = async () => {
+    try {
+      const fileData = await RNFS.readFile(recordingPath, 'base64');
+      const bufferFile = Buffer.from(fileData, 'base64');
+      const params = {
+        Body: bufferFile,
+        Bucket: S3_BUCKET,
+        Key: 'record.m4a',
+      };
+      await myBucket.putObject(params).promise();
+    } catch (e) {
+      console.log('try catch error 발생:', e);
     }
   };
-  const startStop = () => {
-    num.current = 0;
-    timerId = setTimeout(function run() {
-      let startTime = new Date().getTime();
-      playClick();
-      let lastTime = new Date().getTime();
-      setTimeout(run, 500 + (lastTime - startTime));
-    }, 0);
-  };
+
+  // const music1 = 'https://daveceddia.com/freebies/react-metronome/click1.wav';
+  // const music2 = 'https://daveceddia.com/freebies/react-metronome/click2.wav';
+  // const [metro, setMetro] = useState({
+  //   bpm: 100,
+  //   beatsPerMeasure: 4,
+  // });
+  // const num = useRef(0);
+
+  // const playClick = () => {
+  //   num.current = (num.current + 1) % 4;
+  //   if (num.current % metro.beatsPerMeasure === 0) {
+  //     audioRecorderPlayer.startPlayer(music2);
+  //   } else {
+  //     audioRecorderPlayer.startPlayer(music1);
+  //   }
+  // };
+  // const startStop = () => {
+  //   num.current = 0;
+  //   timerId = setTimeout(function run() {
+  //     let startTime = new Date().getTime();
+  //     playClick();
+  //     let lastTime = new Date().getTime();
+  //     setTimeout(run, 500 + (lastTime - startTime));
+  //   }, 0);
+  // };
 
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
       {isModalVisible && <GuideModal />}
       <View style={styles.body}>
         {recording ? (
+          <Recording
+            recordDuration={recordDuration}
+            handleStopRecord={handleStopRecord}
+          />
+        ) : (
+          <RecordBtn
+            recording={recording}
+            handleStartRecord={handleStartRecord}
+          />
+        )}
+        {/* {recording ? (
           <Recording
             recordDuration={recordDuration}
             handleStopRecord={handleStopRecord}
@@ -368,19 +367,10 @@ const Home = (props: any) => {
               )}
             </View>
           </>
-        )}
-      </View>
-      {/* <View style={styles.play}>
-        {playerDuration ? (
-          playerDuration.duration === playerDuration.playTime ? (
-            <Button title="Play" color="black" onPress={soundStart}></Button>
-          ) : (
-            <Text style={styles.playing}>playing</Text>
-          )
-        ) : (
-          ''
         )} */}
+      </View>
       {/* <Button onPress={startStop} title="start"></Button> */}
+      <Button onPress={uploadFile} title="go"></Button>
       {isLoggedIn === false ? (
         <GoogleSignInBtn
           isLoggedIn={isLoggedIn}
