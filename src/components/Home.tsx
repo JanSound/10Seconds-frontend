@@ -271,34 +271,23 @@ const Home = (props: any) => {
     googleConfigureSignIn();
   }, []);
 
-  // const uploadRecordFile = async () => {
-  //   const result = await fetch(
-  //     'http://ec2-54-180-95-225.ap-northeast-2.compute.amazonaws.com:8001/api/v1/beats/generate-presigned-url',
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         accept: 'application/json',
-  //       },
-  //     },
-  //   )
-  //     .then((res) => res.json())
-  //     .catch((e) => console.log('presigned url post 에러 :', e));
-  //   const preUrl = result['presigned_url'];
-  //   uploadRecordToS3(preUrl);
-  // };
-
-  const uploadRecordToS3 = async () => {};
   const uploadFile = async () => {
     try {
+      const result = await axios.post(
+        'http://43.200.7.58:8001/api/v1/beats/presigned-url/put',
+      );
+      const PRESIGNED_URL = result.data['presigned_url'];
       const fileData = await RNFS.readFile(recordingPath, 'base64');
       const bufferFile = Buffer.from(fileData, 'base64');
-      const params = {
-        Body: bufferFile,
-        Bucket: S3_BUCKET,
-        Key: 'record.m4a',
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'audio/m4a',
+        },
+        body: bufferFile,
       };
-      await myBucket.putObject(params).promise();
-    } catch (e) {
+      await fetch(PRESIGNED_URL, options);
+    } catch (e: any) {
       console.log('try catch error 발생:', e);
     }
   };
