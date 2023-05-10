@@ -54,6 +54,13 @@ const myBucket = new AWS.S3({
   region: REGION,
 });
 
+interface IBeat {
+  ID: string;
+  BeatType: string;
+  PresignedUrl: string;
+  RegTs: string;
+}
+
 const Home = (props: any) => {
   const { navigation, isModalVisible, setIsModalVisible } = props;
   const appState = useRef(AppState.currentState);
@@ -149,10 +156,10 @@ const Home = (props: any) => {
     }
   };
 
-  const soundStart = async () => {
+  const playUserBeat = async (beatPath: string) => {
     setPlaying(true);
+    await audioRecorderPlayer.startPlayer(beatPath);
     // await audioRecorderPlayer.startPlayer(recordingPath);
-    await audioRecorderPlayer.startPlayer(recordingPath);
 
     audioRecorderPlayer.addPlayBackListener((e) => {
       setPlayerDuration({
@@ -292,6 +299,12 @@ const Home = (props: any) => {
     }
   };
 
+  const getUserBeats = async () => {
+    const fetchData = await axios.get('http://43.200.7.58:8001/api/v1/beats');
+    const beatList: IBeat[] = fetchData.data; // 배열
+    return beatList;
+  };
+
   // const music1 = 'https://daveceddia.com/freebies/react-metronome/click1.wav';
   // const music2 = 'https://daveceddia.com/freebies/react-metronome/click2.wav';
   // const [metro, setMetro] = useState({
@@ -360,6 +373,7 @@ const Home = (props: any) => {
       </View>
       {/* <Button onPress={startStop} title="start"></Button> */}
       <Button onPress={uploadFile} title="go"></Button>
+      <Button onPress={getUserBeats} title="get"></Button>
       {isLoggedIn === false ? (
         <GoogleSignInBtn
           isLoggedIn={isLoggedIn}
