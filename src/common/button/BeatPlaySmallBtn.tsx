@@ -11,7 +11,7 @@ const BeatPlaySmallBtn = (props: any) => {
       >
         <Image
           style={styles.playBtn}
-          source={require('../../assets/images/playBtn.png')}
+          source={require('../../assets/images/playSmallBtn.png')}
         />
       </TouchableOpacity>
     </View>
@@ -21,15 +21,12 @@ const BeatPlaySmallBtn = (props: any) => {
 const styles = StyleSheet.create({
   playBtnContainer: {
     width: 50,
-    height: 50,
-    backgroundColor: '#4FACF9',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 25,
   },
   playBtn: {
     position: 'absolute',
-    transform: [{ scaleX: 0.1 }, { scaleY: 0.1 }],
+    transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
   },
 });
 export default BeatPlaySmallBtn;
