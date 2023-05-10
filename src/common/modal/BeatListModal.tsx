@@ -30,6 +30,7 @@ const BeatListModal = (props: any) => {
     isEditing,
     setIsEditing,
     playerDuration,
+    navigation,
   } = props;
   const [beats, setBeats] = useState([
     {
@@ -159,7 +160,7 @@ const BeatListModal = (props: any) => {
         >
           <View style={{ flexDirection: 'row' }}>
             <DeleteBtn handleDeleteBeats={handleDeleteBeats} />
-            <MergeBtn />
+            <MergeBtn navigation={navigation} />
           </View>
 
           <EditBtn

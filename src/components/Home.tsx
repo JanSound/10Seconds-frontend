@@ -388,6 +388,7 @@ const Home = (props: any) => {
           setPlaying={setPlaying}
           playerDuration={playerDuration}
           audioRecorderPlayer={audioRecorderPlayer}
+          navigation={navigation}
         />
       )}
     </LinearGradient>
