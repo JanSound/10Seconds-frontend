@@ -22,6 +22,15 @@ import { getUserBeats } from '@/apis/getUserBeats';
 // checked: boolean;
 // clicked: boolean;
 // }
+
+//   id: 'beat url 1',
+//   name: 'beat name 1',
+//   beatType: 'base',
+//   playTime: '00:00:00',
+//   duration: '00:00:00',
+//   checked: false,
+//   clicked: false,
+
 interface IBeat {
   ID: string;
   BeatType: string;
@@ -39,40 +48,10 @@ const BeatListModal = (props: any) => {
     playerDuration,
     navigation,
   } = props;
-  const [beats, setBeats] = useState([
-    // {
-    //   id: 'beat url 1',
-    //   name: 'beat name 1',
-    //   beatType: 'base',
-    //   playTime: '00:00:00',
-    //   duration: '00:00:00',
-    //   checked: false,
-    //   clicked: false,
-    // },
-    // {
-    //   id: 'beat url 2',
-    //   name: 'beat name 2',
-    //   beatType: 'piano',
-    //   playTime: '00:00:00',
-    //   duration: '00:00:00',
-    //   checked: false,
-    //   clicked: false,
-    // },
-    // {
-    //   id: 'beat url 3',
-    //   name: 'beat name 3',
-    //   beatType: 'drum',
-    //   playTime: '00:00:00',
-    //   duration: '00:00:00',
-    //   checked: false,
-    //   clicked: false,
-    // },
-  ] as any);
+  const [beats, setBeats] = useState([] as any);
   // const [isEditing, setIsEditing] = useState(false);
 
   const handleEditBtnClick = () => {
-    console.log(beats);
-
     setIsEditing(!isEditing);
     setPlaying(false);
     setBeats(
@@ -213,7 +192,6 @@ const BeatListModal = (props: any) => {
           <Text style={{ fontSize: 16 }}>첫 노래를 녹음해보세요 !</Text>
         </View>
       ) : (
-        beats &&
         beats.map((beat: any) => {
           return (
             <BeatListItem
