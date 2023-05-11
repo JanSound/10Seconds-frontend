@@ -2,11 +2,13 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const MergeBtn = (props: any) => {
-  const { navigation, beats } = props;
+  const { navigation, setIsEditing, beats } = props;
   return (
     <TouchableOpacity
       style={styles.mergeBtnContainer}
-      onPress={() => navigation.navigate('Merge', { beats: beats })}
+      onPress={() => {
+        navigation.navigate('Merge', { beats: beats });
+      }}
     >
       <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
         병합

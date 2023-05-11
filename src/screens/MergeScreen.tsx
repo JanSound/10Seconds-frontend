@@ -35,7 +35,7 @@ const MergeScreen = (props: any) => {
           </View>
         </View>
         {beats.map((beat: IBeat) => {
-          return <BeatListItem beat={beat} key={beat.id} />;
+          return <BeatListItem beat={beat} key={beat.id} isEditing={true} />;
         })}
       </View>
     </>
