@@ -6,6 +6,7 @@ const clickedColor = '#4FACF9';
 
 const BeatListItemText = (props: any) => {
   const { beat } = props;
+  const [createdDate, createdTime] = beat.createAt.split(/T|Z/);
   return (
     <View>
       <Text
@@ -22,7 +23,7 @@ const BeatListItemText = (props: any) => {
           { color: beat.clicked ? clickedColor : defaultColor },
         ]}
       >
-        {beat.instType}
+        {createdDate} {createdTime}
       </Text>
     </View>
   );
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
   beatName: { fontSize: 20, fontFamily: 'NotoSansKR-Bold', color: 'black' },
   beatInstType: {
     fontSize: 15,
+    opacity: 0.4,
   },
 });
 

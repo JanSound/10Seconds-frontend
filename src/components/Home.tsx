@@ -32,6 +32,7 @@ import AWS from 'aws-sdk';
 import RNFetchBlob from 'rn-fetch-blob';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import { getUserBeats } from '@/apis/getUserBeats';
 
 StatusBar.setBarStyle('light-content');
 
@@ -297,12 +298,6 @@ const Home = (props: any) => {
     } catch (e: any) {
       console.log('try catch error 발생:', e);
     }
-  };
-
-  const getUserBeats = async () => {
-    const fetchData = await axios.get('http://43.200.7.58:8001/api/v1/beats');
-    const beatList: IBeat[] = fetchData.data; // 배열
-    return beatList;
   };
 
   // const music1 = 'https://daveceddia.com/freebies/react-metronome/click1.wav';

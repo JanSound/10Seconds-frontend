@@ -11,15 +11,22 @@ import {
 import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
+import { getUserBeats } from '@/apis/getUserBeats';
 
+// interface IBeat {
+//   id: string;
+//   name: string;
+//   beatType: string;
+//   playTime: string;
+//   duration: string;
+// checked: boolean;
+// clicked: boolean;
+// }
 interface IBeat {
-  id: string;
-  name: string;
-  instType: string;
-  playTime: string;
-  duration: string;
-  checked: boolean;
-  clicked: boolean;
+  ID: string;
+  BeatType: string;
+  PresignedUrl: string;
+  createdAt: string;
 }
 
 const BeatListModal = (props: any) => {
@@ -33,41 +40,43 @@ const BeatListModal = (props: any) => {
     navigation,
   } = props;
   const [beats, setBeats] = useState([
-    {
-      id: 'beat url 1',
-      name: 'beat name 1',
-      instType: 'base',
-      playTime: '00:00:00',
-      duration: '00:00:00',
-      checked: false,
-      clicked: false,
-    },
-    {
-      id: 'beat url 2',
-      name: 'beat name 2',
-      instType: 'piano',
-      playTime: '00:00:00',
-      duration: '00:00:00',
-      checked: false,
-      clicked: false,
-    },
-    {
-      id: 'beat url 3',
-      name: 'beat name 3',
-      instType: 'drum',
-      playTime: '00:00:00',
-      duration: '00:00:00',
-      checked: false,
-      clicked: false,
-    },
-  ]);
+    // {
+    //   id: 'beat url 1',
+    //   name: 'beat name 1',
+    //   beatType: 'base',
+    //   playTime: '00:00:00',
+    //   duration: '00:00:00',
+    //   checked: false,
+    //   clicked: false,
+    // },
+    // {
+    //   id: 'beat url 2',
+    //   name: 'beat name 2',
+    //   beatType: 'piano',
+    //   playTime: '00:00:00',
+    //   duration: '00:00:00',
+    //   checked: false,
+    //   clicked: false,
+    // },
+    // {
+    //   id: 'beat url 3',
+    //   name: 'beat name 3',
+    //   beatType: 'drum',
+    //   playTime: '00:00:00',
+    //   duration: '00:00:00',
+    //   checked: false,
+    //   clicked: false,
+    // },
+  ] as any);
   // const [isEditing, setIsEditing] = useState(false);
 
   const handleEditBtnClick = () => {
+    console.log(beats);
+
     setIsEditing(!isEditing);
     setPlaying(false);
     setBeats(
-      beats.map((beat) => {
+      beats.map((beat: any) => {
         return { ...beat, checked: false, clicked: false };
       }),
     );
@@ -75,7 +84,7 @@ const BeatListModal = (props: any) => {
 
   const handleIsChecked = (id: string) => {
     setBeats(
-      beats.map((beat) => {
+      beats.map((beat: any) => {
         return beat.id === id ? { ...beat, checked: !beat.checked } : beat;
       }),
     );
@@ -86,7 +95,7 @@ const BeatListModal = (props: any) => {
     await audioRecorderPlayer.startPlayer(id);
 
     audioRecorderPlayer.addPlayBackListener((e: any) => {
-      beats.map((beat) =>
+      beats.map((beat: any) =>
         beat.id === id
           ? {
               ...beat,
@@ -106,7 +115,7 @@ const BeatListModal = (props: any) => {
       () => {
         setPlaying(false);
         setBeats(
-          beats.map((beat) => {
+          beats.map((beat: any) => {
             return beat.id === id ? { ...beat, clicked: false } : beat;
           }),
         );
@@ -118,7 +127,7 @@ const BeatListModal = (props: any) => {
       if (timerId) clearTimeout(timerId);
     }
     setBeats(
-      beats.map((beat) => {
+      beats.map((beat: any) => {
         return beat.id === id
           ? { ...beat, clicked: true }
           : { ...beat, clicked: false };
@@ -128,7 +137,7 @@ const BeatListModal = (props: any) => {
   };
 
   const handleDeleteBeats = () => {
-    setBeats(beats.filter((beat) => beat.checked === false));
+    setBeats(beats.filter((beat: any) => beat.checked === false));
   };
 
   const [animation, setAnimation] = useState(new Animated.Value(0));
@@ -143,6 +152,25 @@ const BeatListModal = (props: any) => {
 
   useEffect(() => {
     fadeIn();
+  }, []);
+
+  useEffect(() => {
+    getUserBeats().then((beatArray) => {
+      beatArray.map((fetchBeat: any) => {
+        const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
+        setBeats([
+          {
+            id: ID,
+            name: BeatType + ID.toString(),
+            beatType: BeatType,
+            PresignedUrl: PresignedUrl,
+            createAt: RegTs,
+            checked: false,
+            clicked: false,
+          },
+        ]);
+      });
+    });
   }, []);
 
   const animationStyles = {
@@ -185,7 +213,8 @@ const BeatListModal = (props: any) => {
           <Text style={{ fontSize: 16 }}>첫 노래를 녹음해보세요 !</Text>
         </View>
       ) : (
-        beats.map((beat) => {
+        beats &&
+        beats.map((beat: any) => {
           return (
             <BeatListItem
               beat={beat}

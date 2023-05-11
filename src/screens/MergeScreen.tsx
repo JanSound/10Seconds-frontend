@@ -1,9 +1,20 @@
+import FinishBtn from '@/common/button/FinishBtn';
+import BeatListItem from '@/common/modal/BeatListItem';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+interface IBeat {
+  id: string;
+  name: string;
+  instType: string;
+  playTime: string;
+  duration: string;
+  checked: boolean;
+  clicked: boolean;
+}
 
 const MergeScreen = (props: any) => {
-  const { navigation } = props;
+  const { navigation, beats } = props;
   return (
     <>
       <LinearGradient
@@ -11,12 +22,22 @@ const MergeScreen = (props: any) => {
         style={styles.container}
       ></LinearGradient>
       <View style={styles.titleContainer}>
-        <View>
-          <Text style={styles.titleText}>음악 병합하기</Text>
-          <Text style={{ fontSize: 16, opacity: 0.3 }}>
-            내가 저장한 음악을 병합할 수 있어요
-          </Text>
+        <View style={styles.title}>
+          <View>
+            <Text style={styles.titleText}>음악 병합하기</Text>
+            <Text style={styles.subText}>
+              내가 저장한 음악을 병합할 수 있어요
+            </Text>
+          </View>
+          <View style={{ justifyContent: 'center' }}>
+            <FinishBtn />
+          </View>
         </View>
+      </View>
+      <View>
+        {beats.map((beat: IBeat) => {
+          return <BeatListItem beat={beat} key={beat.id} />;
+        })}
       </View>
     </>
   );
@@ -30,7 +51,11 @@ const styles = StyleSheet.create({
     flex: 15,
     backgroundColor: 'white',
     paddingLeft: 20,
-    marginTop: 15,
+    paddingTop: 15,
+  },
+  title: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   titleText: {
     fontSize: 20,

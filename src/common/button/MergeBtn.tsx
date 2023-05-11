@@ -1,18 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const MergeBtn = (props: any) => {
   const { navigation } = props;
   return (
     <TouchableOpacity
-      style={{
-        backgroundColor: '#4FACF9',
-        borderRadius: 20,
-        width: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft: 10,
-      }}
+      style={styles.mergeBtnContainer}
       onPress={() => navigation.navigate('Merge')}
     >
       <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
@@ -21,5 +14,16 @@ const MergeBtn = (props: any) => {
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  mergeBtnContainer: {
+    backgroundColor: '#4FACF9',
+    borderRadius: 20,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+});
 
 export default MergeBtn;
