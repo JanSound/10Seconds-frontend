@@ -43,13 +43,11 @@ const BeatListModal = (props: any) => {
     audioRecorderPlayer,
     playing,
     setPlaying,
-    isEditing,
-    setIsEditing,
     playerDuration,
     navigation,
   } = props;
   const [beats, setBeats] = useState([] as any);
-  // const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleEditBtnClick = () => {
     setIsEditing(!isEditing);
@@ -69,23 +67,10 @@ const BeatListModal = (props: any) => {
     );
   };
 
-  const soundStart = async (id: string) => {
+  const playUserBeat = async (beatPath: string) => {
     setPlaying(true);
-    await audioRecorderPlayer.startPlayer(id);
-
-    audioRecorderPlayer.addPlayBackListener((e: any) => {
-      beats.map((beat: any) =>
-        beat.id === id
-          ? {
-              ...beat,
-              playTime: audioRecorderPlayer.mmssss(
-                Math.floor(e.currentPosition),
-              ),
-              duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
-            }
-          : beat,
-      );
-    });
+    await audioRecorderPlayer.startPlayer(beatPath);
+    audioRecorderPlayer.addPlayBackListener(() => {});
   };
 
   let timerId: any;
@@ -112,7 +97,7 @@ const BeatListModal = (props: any) => {
           : { ...beat, clicked: false };
       }),
     );
-    soundStart(id);
+    // playUserBeat(id);
   };
 
   const handleDeleteBeats = () => {
@@ -167,7 +152,7 @@ const BeatListModal = (props: any) => {
         >
           <View style={{ flexDirection: 'row' }}>
             <DeleteBtn handleDeleteBeats={handleDeleteBeats} />
-            <MergeBtn navigation={navigation} />
+            <MergeBtn navigation={navigation} beats={beats} />
           </View>
 
           <EditBtn

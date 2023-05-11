@@ -72,6 +72,7 @@ const Home = (props: any) => {
     recordSecs: 0,
     recordTime: '00:00:00',
   });
+
   const [playing, setPlaying] = useState(false);
   const [playerDuration, setPlayerDuration] = useState({
     currentPositionSec: 0,
@@ -88,7 +89,6 @@ const Home = (props: any) => {
     name: '',
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
 
   let timerId: number | NodeJS.Timeout | undefined;
 
@@ -155,20 +155,6 @@ const Home = (props: any) => {
     }
   };
 
-  const playUserBeat = async (beatPath: string) => {
-    setPlaying(true);
-    await audioRecorderPlayer.startPlayer(beatPath);
-    // await audioRecorderPlayer.startPlayer(recordingPath);
-
-    audioRecorderPlayer.addPlayBackListener((e) => {
-      setPlayerDuration({
-        currentPositionSec: e.currentPosition,
-        currentDurationSec: e.duration,
-        playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
-        duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
-      });
-    });
-  };
   const requestRecordPermission = async () => {
     await request(PERMISSIONS.IOS.SPEECH_RECOGNITION)
       .then((result) => {
@@ -333,17 +319,6 @@ const Home = (props: any) => {
             recordDuration={recordDuration}
             handleStopRecord={handleStopRecord}
           />
-        ) : (
-          <RecordBtn
-            recording={recording}
-            handleStartRecord={handleStartRecord}
-          />
-        )}
-        {/* {recording ? (
-          <Recording
-            recordDuration={recordDuration}
-            handleStopRecord={handleStopRecord}
-          />
         ) : converting ? (
           <Converting navigation={navigation} setConverting={setConverting} />
         ) : (
@@ -362,11 +337,9 @@ const Home = (props: any) => {
               )}
             </View>
           </>
-        )} */}
+        )}
       </View>
       {/* <Button onPress={startStop} title="start"></Button> */}
-      <Button onPress={uploadFile} title="go"></Button>
-      <Button onPress={getUserBeats} title="get"></Button>
       {isLoggedIn === false ? (
         <GoogleSignInBtn
           isLoggedIn={isLoggedIn}
@@ -375,9 +348,7 @@ const Home = (props: any) => {
         />
       ) : (
         <BeatListModal
-          isEditing={isEditing}
           playing={playing}
-          setIsEditing={setIsEditing}
           setPlaying={setPlaying}
           playerDuration={playerDuration}
           audioRecorderPlayer={audioRecorderPlayer}

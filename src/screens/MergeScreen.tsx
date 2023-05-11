@@ -14,7 +14,8 @@ interface IBeat {
 }
 
 const MergeScreen = (props: any) => {
-  const { navigation, beats } = props;
+  const { navigation, route } = props;
+  const beats = route.params.beats;
   return (
     <>
       <LinearGradient
@@ -33,8 +34,6 @@ const MergeScreen = (props: any) => {
             <FinishBtn />
           </View>
         </View>
-      </View>
-      <View>
         {beats.map((beat: IBeat) => {
           return <BeatListItem beat={beat} key={beat.id} />;
         })}
@@ -56,6 +55,7 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    marginBottom: 10,
   },
   titleText: {
     fontSize: 20,
