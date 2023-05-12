@@ -2,9 +2,20 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const FinishBtn = (props: any) => {
-  const { navigation } = props;
+  const { beats, setBeats, navigation, handleFinishMerge } = props;
   return (
-    <TouchableOpacity style={styles.mergeBtnContainer}>
+    <TouchableOpacity
+      style={styles.mergeBtnContainer}
+      onPress={() => {
+        handleFinishMerge();
+        setBeats(
+          beats.map((beat: any) => {
+            return { ...beat, checked: false };
+          }),
+        );
+        navigation.navigate('Home');
+      }}
+    >
       <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
         완료
       </Text>

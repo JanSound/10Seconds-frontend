@@ -32,6 +32,7 @@
     "react-native-sound": "^0.11.2",
     "react-native-svg": "^13.8.0",
     "react-native-swipe-gestures": "^1.0.5",
+    "recoil": "^0.7.7",
     "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {

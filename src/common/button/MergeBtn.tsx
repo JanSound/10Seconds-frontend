@@ -2,12 +2,12 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const MergeBtn = (props: any) => {
-  const { navigation, setIsEditing, beats } = props;
+  const { navigation, setIsEditing, beats, setPlaying } = props;
   return (
     <TouchableOpacity
       style={styles.mergeBtnContainer}
       onPress={() => {
-        navigation.navigate('Merge', { beats: beats });
+        navigation.navigate('Merge');
       }}
     >
       <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>

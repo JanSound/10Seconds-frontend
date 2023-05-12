@@ -12,17 +12,8 @@ import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
 import { getUserBeats } from '@/apis/getUserBeats';
-
-// interface IBeat {
-//   id: string;
-//   name: string;
-//   beatType: string;
-//   playTime: string;
-//   duration: string;
-// checked: boolean;
-// clicked: boolean;
-// }
-
+import { recoilBeatState } from '@/recoil/Beat';
+import { useRecoilState } from 'recoil';
 //   id: 'beat url 1',
 //   name: 'beat name 1',
 //   beatType: 'base',
@@ -32,10 +23,13 @@ import { getUserBeats } from '@/apis/getUserBeats';
 //   clicked: false,
 
 interface IBeat {
-  ID: string;
-  BeatType: string;
-  PresignedUrl: string;
+  id: string;
+  name: string;
+  beatType: string;
+  presignedUrl: string;
   createdAt: string;
+  checked: boolean;
+  clicked: boolean;
 }
 
 const BeatListModal = (props: any) => {
@@ -46,7 +40,9 @@ const BeatListModal = (props: any) => {
     playerDuration,
     navigation,
   } = props;
-  const [beats, setBeats] = useState([] as any);
+  // const [beats, setBeats] = useState([] as any);
+  const [beats, setBeats] = useRecoilState(recoilBeatState);
+
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditBtnClick = () => {
@@ -127,7 +123,7 @@ const BeatListModal = (props: any) => {
             id: ID,
             name: BeatType + ID.toString(),
             beatType: BeatType,
-            PresignedUrl: PresignedUrl,
+            presignedUrl: PresignedUrl,
             createAt: RegTs,
             checked: false,
             clicked: false,
@@ -152,7 +148,11 @@ const BeatListModal = (props: any) => {
         >
           <View style={{ flexDirection: 'row' }}>
             <DeleteBtn handleDeleteBeats={handleDeleteBeats} />
-            <MergeBtn navigation={navigation} beats={beats} />
+            <MergeBtn
+              navigation={navigation}
+              setPlaying={setPlaying}
+              beats={beats}
+            />
           </View>
 
           <EditBtn

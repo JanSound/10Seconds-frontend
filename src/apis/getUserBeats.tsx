@@ -1,4 +1,6 @@
+import { recoilBeatState } from '@/recoil/Beat';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
 
 // interface IBeat {
 //   id: string;
