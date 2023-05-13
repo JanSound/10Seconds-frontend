@@ -40,7 +40,6 @@ const BeatListModal = (props: any) => {
     playerDuration,
     navigation,
   } = props;
-  // const [beats, setBeats] = useState([] as any);
   const [beats, setBeats] = useRecoilState(recoilBeatState);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -115,22 +114,24 @@ const BeatListModal = (props: any) => {
   }, []);
 
   useEffect(() => {
-    getUserBeats().then((beatArray) => {
-      beatArray.map((fetchBeat: any) => {
-        const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
-        setBeats([
-          {
-            id: ID,
-            name: BeatType + ID.toString(),
-            beatType: BeatType,
-            presignedUrl: PresignedUrl,
-            createAt: RegTs,
-            checked: false,
-            clicked: false,
-          },
-        ]);
-      });
-    });
+    getUserBeats()
+      .then((beatArray) => {
+        beatArray.map((fetchBeat: any) => {
+          const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
+          setBeats([
+            {
+              id: ID,
+              name: BeatType + ID.toString(),
+              beatType: BeatType,
+              presignedUrl: PresignedUrl,
+              createAt: RegTs,
+              checked: false,
+              clicked: false,
+            },
+          ]);
+        });
+      })
+      .catch((error) => console.log('BeatListModal no data error:', error));
   }, []);
 
   const animationStyles = {
