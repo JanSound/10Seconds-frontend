@@ -6,7 +6,7 @@ const clickedColor = '#4FACF9';
 
 const BeatListItemText = (props: any) => {
   const { beat } = props;
-  const [createdDate, createdTime] = beat.createAt.split(/T|Z/);
+  const [createdDate, createdTime] = beat.createdAt.split(/T|Z/);
   return (
     <View>
       <Text
