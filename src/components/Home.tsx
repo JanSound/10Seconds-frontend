@@ -80,8 +80,7 @@ const Home = (props: any) => {
     playTime: '00:00:00',
     duration: '00:00:00',
   });
-  const [recordingPath, setRecordingPath] = useState('');
-
+  const recoPath = useRef('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({
     idToken: '',
@@ -118,7 +117,7 @@ const Home = (props: any) => {
           ios: 'record.m4a',
         });
         const uri = await audioRecorderPlayer.startRecorder(path);
-        setRecordingPath(uri);
+        recoPath.current = uri;
         audioRecorderPlayer.addRecordBackListener((e) => {
           setRecordDuration({
             ...recordDuration,
@@ -142,7 +141,7 @@ const Home = (props: any) => {
     try {
       if (audioRecorderPlayer) {
         setRecording(false);
-        uploadFile();
+        uploadFile(recoPath.current);
         clearTimeout(timerId);
         await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
@@ -230,7 +229,7 @@ const Home = (props: any) => {
     }
   }, [route.params]);
 
-  const uploadFile = async () => {
+  const uploadFile = async (recordingPath: string) => {
     try {
       const result = await axios.post(
         'http://43.200.7.58:8001/api/v1/beats/presigned-url/put',
