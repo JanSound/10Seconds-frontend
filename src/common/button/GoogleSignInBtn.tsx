@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
   },
   googleSigninButton: {
     backgroundColor: 'white',
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 50,
+    borderRadius: 20,
   },
 });
 

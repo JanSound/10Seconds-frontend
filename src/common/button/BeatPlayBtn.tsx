@@ -16,8 +16,8 @@ const BeatPlayBtn = () => {
 
 const styles = StyleSheet.create({
   playBtnContainer: {
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
     backgroundColor: '#4FACF9',
     alignItems: 'center',
     justifyContent: 'center',
@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
   },
   playBtn: {
     position: 'absolute',
-    left: 20,
-    transform: [{ scaleX: 0.3 }, { scaleY: 0.3 }],
+    left: 1,
+    transform: [{ scaleX: 0.25 }, { scaleY: 0.25 }],
   },
 });
 export default BeatPlayBtn;

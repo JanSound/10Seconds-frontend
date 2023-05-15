@@ -14,23 +14,23 @@ const instrumentId: IInstrument = {
 const SelectScreen = ({ navigation }: any) => {
   const [beats, setBeats] = useState([
     {
-      id: 'same beat other instType url',
-      instType: 'base',
+      id: 'same beat other beatType url',
+      beatType: 'base',
     },
     {
-      id: 'same beat other instType url2',
-      instType: 'piano',
+      id: 'same beat other beatType url2',
+      beatType: 'piano',
     },
     {
-      id: 'same beat other instType url3',
-      instType: 'drum',
+      id: 'same beat other beatType url3',
+      beatType: 'drum',
     },
   ]);
-  // input: 악기 선택(instType 선택)
-  const playBeat = (instType: string) => {
+  // input: 악기 선택(beatType 선택)
+  const playBeat = (beatType: string) => {
     navigation.navigate('Player', {
-      beatId: instrumentId[instType],
-      instType: instType,
+      beatId: instrumentId[beatType],
+      beatType,
     });
   };
 

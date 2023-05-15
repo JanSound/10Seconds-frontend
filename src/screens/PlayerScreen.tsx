@@ -99,7 +99,9 @@ const PlayerScreen = (props: any) => {
         style={styles.playerContainer}
       >
         <View style={styles.textContainer}>
-          <Text style={styles.mainText}>2023.04.02 base</Text>
+          <Text style={styles.mainText}>
+            2023.04.02 {route.params.beatType}
+          </Text>
           <Text style={styles.subText}>재생중</Text>
         </View>
         <BeatPlayBtn />
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
   textContainer: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    flex: 1,
+    flex: 0.5,
   },
   mainText: {
     color: 'white',
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
   },
   downloadBtn: {
     width: 343,
-    height: 65,
+    height: 55,
     backgroundColor: '#224B9B',
     borderRadius: 100,
     alignItems: 'center',
@@ -159,8 +161,8 @@ const styles = StyleSheet.create({
   },
   googleSignInBtn: {
     position: 'absolute',
-    right: 30,
-    bottom: 210,
+    right: 32,
+    bottom: 340,
     zIndex: 1,
   },
 });
