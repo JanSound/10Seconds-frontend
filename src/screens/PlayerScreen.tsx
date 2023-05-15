@@ -28,6 +28,7 @@ const instrument: IInstrument = {
 
 const PlayerScreen = (props: any) => {
   const { route, navigation } = props;
+  const [createdDate, createdTime] = route.params.createdAt.split(/T|Z/);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({
     idToken: '',
@@ -100,7 +101,7 @@ const PlayerScreen = (props: any) => {
       >
         <View style={styles.textContainer}>
           <Text style={styles.mainText}>
-            2023.04.02 {route.params.beatType}
+            {createdDate} {route.params.beatType}
           </Text>
           <Text style={styles.subText}>재생중</Text>
         </View>
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   googleSignInBtn: {
     position: 'absolute',
     right: 32,
-    bottom: 340,
+    bottom: 342,
     zIndex: 1,
   },
 });

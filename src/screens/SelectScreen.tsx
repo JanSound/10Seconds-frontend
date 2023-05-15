@@ -16,21 +16,25 @@ const SelectScreen = ({ navigation }: any) => {
     {
       id: 'same beat other beatType url',
       beatType: 'base',
+      createdAt: '2023-05-01T12:43:23Z',
     },
     {
       id: 'same beat other beatType url2',
       beatType: 'piano',
+      createdAt: '2023-05-02T12:43:23Z',
     },
     {
       id: 'same beat other beatType url3',
       beatType: 'drum',
+      createdAt: '2023-05-02T12:43:23Z',
     },
   ]);
   // input: 악기 선택(beatType 선택)
-  const playBeat = (beatType: string) => {
+  const playBeat = (beatType: string, createdAt: string) => {
     navigation.navigate('Player', {
       beatId: instrumentId[beatType],
       beatType,
+      createdAt,
     });
   };
 
@@ -45,7 +49,7 @@ const SelectScreen = ({ navigation }: any) => {
         </View>
         <TouchableOpacity
           style={styles.baseContainer}
-          onPress={() => playBeat('base')}
+          onPress={() => playBeat('base', beats[0].createdAt)}
         >
           <Image
             style={styles.base}
@@ -55,7 +59,7 @@ const SelectScreen = ({ navigation }: any) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.pianoContainer}
-          onPress={() => playBeat('piano')}
+          onPress={() => playBeat('piano', beats[1].createdAt)}
         >
           <Image
             style={styles.piano}
@@ -65,7 +69,7 @@ const SelectScreen = ({ navigation }: any) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.drumContainer}
-          onPress={() => playBeat('drum')}
+          onPress={() => playBeat('drum', beats[2].createdAt)}
         >
           <Image
             style={styles.drum}
