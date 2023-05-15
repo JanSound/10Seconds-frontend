@@ -231,9 +231,12 @@ const Home = (props: any) => {
 
   const uploadFile = async (recordingPath: string) => {
     try {
-      const result = await axios.post(
-        'http://43.200.7.58:8001/api/v1/beats/presigned-url/put',
-      );
+      const result = await axios
+        .post('http://43.200.7.58:8001/api/v1/beats/presigned-url/put')
+        .catch(() => {
+          throw 'PRESIGNED-ERROR';
+        });
+      const AUDIO_KEY = result.data['key'];
       const PRESIGNED_URL = result.data['presigned_url'];
       const fileData = await RNFS.readFile(recordingPath, 'base64');
       const bufferFile = Buffer.from(fileData, 'base64');
@@ -244,9 +247,27 @@ const Home = (props: any) => {
         },
         body: bufferFile,
       };
-      await fetch(PRESIGNED_URL, options);
+      await fetch(PRESIGNED_URL, options).catch(() => {
+        throw 'UPLOAD-ERROR';
+      });
+
+      await axios
+        .post('http://43.200.7.58:8001/api/v1/convert-beat', {
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: {
+            key: AUDIO_KEY,
+          },
+        })
+        .catch(() => {
+          throw 'DB-ERROR';
+        });
     } catch (e: any) {
-      console.log('uploadFile error 발생:', e);
+      if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
+      if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');
+      if (e === 'DB-ERROR') console.log('DB 저장 실패');
     }
   };
 
