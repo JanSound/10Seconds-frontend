@@ -84,8 +84,8 @@ const SelectScreen = ({ navigation }: any) => {
           contentContainerStyle={{
             alignItems: 'center',
             width: 370,
-            height: 160,
-            marginLeft: 10,
+            height: 230,
+            marginBottom: 20,
           }}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => playBeat(item)}>
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'contain',
-    width: 180,
-    height: 190,
+    width: 150,
+    height: 160,
   },
   instTypeText: {
     color: 'white',

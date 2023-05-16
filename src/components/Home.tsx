@@ -31,6 +31,7 @@ import AWS from 'aws-sdk';
 import axios from 'axios';
 import { Buffer } from 'buffer';
 import { getUserBeats } from '@/apis/getUserBeats';
+import * as Animatable from 'react-native-animatable';
 
 StatusBar.setBarStyle('light-content');
 
@@ -299,7 +300,7 @@ const Home = (props: any) => {
 
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
-      {isModalVisible && <GuideModal />}
+      {/* {isModalVisible && <GuideModal />} */}
       <View style={styles.body}>
         {recording ? (
           <Recording

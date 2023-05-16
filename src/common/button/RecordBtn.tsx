@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   Button,
@@ -9,25 +9,36 @@ import {
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import LinearGradient from 'react-native-linear-gradient';
+import CountDown from '@/components/CountDown';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const RecordBtn = (props: any) => {
   const { handleStartRecord } = props;
+  const [recordCountDown, setRecordCountDown] = useState(false);
 
   return (
     <View>
       <TouchableOpacity
         style={styles.recordingContainer}
-        onPress={handleStartRecord}
+        onPress={() => setRecordCountDown(true)}
       >
         <View style={styles.recordBtnContainer}>
-          <View style={styles.recordBtn}>
-            <LinearGradient
-              colors={['#FF7F37', '#FF4E36']}
-              style={styles.recordBtnCenter}
-            ></LinearGradient>
-          </View>
+          {recordCountDown ? (
+            <View style={{ alignItems: 'center' }}>
+              <CountDown
+                setRecordCountDown={setRecordCountDown}
+                handleStartRecord={handleStartRecord}
+              />
+            </View>
+          ) : (
+            <View style={styles.recordBtn}>
+              <LinearGradient
+                colors={['#FF7F37', '#FF4E36']}
+                style={styles.recordBtnCenter}
+              ></LinearGradient>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     </View>
