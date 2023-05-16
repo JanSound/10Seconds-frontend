@@ -16,7 +16,7 @@ const CountDown = (props: any) => {
     const interval = setInterval(() => {
       setCount((prevCount) => prevCount - 1);
     }, 1000);
-    if (count === -1) {
+    if (count === 0) {
       setRecordCountDown(false);
       clearInterval(interval);
       handleStartRecord();
@@ -28,7 +28,7 @@ const CountDown = (props: any) => {
   return (
     <Animatable.Text
       animation="bounceIn"
-      iterationCount={4}
+      iterationCount={3}
       duration={1000}
       style={{
         fontSize: 85,
@@ -39,7 +39,7 @@ const CountDown = (props: any) => {
         textShadowRadius: 3,
       }}
     >
-      {count > 0 ? count : 'start!'}
+      {count}
     </Animatable.Text>
   );
 };
