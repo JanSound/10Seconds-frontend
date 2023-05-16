@@ -1,6 +1,7 @@
 import FinishBtn from '@/common/button/FinishBtn';
 import BeatListItem from '@/common/modal/BeatListItem';
 import { recoilBeatState } from '@/recoil/Beat';
+import axios from 'axios';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -53,11 +54,47 @@ const MergeScreen = (props: any) => {
     );
   }, []);
 
-  const handleFinishMerge = () => {
-    const mergeBeatList = beats.filter((beat: any) => {
-      return beat.checked === true;
+  const handleFinishMerge = async () => {
+    const restBeats = beats.filter((beat: any) => {
+      return beat.checked === false;
     });
-    console.log(mergeBeatList);
+
+    // const newBeat = await axios.post('.'); // 비트 병합 요청
+    const newBeat = {
+      id: '3',
+      name: 'result3',
+      beatType: 'test',
+      presignedUrl:
+        'https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/result.m4a',
+      createdAt: new Date().toISOString(),
+      checked: false,
+      clicked: false,
+    }; // 데모용
+    // const mergeBeats = beats.filter((beat: any) => {
+    //   return beat.checked === true;
+    // });
+    setBeats([...restBeats, newBeat]);
+    try {
+      // axios.post('http://43.200.7.58:8001/api/v1/beats', { // 데모때매 주석
+      //   headers: {
+      //     accept: 'application/json',
+      //     'Content-Type': 'application/json',
+      //   },
+      //   beatType: newBeat.beatType,
+      //   key: 'testName',
+      // });
+      // mergeBeats.map((beat: IBeat) => {
+      //   axios.delete(`http://43.200.7.58:8001/api/v1/beats/${beat.id}`, {
+      //     headers: {
+      //       accept: 'application/json',
+      //     },
+      //   });
+      // });
+      // setBeats([...beats, newBeat]);
+      // console.log(mergeBeats);
+    } catch (error) {
+      console.log('병합 error:', error);
+    }
   };
 
   return (

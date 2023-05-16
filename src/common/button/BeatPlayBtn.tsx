@@ -1,10 +1,11 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const BeatPlayBtn = () => {
+const BeatPlayBtn = (props: any) => {
+  const { playBeat } = props;
   return (
     <View style={{ alignItems: 'center' }}>
-      <TouchableOpacity style={styles.playBtnContainer}>
+      <TouchableOpacity style={styles.playBtnContainer} onPress={playBeat}>
         <Image
           style={styles.playBtn}
           source={require('../../assets/images/playBtn.png')}

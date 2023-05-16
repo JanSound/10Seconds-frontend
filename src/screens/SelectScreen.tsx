@@ -38,48 +38,68 @@ const instrument: IInstrument = {
   snare: require('../assets/images/snare.png'),
   hihat: require('../assets/images/hihat.png'),
 };
-
+let demoCount = 1;
 const SelectScreen = ({ navigation }: any) => {
-  const [beats, setBeats] = useState([] as any);
+  const [beats, setBeats] = useState([
+    // 데모용
+    {
+      BeatType: 'base',
+      PresignedUrl: `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/case${demoCount}_base.m4a`,
+      Key: `case${demoCount}_base.m4a`,
+    },
+    {
+      BeatType: 'piano',
+      PresignedUrl: `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/case${demoCount}_piano.m4a`,
+      Key: `case${demoCount}_piano.m4a`,
+    },
+    {
+      BeatType: 'drum',
+      PresignedUrl: `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/case${demoCount}_drum.m4a`,
+      Key: `case${demoCount}_drum.m4a`,
+    },
+  ]);
+  // const [beats, setBeats] = useState([] as any); // 데모때매 주석
   const playBeat = (beat: IConvertBeat) => {
+    console.log('SelectScreen playBeat item:', beat);
     navigation.navigate('Player', {
       BeatType: beat.BeatType,
       PresignedUrl: beat.PresignedUrl,
       Key: beat.Key,
     });
   };
-
-  const convertBeat = async () => {
-    try {
-      const result = await axios
-        .post('http://43.200.7.58:8001/api/v1/beats/presigned-url/put')
-        .catch(() => {
-          throw 'PRESIGNED-ERROR';
-        });
-      const AUDIO_KEY = result.data['key'];
-      const convertBeatList = await axios
-        .post('http://43.200.7.58:8001/api/v1/convert-beat', {
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-
-          key: AUDIO_KEY,
-        })
-        .catch(() => {
-          throw 'DB-ERROR';
-        });
-      setBeats(convertBeatList.data);
-    } catch (e: any) {
-      if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
-      if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');
-      if (e === 'DB-ERROR') console.log('DB 저장 실패');
-      else console.log('error:', e);
-    }
-  };
   useEffect(() => {
-    convertBeat();
+    demoCount += 1;
   }, []);
+  // const convertBeat = async () => {
+  //   try {
+  //     const result = await axios
+  //       .post('http://43.200.7.58:8001/api/v1/beats/presigned-url/put')
+  //       .catch(() => {
+  //         throw 'PRESIGNED-ERROR';
+  //       });
+  //     const AUDIO_KEY = result.data['key'];
+  //     const convertBeatList = await axios
+  //       .post('http://43.200.7.58:8001/api/v1/convert-beat', {
+  //         headers: {
+  //           accept: 'application/json',
+  //           'Content-Type': 'application/json',
+  //         },
+
+  //         key: AUDIO_KEY,
+  //       })
+  //       .catch(() => {
+  //         throw 'DB-ERROR';
+  //       });
+  //     setBeats(convertBeatList.data);
+  //   } catch (e: any) {
+  //     if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
+  //     if (e === 'DB-ERROR') console.log('DB 저장 실패');
+  //     else console.log('error:', e);
+  //   }
+  // };
+  // useEffect(() => { // 데모때매 주석
+  //   convertBeat();
+  // }, []);
 
   return (
     <>

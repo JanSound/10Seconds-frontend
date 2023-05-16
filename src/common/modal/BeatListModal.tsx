@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Animated,
   Image,
+  ScrollView,
 } from 'react-native';
 import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
@@ -32,6 +33,13 @@ interface IBeat {
   clicked: boolean;
 }
 
+interface IFetchBeat {
+  ID: string;
+  BeatType: string;
+  PresignedUrl: string;
+  RegTs: string;
+}
+
 const BeatListModal = (props: any) => {
   const {
     audioRecorderPlayer,
@@ -40,7 +48,7 @@ const BeatListModal = (props: any) => {
     playerDuration,
     navigation,
   } = props;
-  const [beats, setBeats] = useRecoilState(recoilBeatState);
+  const [beats, setBeats] = useRecoilState(recoilBeatState); // 실전용
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -48,7 +56,7 @@ const BeatListModal = (props: any) => {
     setIsEditing(!isEditing);
     setPlaying(false);
     setBeats(
-      beats.map((beat: any) => {
+      beats.map((beat: IBeat) => {
         return { ...beat, checked: false, clicked: false };
       }),
     );
@@ -56,37 +64,45 @@ const BeatListModal = (props: any) => {
 
   const handleIsChecked = (id: string) => {
     setBeats(
-      beats.map((beat: any) => {
+      beats.map((beat: IBeat) => {
         return beat.id === id ? { ...beat, checked: !beat.checked } : beat;
       }),
     );
   };
 
-  const playUserBeat = async (beatPath: string) => {
-    setPlaying(true);
-    await audioRecorderPlayer.startPlayer(beatPath);
-    audioRecorderPlayer.addPlayBackListener(() => {});
+  const playResultBeat = async (id: string) => {
+    try {
+      beats.map(async (beat: IBeat) => {
+        if (beat.id === id) {
+          await audioRecorderPlayer.startPlayer(beat.presignedUrl);
+        }
+      });
+      // await audioRecorderPlayer.startPlayer(
+      //   `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/result.m4a`,
+      // );
+      audioRecorderPlayer.addPlayBackListener(() => {});
+    } catch (err) {
+      console.log('재생오류:', err);
+    }
   };
 
   let timerId: any;
   const handleBeatClick = (id: string) => {
-    timerId = setTimeout(
-      () => {
-        setPlaying(false);
-        setBeats(
-          beats.map((beat: any) => {
-            return beat.id === id ? { ...beat, clicked: false } : beat;
-          }),
-        );
-      },
-      // playerDuration.duration,
-      2000,
-    );
+    setPlaying(true);
+    playResultBeat(id);
+    timerId = setTimeout(() => {
+      setPlaying(false);
+      setBeats(
+        beats.map((beat: IBeat) => {
+          return beat.id === id ? { ...beat, clicked: false } : beat;
+        }),
+      );
+    }, 10000);
     if (playing === true) {
       if (timerId) clearTimeout(timerId);
     }
     setBeats(
-      beats.map((beat: any) => {
+      beats.map((beat: IBeat) => {
         return beat.id === id
           ? { ...beat, clicked: true }
           : { ...beat, clicked: false };
@@ -96,7 +112,7 @@ const BeatListModal = (props: any) => {
   };
 
   const handleDeleteBeats = () => {
-    setBeats(beats.filter((beat: any) => beat.checked === false));
+    setBeats(beats.filter((beat: IBeat) => beat.checked === false));
   };
 
   const [animation, setAnimation] = useState(new Animated.Value(0));
@@ -113,27 +129,27 @@ const BeatListModal = (props: any) => {
     fadeIn();
   }, []);
 
-  useEffect(() => {
-    getUserBeats()
-      .then((beatArray) => {
-        const newBeat: IBeat[] = [];
-        Array.isArray(beatArray) &&
-          beatArray.map((fetchBeat: any) => {
-            const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
-            newBeat.push({
-              id: ID,
-              name: BeatType + ID.toString(),
-              beatType: BeatType,
-              presignedUrl: PresignedUrl,
-              createdAt: RegTs,
-              checked: false,
-              clicked: false,
-            });
-          });
-        setBeats([...newBeat]);
-      })
-      .catch((error) => console.log('BeatListModal no data error:', error));
-  }, []);
+  // useEffect(() => {
+  //   getUserBeats()
+  //     .then((beatArray) => {
+  //       const newBeat: IBeat[] = [];
+  //       Array.isArray(beatArray) &&
+  //         beatArray.map((fetchBeat: any) => {
+  //           const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
+  //           newBeat.push({
+  //             id: ID,
+  //             name: BeatType + ID.toString(),
+  //             beatType: BeatType,
+  //             presignedUrl: PresignedUrl,
+  //             createdAt: RegTs,
+  //             checked: false,
+  //             clicked: false,
+  //           });
+  //         });
+  //       setBeats([...newBeat]);
+  //     })
+  //     .catch((error) => console.log('BeatListModal no data error:', error));
+  // }, []);
 
   const animationStyles = {
     transform: [{ translateY: animation }],
@@ -179,17 +195,19 @@ const BeatListModal = (props: any) => {
           <Text style={{ fontSize: 16 }}>첫 노래를 녹음해보세요 !</Text>
         </View>
       ) : (
-        beats.map((beat: any) => {
-          return (
-            <BeatListItem
-              beat={beat}
-              key={beat.id}
-              handleIsChecked={handleIsChecked}
-              handleBeatClick={handleBeatClick}
-              isEditing={isEditing}
-            />
-          );
-        })
+        <ScrollView>
+          {beats.map((beat: IBeat) => {
+            return (
+              <BeatListItem
+                beat={beat}
+                key={beat.id}
+                handleIsChecked={handleIsChecked}
+                handleBeatClick={handleBeatClick}
+                isEditing={isEditing}
+              />
+            );
+          })}
+        </ScrollView>
       )}
     </Animated.View>
   );

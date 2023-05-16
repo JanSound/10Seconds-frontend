@@ -21,7 +21,6 @@ import {
 import RNFS from 'react-native-fs';
 import RecordBtn from '../common/button/RecordBtn';
 import GoogleSignInBtn from '../common/button/GoogleSignInBtn';
-import GuideModal from '../common/modal/GuideModal';
 import LinearGradient from 'react-native-linear-gradient';
 import BeatListModal from '../common/modal/BeatListModal';
 import Converting from './Converting';
@@ -38,31 +37,8 @@ StatusBar.setBarStyle('light-content');
 const audioRecorderPlayer = new AudioRecorderPlayer();
 audioRecorderPlayer.setSubscriptionDuration(0.08);
 
-const ACCESS_KEY = config.aws.MY_AWS_ACCESS_KEY;
-const SECRET_ACCESS_KEY = config.aws.MY_AWS_SECRET_KEY;
-const REGION = config.aws.MY_AWS_S3_BUCKET_REGION;
-const S3_BUCKET = config.aws.MY_AWS_S3_BUCKET;
-
-AWS.config.update({
-  region: REGION,
-  accessKeyId: ACCESS_KEY,
-  secretAccessKey: SECRET_ACCESS_KEY,
-});
-
-const myBucket = new AWS.S3({
-  params: { Bucket: S3_BUCKET },
-  region: REGION,
-});
-
-interface IBeat {
-  ID: string;
-  BeatType: string;
-  PresignedUrl: string;
-  RegTs: string;
-}
-
 const Home = (props: any) => {
-  const { navigation, route, isModalVisible, setIsModalVisible } = props;
+  const { navigation, route } = props;
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
@@ -237,7 +213,6 @@ const Home = (props: any) => {
         .catch(() => {
           throw 'PRESIGNED-ERROR';
         });
-      const AUDIO_KEY = result.data['key'];
       const PRESIGNED_URL = result.data['presigned_url'];
       const fileData = await RNFS.readFile(recordingPath, 'base64');
       const bufferFile = Buffer.from(fileData, 'base64');
@@ -248,27 +223,13 @@ const Home = (props: any) => {
         },
         body: bufferFile,
       };
-      await fetch(PRESIGNED_URL, options).catch(() => {
-        throw 'UPLOAD-ERROR';
-      });
-
-      await axios
-        .post('http://43.200.7.58:8001/api/v1/convert-beat', {
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: {
-            key: AUDIO_KEY,
-          },
-        })
-        .catch(() => {
-          throw 'DB-ERROR';
-        });
+      // await fetch(PRESIGNED_URL, options).catch(() => {
+      //   throw 'UPLOAD-ERROR';
+      // });
     } catch (e: any) {
       if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
       if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');
-      if (e === 'DB-ERROR') console.log('DB 저장 실패');
+      else console.log('error:', e);
     }
   };
 
@@ -300,7 +261,6 @@ const Home = (props: any) => {
 
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>
-      {/* {isModalVisible && <GuideModal />} */}
       <View style={styles.body}>
         {recording ? (
           <Recording
@@ -327,7 +287,15 @@ const Home = (props: any) => {
           </>
         )}
       </View>
-      {/* <Button onPress={startStop} title="start"></Button> */}
+      {/* <Button onPress={playFirstBaseBeat} title="base"></Button>
+      <Button onPress={playFirstPianoBeat} title="piano"></Button>
+      <Button onPress={playFirstDrumBeat} title="drum"></Button>
+
+      <Button onPress={playSecondBaseBeat} title="base2"></Button>
+      <Button onPress={playSecondPianoBeat} title="piano2"></Button>
+      <Button onPress={playSecondDrumBeat} title="drum2"></Button>
+
+      <Button onPress={playMergeBeat} title="result"></Button> */}
       {isLoggedIn === false ? (
         <GoogleSignInBtn isLoggedIn={isLoggedIn} userInfo={userInfo} />
       ) : (

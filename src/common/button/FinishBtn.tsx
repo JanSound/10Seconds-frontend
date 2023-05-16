@@ -1,18 +1,21 @@
+import { recoilBeatState } from '@/recoil/Beat';
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { useRecoilState } from 'recoil';
 
 const FinishBtn = (props: any) => {
-  const { beats, setBeats, navigation, handleFinishMerge } = props;
+  const { navigation, handleFinishMerge } = props;
+  const [beats, setBeats] = useRecoilState(recoilBeatState);
   return (
     <TouchableOpacity
       style={styles.mergeBtnContainer}
       onPress={() => {
         handleFinishMerge();
-        setBeats(
-          beats.map((beat: any) => {
-            return { ...beat, checked: false };
-          }),
-        );
+        // setBeats( // 데모때매 주석
+        //   beats.map((beat: any) => {
+        //     return { ...beat, checked: false };
+        //   }),
+        // );
         navigation.navigate('Home');
       }}
     >
