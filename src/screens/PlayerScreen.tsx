@@ -20,15 +20,10 @@ interface IInstrument {
   [key: string]: ImageSourcePropType;
 }
 
-const instrument: IInstrument = {
-  base: require('../assets/images/base.png'),
-  piano: require('../assets/images/piano.png'),
-  drum: require('../assets/images/drum.png'),
-};
-
 const PlayerScreen = (props: any) => {
   const { route, navigation } = props;
-  const [createdDate, createdTime] = route.params.createdAt.split(/T|Z/);
+  const cur = new Date();
+  const createdDate = `${cur.getFullYear()}.${cur.getMonth()}.${cur.getDate()}.`;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({
     idToken: '',
@@ -101,7 +96,7 @@ const PlayerScreen = (props: any) => {
       >
         <View style={styles.textContainer}>
           <Text style={styles.mainText}>
-            {createdDate} {route.params.beatType}
+            {createdDate} {route.params.BeatType}
           </Text>
           <Text style={styles.subText}>재생중</Text>
         </View>

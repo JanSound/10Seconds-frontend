@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,11 +15,10 @@ interface IInstrument {
   [key: string]: ImageSourcePropType;
 }
 
-interface IBeat {
-  ID: string;
+interface IConvertBeat {
   BeatType: string;
   PresignedUrl: string;
-  RegTs: string;
+  Key: string;
 }
 
 // const instrumentId: IInstrument = {
@@ -40,34 +40,46 @@ const instrument: IInstrument = {
 };
 
 const SelectScreen = ({ navigation }: any) => {
-  const [beats, setBeats] = useState([
-    {
-      ID: '1',
-      BeatType: 'base',
-      RegTs: '2023-05-01T12:43:23Z',
-      PresignedUrl: 'a',
-    },
-    {
-      ID: '2',
-      BeatType: 'piano',
-      RegTs: '2023-05-02T12:43:23Z',
-      PresignedUrl: 'ab',
-    },
-    {
-      ID: '3',
-      BeatType: 'drum',
-      RegTs: '2023-05-03T12:43:23Z',
-      PresignedUrl: 'abc',
-    },
-  ]);
-  // input: 악기 선택(BeatType 선택)
-  const playBeat = (beat: IBeat) => {
+  const [beats, setBeats] = useState([] as any);
+  const playBeat = (beat: IConvertBeat) => {
     navigation.navigate('Player', {
-      beatId: beat.ID,
-      beatType: beat.BeatType,
-      createdAt: beat.RegTs,
+      BeatType: beat.BeatType,
+      PresignedUrl: beat.PresignedUrl,
+      Key: beat.Key,
     });
   };
+
+  const convertBeat = async () => {
+    try {
+      const result = await axios
+        .post('http://43.200.7.58:8001/api/v1/beats/presigned-url/put')
+        .catch(() => {
+          throw 'PRESIGNED-ERROR';
+        });
+      const AUDIO_KEY = result.data['key'];
+      const convertBeatList = await axios
+        .post('http://43.200.7.58:8001/api/v1/convert-beat', {
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+
+          key: AUDIO_KEY,
+        })
+        .catch(() => {
+          throw 'DB-ERROR';
+        });
+      setBeats(convertBeatList.data);
+    } catch (e: any) {
+      if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
+      if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');
+      if (e === 'DB-ERROR') console.log('DB 저장 실패');
+      else console.log('error:', e);
+    }
+  };
+  useEffect(() => {
+    convertBeat();
+  }, []);
 
   return (
     <>
@@ -79,7 +91,7 @@ const SelectScreen = ({ navigation }: any) => {
           <Text style={styles.description}>악기를 선택해주세요</Text>
         </View>
         <FlatList
-          keyExtractor={(item) => item.PresignedUrl}
+          keyExtractor={(item) => item.Key}
           data={beats}
           contentContainerStyle={{
             alignItems: 'center',
