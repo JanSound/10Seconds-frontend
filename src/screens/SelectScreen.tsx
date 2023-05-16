@@ -25,6 +25,7 @@ interface IBeat {
 //   base: 'same beat base url',
 //   piano: 'same beat paino url',
 //   drum: 'same beat drum url',
+//   kick: 'same beat drum url',
 //   snare: 'same beat snare url',
 //   hihat: 'same beat hat url',
 // };
@@ -33,6 +34,7 @@ const instrument: IInstrument = {
   base: require('../assets/images/base.png'),
   piano: require('../assets/images/piano.png'),
   drum: require('../assets/images/drum.png'),
+  // kick: require('../assets/images/kick.png'),
   snare: require('../assets/images/snare.png'),
   hihat: require('../assets/images/hihat.png'),
 };
