@@ -1,40 +1,69 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ImageSourcePropType,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface IInstrument {
-  [key: string]: string;
+  [key: string]: ImageSourcePropType;
 }
-const instrumentId: IInstrument = {
-  base: 'same beat base url',
-  piano: 'same beat paino url',
-  drum: 'same beat drum url',
+
+interface IBeat {
+  ID: string;
+  BeatType: string;
+  PresignedUrl: string;
+  RegTs: string;
+}
+
+// const instrumentId: IInstrument = {
+//   base: 'same beat base url',
+//   piano: 'same beat paino url',
+//   drum: 'same beat drum url',
+//   snare: 'same beat snare url',
+//   hihat: 'same beat hat url',
+// };
+
+const instrument: IInstrument = {
+  base: require('../assets/images/base.png'),
+  piano: require('../assets/images/piano.png'),
+  drum: require('../assets/images/drum.png'),
+  snare: require('../assets/images/snare.png'),
+  hihat: require('../assets/images/hihat.png'),
 };
 
 const SelectScreen = ({ navigation }: any) => {
   const [beats, setBeats] = useState([
     {
-      id: 'same beat other beatType url',
-      beatType: 'base',
-      createdAt: '2023-05-01T12:43:23Z',
+      ID: '1',
+      BeatType: 'base',
+      RegTs: '2023-05-01T12:43:23Z',
+      PresignedUrl: 'a',
     },
     {
-      id: 'same beat other beatType url2',
-      beatType: 'piano',
-      createdAt: '2023-05-02T12:43:23Z',
+      ID: '2',
+      BeatType: 'piano',
+      RegTs: '2023-05-02T12:43:23Z',
+      PresignedUrl: 'ab',
     },
     {
-      id: 'same beat other beatType url3',
-      beatType: 'drum',
-      createdAt: '2023-05-02T12:43:23Z',
+      ID: '3',
+      BeatType: 'drum',
+      RegTs: '2023-05-03T12:43:23Z',
+      PresignedUrl: 'abc',
     },
   ]);
-  // input: 악기 선택(beatType 선택)
-  const playBeat = (beatType: string, createdAt: string) => {
+  // input: 악기 선택(BeatType 선택)
+  const playBeat = (beat: IBeat) => {
     navigation.navigate('Player', {
-      beatId: instrumentId[beatType],
-      beatType,
-      createdAt,
+      beatId: beat.ID,
+      beatType: beat.BeatType,
+      createdAt: beat.RegTs,
     });
   };
 
@@ -47,36 +76,25 @@ const SelectScreen = ({ navigation }: any) => {
         <View style={styles.descriptionContainer}>
           <Text style={styles.description}>악기를 선택해주세요</Text>
         </View>
-        <TouchableOpacity
-          style={styles.baseContainer}
-          onPress={() => playBeat('base', beats[0].createdAt)}
-        >
-          <Image
-            style={styles.base}
-            source={require('../assets/images/base.png')}
-          />
-          <Text style={styles.instTypeText}>base</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.pianoContainer}
-          onPress={() => playBeat('piano', beats[1].createdAt)}
-        >
-          <Image
-            style={styles.piano}
-            source={require('../assets/images/piano.png')}
-          />
-          <Text style={styles.instTypeText}>piano</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.drumContainer}
-          onPress={() => playBeat('drum', beats[2].createdAt)}
-        >
-          <Image
-            style={styles.drum}
-            source={require('../assets/images/drum.png')}
-          />
-          <Text style={styles.instTypeText}>drum</Text>
-        </TouchableOpacity>
+        <FlatList
+          keyExtractor={(item) => item.PresignedUrl}
+          data={beats}
+          contentContainerStyle={{
+            alignItems: 'center',
+            width: 370,
+            height: 160,
+            marginLeft: 10,
+          }}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => playBeat(item)}>
+              <View style={styles.container}>
+                <Image style={styles.inst} source={instrument[item.BeatType]} />
+                <Text style={styles.instTypeText}>{item.BeatType}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          numColumns={1}
+        />
       </LinearGradient>
     </>
   );
@@ -90,43 +108,28 @@ const styles = StyleSheet.create({
   description: {
     color: 'white',
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 30,
+    fontSize: 25,
     lineHeight: 50,
     textAlign: 'center',
-    marginTop: 50,
+    marginTop: 60,
   },
-  baseContainer: {
+  container: {
     flex: 1,
-    alignItems: 'center',
+    marginBottom: 20,
+  },
+  inst: {
     justifyContent: 'center',
+    alignItems: 'center',
+    resizeMode: 'contain',
+    width: 180,
+    height: 190,
   },
   instTypeText: {
     color: 'white',
     fontFamily: 'NotoSansKR-Bold',
     fontSize: 20,
     marginTop: 10,
-  },
-  base: {
-    width: 150,
-    height: 150,
-  },
-  pianoContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  piano: {
-    width: 150,
-    height: 150,
-  },
-  drumContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  drum: {
-    width: 150,
-    height: 150,
+    textAlign: 'center',
   },
 });
 

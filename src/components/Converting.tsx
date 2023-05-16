@@ -6,7 +6,10 @@ const Converting = (props: any) => {
   const { navigation, setConverting } = props;
   return (
     <>
-      <Text style={styles.mainText}>변환중. . .</Text>
+      <Text style={styles.mainText}>
+        녹음된 화면을 {'\n'}
+        악기로 변환하고 있어요
+      </Text>
       <View style={styles.recordBody}>
         <ConvertLoading navigation={navigation} setConverting={setConverting} />
       </View>
@@ -21,10 +24,9 @@ const styles = StyleSheet.create({
   mainText: {
     color: 'white',
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 35,
-    lineHeight: 50,
+    fontSize: 25,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 50,
   },
 });
 
