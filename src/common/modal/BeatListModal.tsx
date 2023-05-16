@@ -117,19 +117,19 @@ const BeatListModal = (props: any) => {
     getUserBeats()
       .then((beatArray) => {
         const newBeat: IBeat[] = [];
-        beatArray.map((fetchBeat: any) => {
-          const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
-          // console.log('fetchBeat:', ID, fetchBeat);
-          newBeat.push({
-            id: ID,
-            name: BeatType + ID.toString(),
-            beatType: BeatType,
-            presignedUrl: PresignedUrl,
-            createdAt: RegTs,
-            checked: false,
-            clicked: false,
+        Array.isArray(beatArray) &&
+          beatArray.map((fetchBeat: any) => {
+            const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
+            newBeat.push({
+              id: ID,
+              name: BeatType + ID.toString(),
+              beatType: BeatType,
+              presignedUrl: PresignedUrl,
+              createdAt: RegTs,
+              checked: false,
+              clicked: false,
+            });
           });
-        });
         setBeats([...newBeat]);
       })
       .catch((error) => console.log('BeatListModal no data error:', error));

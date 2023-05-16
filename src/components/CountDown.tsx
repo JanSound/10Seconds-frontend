@@ -31,7 +31,7 @@ const CountDown = (props: any) => {
       iterationCount={4}
       duration={1000}
       style={{
-        fontSize: 72,
+        fontSize: 85,
         fontWeight: 'bold',
         color: 'white',
         textShadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -39,7 +39,7 @@ const CountDown = (props: any) => {
         textShadowRadius: 3,
       }}
     >
-      {count > 0 ? count : 'start !'}
+      {count > 0 ? count : 'start!'}
     </Animatable.Text>
   );
 };
