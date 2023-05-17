@@ -11,7 +11,7 @@ const MergeBtn = (props: any) => {
       }}
     >
       <Text style={{ color: 'white', fontFamily: 'NotoSansKR-Bold' }}>
-        병합
+        비트합치기
       </Text>
     </TouchableOpacity>
   );
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   mergeBtnContainer: {
     backgroundColor: '#4FACF9',
     borderRadius: 20,
-    width: 40,
+    width: 80,
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 10,

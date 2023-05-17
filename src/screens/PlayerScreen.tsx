@@ -211,8 +211,8 @@ const styles = StyleSheet.create({
   },
   googleSignInBtn: {
     position: 'absolute',
-    right: 32,
-    bottom: 342,
+    right: 45,
+    bottom: 377,
     zIndex: 1,
   },
 });

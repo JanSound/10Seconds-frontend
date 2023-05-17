@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import config from '../../config/config';
-import { PERMISSIONS, RESULTS, request, check } from 'react-native-permissions';
+import {
+  PERMISSIONS,
+  RESULTS,
+  request,
+  check,
+  requestMultiple,
+  checkMultiple,
+} from 'react-native-permissions';
 import {
   GoogleSignin,
   statusCodes,
@@ -132,9 +139,20 @@ const Home = (props: any) => {
   };
 
   const requestRecordPermission = async () => {
-    await request(PERMISSIONS.IOS.SPEECH_RECOGNITION)
-      .then((result) => {
-        if (result === RESULTS.GRANTED) {
+    await requestMultiple([
+      PERMISSIONS.IOS.SPEECH_RECOGNITION,
+      PERMISSIONS.IOS.MICROPHONE,
+    ])
+      .then((status) => {
+        console.log(
+          'speech recognition 권한:',
+          status[PERMISSIONS.IOS.SPEECH_RECOGNITION],
+        );
+        console.log('microphone 권한:', status[PERMISSIONS.IOS.MICROPHONE]);
+        if (
+          status[PERMISSIONS.IOS.SPEECH_RECOGNITION] &&
+          status[PERMISSIONS.IOS.MICROPHONE]
+        ) {
           setRecordPermission(true);
         }
       })
@@ -144,12 +162,23 @@ const Home = (props: any) => {
   };
 
   const checkRecordPermission = async () => {
-    const checkPermission = await check(PERMISSIONS.IOS.SPEECH_RECOGNITION)
-      .then((result) => {
-        if (result === RESULTS.GRANTED) {
+    const checkPermission = await checkMultiple([
+      PERMISSIONS.IOS.MICROPHONE,
+      PERMISSIONS.IOS.SPEECH_RECOGNITION,
+    ])
+      .then((status) => {
+        console.log(
+          'speech recognition 권한:',
+          status[PERMISSIONS.IOS.SPEECH_RECOGNITION],
+        );
+        console.log('microphone 권한:', status[PERMISSIONS.IOS.MICROPHONE]);
+        if (
+          status[PERMISSIONS.IOS.SPEECH_RECOGNITION] &&
+          status[PERMISSIONS.IOS.MICROPHONE]
+        ) {
           setRecordPermission(true);
         }
-        return result;
+        return status[PERMISSIONS.IOS.SPEECH_RECOGNITION];
       })
       .catch((e) => {
         console.log('check API 에러 :', e);

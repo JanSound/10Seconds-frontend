@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 14'",
+    "ios": "react-native run-ios --simulator='iPhone 11'",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "react-native setup-ios-permissions && pod-install"
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.3.1",
@@ -51,6 +52,10 @@
     "react-test-renderer": "17.0.2",
     "typescript": "^5.0.2"
   },
+    "reactNativePermissionsIOS": [
+      "Microphone",
+      "SpeechRecognition"
+    ],
   "jest": {
     "preset": "react-native"
   }

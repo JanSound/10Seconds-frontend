@@ -115,8 +115,7 @@ const SelectScreen = ({ navigation }: any) => {
           data={beats}
           contentContainerStyle={{
             alignItems: 'center',
-            width: 370,
-            height: 230,
+            height: 250,
             marginBottom: 20,
           }}
           renderItem={({ item }) => (
