@@ -55,9 +55,9 @@ const MergeScreen = (props: any) => {
   }, []);
 
   const handleFinishMerge = async () => {
-    // const restBeats = beats.filter((beat: any) => {
-    //   return beat.checked === false;
-    // });
+    const restBeats = beats.map((beat: IBeat) => {
+      return { ...beat, checked: false };
+    });
 
     // const newBeat = await axios.post('.'); // 비트 병합 요청
     const newBeat = {
@@ -73,7 +73,7 @@ const MergeScreen = (props: any) => {
     // const mergeBeats = beats.filter((beat: any) => {
     //   return beat.checked === true;
     // });
-    setBeats([...beats, newBeat]);
+    setBeats([...restBeats, newBeat]);
     try {
       // axios.post('http://43.200.7.58:8001/api/v1/beats', { // 데모때매 주석
       //   headers: {
