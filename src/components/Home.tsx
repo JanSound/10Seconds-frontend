@@ -85,8 +85,11 @@ const Home = (props: any) => {
 
   const handleStartRecord = async () => {
     try {
-      const checkPermission = await checkRecordPermission();
-      if (checkPermission === RESULTS.GRANTED) {
+      const checkPermission: any = await checkRecordPermission();
+      if (
+        checkPermission[0] === 'granted' &&
+        checkPermission[1] === 'granted'
+      ) {
         // startStop();
         setRecording(true);
         setPlayerDuration({
@@ -172,13 +175,10 @@ const Home = (props: any) => {
           status[PERMISSIONS.IOS.SPEECH_RECOGNITION],
         );
         console.log('microphone 권한:', status[PERMISSIONS.IOS.MICROPHONE]);
-        if (
-          status[PERMISSIONS.IOS.SPEECH_RECOGNITION] &&
-          status[PERMISSIONS.IOS.MICROPHONE]
-        ) {
-          setRecordPermission(true);
-        }
-        return status[PERMISSIONS.IOS.SPEECH_RECOGNITION];
+        return [
+          status[PERMISSIONS.IOS.SPEECH_RECOGNITION],
+          status[PERMISSIONS.IOS.MICROPHONE],
+        ];
       })
       .catch((e) => {
         console.log('check API 에러 :', e);

@@ -52,12 +52,10 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	  <key>NSMicrophoneUsageDescription</key>
-  <string>YOUR TEXT</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) 앱을 사용하기 위해선 마이크 권한이 필요합니다.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>$(PRODUCT_NAME) 앱을 사용하기 위해선 마이크 권한이 필요합니다.</string>
+	<string>$(PRODUCT_NAME) 앱을 사용하기 위해선 음성인식 권한이 필요합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NotoSansKR-Regular.otf</string>
