@@ -119,7 +119,7 @@ const BeatListModal = (props: any) => {
   const fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds
     Animated.timing(animation, {
-      toValue: -200,
+      toValue: -180,
       duration: 500,
       useNativeDriver: true,
     }).start();
@@ -180,7 +180,7 @@ const BeatListModal = (props: any) => {
         </View>
       ) : (
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>내음악</Text>
+          <Text style={styles.titleText}>내 음악</Text>
           <EditBtn
             isEditing={isEditing}
             handleEditBtnClick={handleEditBtnClick}

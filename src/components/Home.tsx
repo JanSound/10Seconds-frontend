@@ -300,12 +300,15 @@ const Home = (props: any) => {
           <Converting navigation={navigation} setConverting={setConverting} />
         ) : (
           <>
-            <Text style={styles.mainText}>눌러서 녹음하기</Text>
             <View style={styles.recordBody}>
               {playing ? (
-                <PauseBtn />
+                <>
+                  <Text style={styles.mainText}>재생중</Text>
+                  <PauseBtn />
+                </>
               ) : (
                 <>
+                  <Text style={styles.mainText}>눌러서 녹음하기</Text>
                   <RecordBtn
                     recording={recording}
                     handleStartRecord={handleStartRecord}
@@ -357,7 +360,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
     lineHeight: 50,
     textAlign: 'center',
-    marginBottom: 30,
   },
   play: {
     flex: 1,

@@ -20,6 +20,7 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { useRecoilState } from 'recoil';
 import { recoilBeatState } from '@/recoil/Beat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PauseBtn from '@/common/button/PauseBtn';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -33,6 +34,7 @@ const PlayerScreen = (props: any) => {
   const [beats, setBeats] = useRecoilState(recoilBeatState);
   const { route, navigation } = props;
   const { BeatType, PresignedUrl, Key } = route.params;
+  const [playing, setPlaying] = useState(false);
   const cur = new Date();
   const createdDate = `${cur.getFullYear()}.${
     cur.getMonth() + 1
@@ -44,9 +46,13 @@ const PlayerScreen = (props: any) => {
     email: '',
     name: '',
   });
-
+  let timerId: number | NodeJS.Timeout | undefined;
   const playBeat = async () => {
     try {
+      setPlaying(true);
+      timerId = setTimeout(() => {
+        setPlaying(false);
+      }, 10000);
       console.log('PlayerScreen playBeat demoCount:', demoCount);
       await audioRecorderPlayer.startPlayer(
         `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/case${demoCount}_${BeatType}.m4a`,
@@ -123,6 +129,13 @@ const PlayerScreen = (props: any) => {
 
   useEffect(() => {
     googleConfigureSignIn();
+    const stopPlay = async () => {
+      await audioRecorderPlayer.stopPlayer();
+    };
+    return () => {
+      stopPlay();
+      clearTimeout(timerId);
+    };
   }, []);
   useEffect(() => {
     if (isLoggedIn) {
@@ -152,9 +165,9 @@ const PlayerScreen = (props: any) => {
           <Text style={styles.mainText}>
             {createdDate} {BeatType}
           </Text>
-          <Text style={styles.subText}>재생중</Text>
+          <Text style={styles.subText}>눌러서 비트 재생</Text>
         </View>
-        <BeatPlayBtn playBeat={playBeat} />
+        {playing ? <PauseBtn /> : <BeatPlayBtn playBeat={playBeat} />}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.downloadBtn}
@@ -212,7 +225,7 @@ const styles = StyleSheet.create({
   googleSignInBtn: {
     position: 'absolute',
     right: 45,
-    bottom: 377,
+    bottom: 343,
     zIndex: 1,
   },
 });

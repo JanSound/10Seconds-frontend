@@ -7,7 +7,7 @@ const Converting = (props: any) => {
   return (
     <>
       <Text style={styles.mainText}>
-        녹음된 화면을 {'\n'}
+        녹음된 음성을 {'\n'}
         악기로 변환하고 있어요
       </Text>
       <View style={styles.recordBody}>

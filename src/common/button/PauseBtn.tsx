@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 500,
+    margin: 30,
   },
   pauseBtnOne: {
     width: 20,
