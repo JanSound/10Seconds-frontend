@@ -5,6 +5,7 @@ import {
   requestMultiple,
 } from 'react-native-permissions';
 import { Alert, Linking } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const requestRecordPermission = async () => {
   await requestMultiple([
@@ -52,4 +53,13 @@ export const alertMikePermissionDenied = () => {
       onPress: () => Linking.openSettings(),
     },
   ]);
+};
+
+export const getOAuthToken = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('token');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.log('getToken 에러:', e);
+  }
 };

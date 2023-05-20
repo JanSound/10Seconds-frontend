@@ -12,9 +12,10 @@ import {
 import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
-import { getUserBeats } from '@/apis/getUserBeats';
+import { getUserBeats } from '@/apis/userBeat';
 import { recoilBeatState } from '@/recoil/Beat';
 import { useRecoilState } from 'recoil';
+import { IBeat } from '@/types/beat';
 //   id: 'beat url 1',
 //   name: 'beat name 1',
 //   beatType: 'base',
@@ -22,23 +23,6 @@ import { useRecoilState } from 'recoil';
 //   duration: '00:00:00',
 //   checked: false,
 //   clicked: false,
-
-interface IBeat {
-  id: string;
-  name: string;
-  beatType: string;
-  presignedUrl: string;
-  createdAt: string;
-  checked: boolean;
-  clicked: boolean;
-}
-
-interface IFetchBeat {
-  ID: string;
-  BeatType: string;
-  PresignedUrl: string;
-  RegTs: string;
-}
 
 const BeatListModal = (props: any) => {
   const {
@@ -129,27 +113,27 @@ const BeatListModal = (props: any) => {
     fadeIn();
   }, []);
 
-  // useEffect(() => {
-  //   getUserBeats()
-  //     .then((beatArray) => {
-  //       const newBeat: IBeat[] = [];
-  //       Array.isArray(beatArray) &&
-  //         beatArray.map((fetchBeat: any) => {
-  //           const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
-  //           newBeat.push({
-  //             id: ID,
-  //             name: BeatType + ID.toString(),
-  //             beatType: BeatType,
-  //             presignedUrl: PresignedUrl,
-  //             createdAt: RegTs,
-  //             checked: false,
-  //             clicked: false,
-  //           });
-  //         });
-  //       setBeats([...newBeat]);
-  //     })
-  //     .catch((error) => console.log('BeatListModal no data error:', error));
-  // }, []);
+  useEffect(() => {
+    getUserBeats()
+      .then((beatArray) => {
+        const newBeat: IBeat[] = [];
+        Array.isArray(beatArray) &&
+          beatArray.map((fetchBeat: any) => {
+            const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
+            newBeat.push({
+              id: ID,
+              name: BeatType + ID.toString(),
+              beatType: BeatType,
+              presignedUrl: PresignedUrl,
+              createdAt: RegTs,
+              checked: false,
+              clicked: false,
+            });
+          });
+        setBeats([...newBeat]);
+      })
+      .catch((error) => console.log('BeatListModal no data error:', error));
+  }, []);
 
   const animationStyles = {
     transform: [{ translateY: animation }],

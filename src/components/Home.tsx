@@ -23,13 +23,19 @@ import Converting from './Converting';
 import Recording from './Recording';
 import PauseBtn from '@/common/button/PauseBtn';
 import { Buffer } from 'buffer';
-import { getPresignedUrl, getUserBeats } from '@/apis/userBeat';
+import {
+  getPresignedUrl,
+  getUserBeats,
+  saveBeat,
+  uploadBeat,
+} from '@/apis/userBeat';
 import * as Animatable from 'react-native-animatable';
 import {
   alertMikePermissionDenied,
   checkRecordPermission,
   requestRecordPermission,
 } from '@/apis/userPermisson';
+import axios from 'axios';
 
 StatusBar.setBarStyle('light-content');
 
@@ -153,41 +159,16 @@ const Home = (props: any) => {
     return subscription;
   };
 
-  useEffect(() => {
-    const subscription = checkCurrentScreen();
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    requestRecordPermission();
-    googleConfigureSignIn();
-  }, []);
-
-  useEffect(() => {
-    if (route.params) {
-      setIsLoggedIn(route.params.isLoggedIn);
-      setUserInfo(route.params.userInfo);
-    }
-  }, [route.params]);
-
   const uploadFile = async (recordingPath: string) => {
     try {
-      const result = await getPresignedUrl();
-      const PRESIGNED_URL = result.data['presigned_url'];
+      const fetchData = await getPresignedUrl();
+      const AUDIO_KEY = fetchData.data['key'];
+      const PRESIGNED_URL = fetchData.data['presigned_url'];
       const fileData = await RNFS.readFile(recordingPath, 'base64');
       const bufferFile = Buffer.from(fileData, 'base64');
-      const options = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'audio/m4a',
-        },
-        body: bufferFile,
-      };
-      // await fetch(PRESIGNED_URL, options).catch(() => {
-      //   throw 'UPLOAD-ERROR';
-      // });
+
+      await uploadBeat(PRESIGNED_URL, bufferFile);
+      await saveBeat(AUDIO_KEY);
     } catch (e: any) {
       if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
       if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');
@@ -220,6 +201,25 @@ const Home = (props: any) => {
   //     setTimeout(run, 500 + (lastTime - startTime));
   //   }, 0);
   // };
+
+  useEffect(() => {
+    const subscription = checkCurrentScreen();
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    requestRecordPermission();
+    googleConfigureSignIn();
+  }, []);
+
+  useEffect(() => {
+    if (route.params) {
+      setIsLoggedIn(route.params.isLoggedIn);
+      setUserInfo(route.params.userInfo);
+    }
+  }, [route.params]);
 
   return (
     <LinearGradient colors={['#4FACF9', '#3A83F4']} style={styles.container}>

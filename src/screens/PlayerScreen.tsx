@@ -21,14 +21,9 @@ import { useRecoilState } from 'recoil';
 import { recoilBeatState } from '@/recoil/Beat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PauseBtn from '@/common/button/PauseBtn';
+import { getOAuthToken } from '@/apis/userPermisson';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
-
-interface IInstrument {
-  [key: string]: ImageSourcePropType;
-}
-
-let demoCount = 1;
 
 const PlayerScreen = (props: any) => {
   const [beats, setBeats] = useRecoilState(recoilBeatState);
@@ -47,41 +42,29 @@ const PlayerScreen = (props: any) => {
     name: '',
   });
   let timerId: number | NodeJS.Timeout | undefined;
-  const playBeat = async () => {
+
+  const playBeat = async (recordingPath: string) => {
     try {
       setPlaying(true);
       timerId = setTimeout(() => {
         setPlaying(false);
       }, 10000);
-      console.log('PlayerScreen playBeat demoCount:', demoCount);
-      await audioRecorderPlayer.startPlayer(
-        `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/case${demoCount}_${BeatType}.m4a`,
-      );
+      await audioRecorderPlayer.startPlayer(recordingPath);
       audioRecorderPlayer.addPlayBackListener(() => {});
     } catch (err) {
       console.log('재생오류:', err);
     }
   };
 
-  const getToken = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('token');
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.log('getToken 에러:', e);
-    }
-  };
-
   const requestGoogleLogin = async () => {
     try {
-      if ((await getToken()) !== null) {
+      if ((await getOAuthToken()) !== null) {
         GoogleSignin.signInSilently();
         setIsLoggedIn(true);
         return;
       }
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      // userInfo : [idToken, serverAuthCode, scopes, user {email, name, photo} ]
       setUserInfo({
         idToken: userInfo.idToken!,
         serverAuthCode: userInfo.serverAuthCode!,
@@ -99,7 +82,6 @@ const PlayerScreen = (props: any) => {
           redirect_uri: config.oauth.REDIRECT_URI,
         }),
       }).then((res) => {
-        demoCount += 1;
         return res.json();
       });
       // result : ["access_token", "expires_in", "refresh_token", "scope", "token_type", "id_token"]
