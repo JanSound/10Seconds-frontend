@@ -82,3 +82,13 @@ export const saveBeat = async (beatType: string, key: string) => {
     key: key,
   });
 };
+
+export const deleteBeats = async (deleteBeats: IBeat[]) => {
+  deleteBeats.map((beat: IBeat) => {
+    axios.delete(`http://43.200.7.58:8001/api/v1/beats/${beat.id}`, {
+      headers: {
+        accept: 'application/json',
+      },
+    });
+  });
+};

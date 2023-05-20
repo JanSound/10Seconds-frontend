@@ -47,7 +47,7 @@ const SelectScreen = ({ navigation }: any) => {
           <Text style={styles.description}>악기를 선택해주세요</Text>
         </View>
         <FlatList
-          keyExtractor={(item) => item.Key}
+          keyExtractor={(item, index) => index.toString()}
           data={selectInstBeat}
           contentContainerStyle={{
             alignItems: 'center',

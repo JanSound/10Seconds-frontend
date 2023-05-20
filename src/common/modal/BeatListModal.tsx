@@ -12,7 +12,7 @@ import {
 import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
 import MergeBtn from '../button/MergeBtn';
-import { getUserBeats } from '@/apis/userBeat';
+import { deleteBeats, getUserBeats } from '@/apis/userBeat';
 import { recoilBeatState } from '@/recoil/Beat';
 import { useRecoilState } from 'recoil';
 import { IBeat } from '@/types/beat';
@@ -54,16 +54,13 @@ const BeatListModal = (props: any) => {
     );
   };
 
-  const playResultBeat = async (id: string) => {
+  const playBeat = async (id: string) => {
     try {
       beats.map(async (beat: IBeat) => {
         if (beat.id === id) {
           await audioRecorderPlayer.startPlayer(beat.presignedUrl);
         }
       });
-      // await audioRecorderPlayer.startPlayer(
-      //   `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/result.m4a`,
-      // );
       audioRecorderPlayer.addPlayBackListener(() => {});
     } catch (err) {
       console.log('재생오류:', err);
@@ -73,7 +70,7 @@ const BeatListModal = (props: any) => {
   let timerId: any;
   const handleBeatClick = (id: string) => {
     setPlaying(true);
-    playResultBeat(id);
+    playBeat(id);
     timerId = setTimeout(() => {
       setPlaying(false);
       setBeats(
@@ -95,7 +92,9 @@ const BeatListModal = (props: any) => {
     // playUserBeat(id);
   };
 
-  const handleDeleteBeats = () => {
+  const handleDeleteBeats = async () => {
+    const checkedBeats = beats.filter((beat: IBeat) => beat.checked === false);
+    await deleteBeats(checkedBeats);
     setBeats(beats.filter((beat: IBeat) => beat.checked === false));
   };
 
