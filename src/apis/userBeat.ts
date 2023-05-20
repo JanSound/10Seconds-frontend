@@ -1,6 +1,5 @@
 import { recoilBeatState } from '@/recoil/Beat';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
 
 interface IBeat {
   id: string;
@@ -21,5 +20,17 @@ export const getUserBeats = async () => {
     } else throw 'getUserBeats FETCH ERROR';
   } catch (error) {
     console.log('getUserBeats error :', error);
+  }
+};
+
+export const getPresignedUrl = async () => {
+  try {
+    return await axios
+      .post('http://43.200.7.58:8001/api/v1/beats/presigned-url/put')
+      .catch(() => {
+        throw 'PRESIGNED-ERROR';
+      });
+  } catch (error) {
+    console.log('PRESIGNED-URL GET ERROR:', error);
   }
 };

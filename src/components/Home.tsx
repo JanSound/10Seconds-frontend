@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import config from '../../config/config';
-import {
-  PERMISSIONS,
-  RESULTS,
-  request,
-  check,
-  requestMultiple,
-  checkMultiple,
-} from 'react-native-permissions';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import {
   StyleSheet,
   View,
@@ -33,11 +22,14 @@ import BeatListModal from '../common/modal/BeatListModal';
 import Converting from './Converting';
 import Recording from './Recording';
 import PauseBtn from '@/common/button/PauseBtn';
-import AWS from 'aws-sdk';
-import axios from 'axios';
 import { Buffer } from 'buffer';
-import { getUserBeats } from '@/apis/getUserBeats';
+import { getPresignedUrl, getUserBeats } from '@/apis/userBeat';
 import * as Animatable from 'react-native-animatable';
+import {
+  alertMikePermissionDenied,
+  checkRecordPermission,
+  requestRecordPermission,
+} from '@/apis/userPermisson';
 
 StatusBar.setBarStyle('light-content');
 
@@ -51,7 +43,6 @@ const Home = (props: any) => {
 
   const [converting, setConverting] = useState(false);
   const [recording, setRecording] = useState(false);
-  const [recordPermission, setRecordPermission] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
     recordSecs: 0,
     recordTime: '00:00:00',
@@ -73,15 +64,6 @@ const Home = (props: any) => {
     name: '',
   });
   let timerId: number | NodeJS.Timeout | undefined;
-
-  const alertMikePermissionDenied = () => {
-    Alert.alert('마이크 접근 권한 거부', '마이크 접근 권한을 허용해주세요 !', [
-      {
-        text: 'OK',
-        onPress: () => Linking.openSettings(),
-      },
-    ]);
-  };
 
   const handleStartRecord = async () => {
     try {
@@ -141,51 +123,6 @@ const Home = (props: any) => {
     }
   };
 
-  const requestRecordPermission = async () => {
-    await requestMultiple([
-      PERMISSIONS.IOS.SPEECH_RECOGNITION,
-      PERMISSIONS.IOS.MICROPHONE,
-    ])
-      .then((status) => {
-        console.log(
-          'speech recognition 권한:',
-          status[PERMISSIONS.IOS.SPEECH_RECOGNITION],
-        );
-        console.log('microphone 권한:', status[PERMISSIONS.IOS.MICROPHONE]);
-        if (
-          status[PERMISSIONS.IOS.SPEECH_RECOGNITION] &&
-          status[PERMISSIONS.IOS.MICROPHONE]
-        ) {
-          setRecordPermission(true);
-        }
-      })
-      .catch((e) => {
-        console.log('request API 에러 : ', e);
-      });
-  };
-
-  const checkRecordPermission = async () => {
-    const checkPermission = await checkMultiple([
-      PERMISSIONS.IOS.MICROPHONE,
-      PERMISSIONS.IOS.SPEECH_RECOGNITION,
-    ])
-      .then((status) => {
-        console.log(
-          'speech recognition 권한:',
-          status[PERMISSIONS.IOS.SPEECH_RECOGNITION],
-        );
-        console.log('microphone 권한:', status[PERMISSIONS.IOS.MICROPHONE]);
-        return [
-          status[PERMISSIONS.IOS.SPEECH_RECOGNITION],
-          status[PERMISSIONS.IOS.MICROPHONE],
-        ];
-      })
-      .catch((e) => {
-        console.log('check API 에러 :', e);
-      });
-    return checkPermission;
-  };
-
   const googleConfigureSignIn = () => {
     GoogleSignin.configure({
       webClientId: config.oauth.GOOGLE_WEB_CLIENT_ID,
@@ -237,11 +174,7 @@ const Home = (props: any) => {
 
   const uploadFile = async (recordingPath: string) => {
     try {
-      const result = await axios
-        .post('http://43.200.7.58:8001/api/v1/beats/presigned-url/put')
-        .catch(() => {
-          throw 'PRESIGNED-ERROR';
-        });
+      const result = await getPresignedUrl();
       const PRESIGNED_URL = result.data['presigned_url'];
       const fileData = await RNFS.readFile(recordingPath, 'base64');
       const bufferFile = Buffer.from(fileData, 'base64');
@@ -319,15 +252,6 @@ const Home = (props: any) => {
           </>
         )}
       </View>
-      {/* <Button onPress={playFirstBaseBeat} title="base"></Button>
-      <Button onPress={playFirstPianoBeat} title="piano"></Button>
-      <Button onPress={playFirstDrumBeat} title="drum"></Button>
-
-      <Button onPress={playSecondBaseBeat} title="base2"></Button>
-      <Button onPress={playSecondPianoBeat} title="piano2"></Button>
-      <Button onPress={playSecondDrumBeat} title="drum2"></Button>
-
-      <Button onPress={playMergeBeat} title="result"></Button> */}
       {isLoggedIn === false ? (
         <GoogleSignInBtn isLoggedIn={isLoggedIn} userInfo={userInfo} />
       ) : (
