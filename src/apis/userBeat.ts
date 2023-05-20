@@ -54,8 +54,8 @@ export const uploadBeat = async (presignedUrl: string, bufferFile: Buffer) => {
     });
 };
 
-export const saveBeat = async (beatKey: string) => {
-  await axios
+export const convertBeat = async (beatKey: string) => {
+  return await axios
     .post('http://43.200.7.58:8001/api/v1/convert-beat', {
       headers: {
         accept: 'application/json',
@@ -63,8 +63,22 @@ export const saveBeat = async (beatKey: string) => {
       },
       key: beatKey,
     })
-    .then(() => console.log('DB 저장 성공'))
+    .then((res) => {
+      console.log('DB 저장 성공:', res.data);
+      return res.data;
+    })
     .catch(() => {
       throw 'DB 저장 ERROR';
     });
+};
+
+export const saveBeat = async (beatType: string, key: string) => {
+  axios.post('http://43.200.7.58:8001/api/v1/beats', {
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    beatType: beatType,
+    key: key,
+  });
 };

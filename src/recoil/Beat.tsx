@@ -7,3 +7,8 @@ export const recoilBeatState = atom({
   key: `recoilBeatState/${randomId}`,
   default: initialState,
 });
+
+export const recoilSelectInstBeatState = atom({
+  key: `recoilSelectInstBeatState/${randomId}`,
+  default: initialState,
+});

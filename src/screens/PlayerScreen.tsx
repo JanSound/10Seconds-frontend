@@ -22,6 +22,7 @@ import { recoilBeatState } from '@/recoil/Beat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PauseBtn from '@/common/button/PauseBtn';
 import { getOAuthToken } from '@/apis/userPermisson';
+import { saveBeat } from '@/apis/userBeat';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -109,6 +110,10 @@ const PlayerScreen = (props: any) => {
     });
   };
 
+  const handleSaveButtonClick = async () => {
+    await saveBeat(BeatType, Key);
+  };
+
   useEffect(() => {
     googleConfigureSignIn();
     const stopPlay = async () => {
@@ -116,21 +121,13 @@ const PlayerScreen = (props: any) => {
     };
     return () => {
       stopPlay();
-      clearTimeout(timerId);
+      if (timerId) clearTimeout(timerId);
     };
   }, []);
+
   useEffect(() => {
     if (isLoggedIn) {
-      const newBeat = {
-        id: Key,
-        name: Key,
-        beatType: BeatType,
-        presignedUrl: PresignedUrl,
-        createdAt: new Date().toISOString(),
-        checked: false,
-        clicked: false,
-      }; // 테스트용 비트 병합
-      setBeats([...beats, newBeat]);
+      handleSaveButtonClick();
       navigation.navigate('Home', {
         isLoggedIn,
         userInfo,

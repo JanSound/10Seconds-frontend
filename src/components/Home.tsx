@@ -23,19 +23,15 @@ import Converting from './Converting';
 import Recording from './Recording';
 import PauseBtn from '@/common/button/PauseBtn';
 import { Buffer } from 'buffer';
-import {
-  getPresignedUrl,
-  getUserBeats,
-  saveBeat,
-  uploadBeat,
-} from '@/apis/userBeat';
+import { convertBeat, getPresignedUrl, uploadBeat } from '@/apis/userBeat';
 import * as Animatable from 'react-native-animatable';
 import {
   alertMikePermissionDenied,
   checkRecordPermission,
   requestRecordPermission,
 } from '@/apis/userPermisson';
-import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { recoilSelectInstBeatState } from '@/recoil/Beat';
 
 StatusBar.setBarStyle('light-content');
 
@@ -47,6 +43,9 @@ const Home = (props: any) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
+  const [selectInstBeat, setSelectInstBeat] = useRecoilState(
+    recoilSelectInstBeatState,
+  );
   const [converting, setConverting] = useState(false);
   const [recording, setRecording] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
@@ -168,7 +167,8 @@ const Home = (props: any) => {
       const bufferFile = Buffer.from(fileData, 'base64');
 
       await uploadBeat(PRESIGNED_URL, bufferFile);
-      await saveBeat(AUDIO_KEY);
+      const convert = await convertBeat(AUDIO_KEY);
+      setSelectInstBeat(convert);
     } catch (e: any) {
       if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
       if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');

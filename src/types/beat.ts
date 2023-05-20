@@ -14,3 +14,9 @@ export interface IFetchBeat {
   PresignedUrl: string;
   RegTs: string;
 }
+
+export interface IConvertBeat {
+  BeatType: string;
+  PresignedUrl: string;
+  Key: string;
+}
