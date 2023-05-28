@@ -1,3 +1,4 @@
+import { getMergeBeat } from '@/apis/userBeat';
 import FinishBtn from '@/common/button/FinishBtn';
 import BeatListItem from '@/common/modal/BeatListItem';
 import { recoilBeatState } from '@/recoil/Beat';
@@ -55,25 +56,14 @@ const MergeScreen = (props: any) => {
   }, []);
 
   const handleFinishMerge = async () => {
-    const restBeats = beats.map((beat: IBeat) => {
-      return { ...beat, checked: false };
-    });
-
-    // const newBeat = await axios.post('.'); // 비트 병합 요청
-    const newBeat = {
-      id: '3',
-      name: 'result3',
-      beatType: 'test',
-      presignedUrl:
-        'https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/result.m4a',
-      createdAt: new Date().toISOString(),
-      checked: false,
-      clicked: false,
-    }; // 데모용
-    // const mergeBeats = beats.filter((beat: any) => {
-    //   return beat.checked === true;
+    // const restBeats = beats.map((beat: IBeat) => {
+    //   return { ...beat, checked: false };
     // });
-    setBeats([...restBeats, newBeat]);
+    const checkedBeats = beats.filter((beat: IBeat) => {
+      return beat.checked === true;
+    });
+    // const mergeBeat = await getMergeBeat(checkedBeats);
+    // setBeats(beats.concat(mergeBeat));
     try {
       // axios.post('http://43.200.7.58:8001/api/v1/beats', { // 데모때매 주석
       //   headers: {
@@ -83,15 +73,6 @@ const MergeScreen = (props: any) => {
       //   beatType: newBeat.beatType,
       //   key: 'testName',
       // });
-      // mergeBeats.map((beat: IBeat) => {
-      //   axios.delete(`http://43.200.7.58:8001/api/v1/beats/${beat.id}`, {
-      //     headers: {
-      //       accept: 'application/json',
-      //     },
-      //   });
-      // });
-      // setBeats([...beats, newBeat]);
-      // console.log(mergeBeats);
     } catch (error) {
       console.log('병합 error:', error);
     }

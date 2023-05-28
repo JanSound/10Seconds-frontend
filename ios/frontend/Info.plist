@@ -25,6 +25,14 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+			<string>b4ff7f01ba3db8d528cabc8fc50d1778</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>com.JanSound.10Seconds</string>
 			<key>CFBundleURLSchemes</key>
@@ -35,6 +43,15 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>KAKAO_APP_KEY</key>
+	<string>b4ff7f01ba3db8d528cabc8fc50d1778</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	    <!-- 카카오톡으로 로그인 -->
+	    <string>kakaokompassauth</string>
+	    <!-- 카카오링크 -->
+	    <string>kakaolink</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

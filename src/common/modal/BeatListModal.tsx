@@ -8,6 +8,7 @@ import {
   Animated,
   Image,
   ScrollView,
+  Slider,
 } from 'react-native';
 import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
