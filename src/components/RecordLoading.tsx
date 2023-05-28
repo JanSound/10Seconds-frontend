@@ -5,7 +5,7 @@ import RecordBtn from '../common/button/RecordBtn';
 import * as Animatable from 'react-native-animatable';
 
 const RecordLoading = (props: any) => {
-  const { handleStopRecord, recordDuration } = props;
+  const { handleStopRecord, recordDuration, bpm } = props;
   return (
     <View>
       <View style={styles.recordingLoadingContainer}>
@@ -23,7 +23,7 @@ const RecordLoading = (props: any) => {
             <Animatable.View
               animation="fadeOut"
               iterationCount={Infinity}
-              duration={800}
+              duration={(60 / bpm) * 1000}
               iterationDelay={200}
               style={styles.viewContainer}
             >
@@ -43,6 +43,7 @@ const RecordLoading = (props: any) => {
 const styles = StyleSheet.create({
   recordingLoadingContainer: {
     alignItems: 'center',
+    margin: 30,
   },
   recordingTime: {
     width: 300,

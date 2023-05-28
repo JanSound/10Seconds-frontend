@@ -18,7 +18,6 @@ const CountDown = (props: any) => {
       setCount((prevCount) => prevCount - 1);
     }, 1000);
     if (count === 0) {
-      setRecordCountDown(false);
       clearInterval(interval);
       handleStartRecord();
     }

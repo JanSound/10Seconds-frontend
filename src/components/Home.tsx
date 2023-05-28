@@ -33,6 +33,7 @@ import {
 import { useRecoilState } from 'recoil';
 import { recoilSelectInstBeatState } from '@/recoil/Beat';
 import { shareBeat } from '@/apis/kakaoShare';
+import BpmSlider from './BpmSlider';
 
 StatusBar.setBarStyle('light-content');
 
@@ -69,6 +70,7 @@ const Home = (props: any) => {
     email: '',
     name: '',
   });
+  const [bpm, setBpm] = useState(120);
   let timerId: number | NodeJS.Timeout | undefined;
 
   const handleStartRecord = async () => {
@@ -177,32 +179,6 @@ const Home = (props: any) => {
     }
   };
 
-  // const music1 = 'https://daveceddia.com/freebies/react-metronome/click1.wav';
-  // const music2 = 'https://daveceddia.com/freebies/react-metronome/click2.wav';
-  // const [metro, setMetro] = useState({
-  //   bpm: 100,
-  //   beatsPerMeasure: 4,
-  // });
-  // const num = useRef(0);
-
-  // const playClick = () => {
-  //   num.current = (num.current + 1) % 4;
-  //   if (num.current % metro.beatsPerMeasure === 0) {
-  //     audioRecorderPlayer.startPlayer(music2);
-  //   } else {
-  //     audioRecorderPlayer.startPlayer(music1);
-  //   }
-  // };
-  // const startStop = () => {
-  //   num.current = 0;
-  //   timerId = setTimeout(function run() {
-  //     let startTime = new Date().getTime();
-  //     playClick();
-  //     let lastTime = new Date().getTime();
-  //     setTimeout(run, 500 + (lastTime - startTime));
-  //   }, 0);
-  // };
-
   useEffect(() => {
     const subscription = checkCurrentScreen();
     return () => {
@@ -229,6 +205,7 @@ const Home = (props: any) => {
           <Recording
             recordDuration={recordDuration}
             handleStopRecord={handleStopRecord}
+            bpm={bpm}
           />
         ) : converting ? (
           <Converting navigation={navigation} setConverting={setConverting} />
@@ -247,12 +224,14 @@ const Home = (props: any) => {
                     recording={recording}
                     handleStartRecord={handleStartRecord}
                   />
+                  <BpmSlider bpm={bpm} setBpm={setBpm} />
                 </>
               )}
             </View>
           </>
         )}
       </View>
+
       {isLoggedIn === false ? (
         <GoogleSignInBtn isLoggedIn={isLoggedIn} userInfo={userInfo} />
       ) : (
@@ -282,7 +261,7 @@ const styles = StyleSheet.create({
   mainText: {
     color: 'white',
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 35,
+    fontSize: 30,
     lineHeight: 50,
     textAlign: 'center',
   },

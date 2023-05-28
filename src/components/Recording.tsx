@@ -4,13 +4,14 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RecordLoading from './RecordLoading';
 
 const Recording = (props: any) => {
-  const { recordDuration, handleStopRecord } = props;
+  const { recordDuration, handleStopRecord, bpm } = props;
 
   return (
     <>
       <Text style={styles.mainText}>녹음중. . .</Text>
       <View style={styles.recordBody}>
         <RecordLoading
+          bpm={bpm}
           handleStopRecord={handleStopRecord}
           recordDuration={recordDuration}
         />
@@ -26,10 +27,10 @@ const styles = StyleSheet.create({
   mainText: {
     color: 'white',
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 35,
+    fontSize: 30,
     lineHeight: 50,
     textAlign: 'center',
-    marginBottom: 30,
+    margin: 20,
   },
 });
 export default Recording;
