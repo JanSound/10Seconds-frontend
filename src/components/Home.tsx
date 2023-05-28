@@ -32,6 +32,7 @@ import {
 } from '@/apis/userPermisson';
 import { useRecoilState } from 'recoil';
 import { recoilSelectInstBeatState } from '@/recoil/Beat';
+import { shareBeat } from '@/apis/kakaoShare';
 
 StatusBar.setBarStyle('light-content');
 
@@ -73,11 +74,11 @@ const Home = (props: any) => {
   const handleStartRecord = async () => {
     try {
       const checkPermission: any = await checkRecordPermission();
+      // shareBeat();
       if (
         checkPermission[0] === 'granted' &&
         checkPermission[1] === 'granted'
       ) {
-        // startStop();
         setRecording(true);
         setPlayerDuration({
           ...playerDuration,
