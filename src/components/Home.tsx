@@ -28,6 +28,7 @@ import * as Animatable from 'react-native-animatable';
 import {
   alertMikePermissionDenied,
   checkRecordPermission,
+  getOAuthToken,
   requestRecordPermission,
 } from '@/apis/userPermisson';
 import { useRecoilState } from 'recoil';
@@ -179,6 +180,13 @@ const Home = (props: any) => {
     }
   };
 
+  const getLoginToken = async () => {
+    if ((await getOAuthToken()) !== null) {
+      GoogleSignin.signInSilently();
+      setIsLoggedIn(true);
+    }
+  };
+
   useEffect(() => {
     const subscription = checkCurrentScreen();
     return () => {
@@ -189,6 +197,7 @@ const Home = (props: any) => {
   useEffect(() => {
     requestRecordPermission();
     googleConfigureSignIn();
+    getLoginToken();
   }, []);
 
   useEffect(() => {

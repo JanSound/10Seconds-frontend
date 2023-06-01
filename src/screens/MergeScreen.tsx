@@ -59,20 +59,12 @@ const MergeScreen = (props: any) => {
     // const restBeats = beats.map((beat: IBeat) => {
     //   return { ...beat, checked: false };
     // });
-    const checkedBeats = beats.filter((beat: IBeat) => {
-      return beat.checked === true;
-    });
-    // const mergeBeat = await getMergeBeat(checkedBeats);
-    // setBeats(beats.concat(mergeBeat));
+
     try {
-      // axios.post('http://43.200.7.58:8001/api/v1/beats', { // 데모때매 주석
-      //   headers: {
-      //     accept: 'application/json',
-      //     'Content-Type': 'application/json',
-      //   },
-      //   beatType: newBeat.beatType,
-      //   key: 'testName',
-      // });
+      const checkedBeats = beats.filter((beat: IBeat) => beat.checked === true);
+      const checkedID = checkedBeats.map((beat: IBeat) => beat.id);
+      const mergeBeat = await getMergeBeat(checkedID);
+      console.log(mergeBeat);
     } catch (error) {
       console.log('병합 error:', error);
     }

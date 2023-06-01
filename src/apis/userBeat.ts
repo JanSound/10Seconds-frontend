@@ -93,9 +93,8 @@ export const deleteBeats = async (deleteBeats: IBeat[]) => {
   });
 };
 
-export const getMergeBeat = async (checkedBeats: IBeat[]) => {
-  return await axios.post('http://43.200.7.58:8001/api/v1/beats/병합', {
-    // 비트 병합 API 불러오기
-    key: checkedBeats,
+export const getMergeBeat = async (checkedBeats: []) => {
+  return await axios.post('http://43.200.7.58:8001/api/v1/stack-beats', {
+    beats: checkedBeats,
   });
 };

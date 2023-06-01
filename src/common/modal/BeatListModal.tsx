@@ -8,7 +8,6 @@ import {
   Animated,
   Image,
   ScrollView,
-  Slider,
 } from 'react-native';
 import EditBtn from '../button/EditBtn';
 import DeleteBtn from '../button/DeleteBtn';
@@ -17,6 +16,8 @@ import { deleteBeats, getUserBeats } from '@/apis/userBeat';
 import { recoilBeatState } from '@/recoil/Beat';
 import { useRecoilState } from 'recoil';
 import { IBeat } from '@/types/beat';
+import { useIsFocused } from '@react-navigation/native';
+
 //   id: 'beat url 1',
 //   name: 'beat name 1',
 //   beatType: 'base',
@@ -33,7 +34,7 @@ const BeatListModal = (props: any) => {
     playerDuration,
     navigation,
   } = props;
-  const [beats, setBeats] = useRecoilState(recoilBeatState); // 실전용
+  const [beats, setBeats] = useRecoilState(recoilBeatState);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -113,27 +114,36 @@ const BeatListModal = (props: any) => {
     fadeIn();
   }, []);
 
-  useEffect(() => {
-    getUserBeats()
+  const getBeats = async () => {
+    await getUserBeats()
       .then((beatArray) => {
-        const newBeat: IBeat[] = [];
         Array.isArray(beatArray) &&
-          beatArray.map((fetchBeat: any) => {
-            const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
-            newBeat.push({
-              id: ID,
-              name: BeatType + ID.toString(),
-              beatType: BeatType,
-              presignedUrl: PresignedUrl,
-              createdAt: RegTs,
-              checked: false,
-              clicked: false,
-            });
-          });
-        setBeats([...newBeat]);
+          setBeats(
+            beatArray.map((fetchBeat: any) => {
+              console.log(fetchBeat);
+              const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
+              return {
+                id: ID,
+                name: BeatType + ID.toString(),
+                beatType: BeatType,
+                presignedUrl: PresignedUrl,
+                createdAt: RegTs,
+                checked: false,
+                clicked: false,
+              };
+            }),
+          );
       })
       .catch((error) => console.log('BeatListModal no data error:', error));
-  }, []);
+  };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      getBeats();
+    }
+  }, [isFocused]);
 
   const animationStyles = {
     transform: [{ translateY: animation }],
