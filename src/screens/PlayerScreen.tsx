@@ -44,13 +44,14 @@ const PlayerScreen = (props: any) => {
   });
   let timerId: number | NodeJS.Timeout | undefined;
 
-  const playBeat = async (recordingPath: string) => {
+  const playBeat = async () => {
     try {
       setPlaying(true);
       timerId = setTimeout(() => {
-        setPlaying(false);
+        if (timerId) setPlaying(false);
       }, 10000);
-      await audioRecorderPlayer.startPlayer(recordingPath);
+      console.log('pre-url:', PresignedUrl);
+      await audioRecorderPlayer.startPlayer(PresignedUrl);
       audioRecorderPlayer.addPlayBackListener(() => {});
     } catch (err) {
       console.log('재생오류:', err);
@@ -120,8 +121,10 @@ const PlayerScreen = (props: any) => {
       await audioRecorderPlayer.stopPlayer();
     };
     return () => {
-      stopPlay();
-      if (timerId) clearTimeout(timerId);
+      if (timerId) {
+        stopPlay();
+        clearTimeout(timerId);
+      }
     };
   }, []);
 

@@ -29,11 +29,9 @@ export const getPresignedUrl = async () => {
   }
 };
 
-export const playBeat = async (recordingPath: string) => {
+export const playBeat = async (path: string) => {
   try {
-    await audioRecorderPlayer.startPlayer(
-      `https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/tenseconds-demo/${recordingPath}`,
-    );
+    await audioRecorderPlayer.startPlayer(path);
     audioRecorderPlayer.addPlayBackListener(() => {});
   } catch (err) {
     console.log('playBeat 오류:', err);
@@ -55,16 +53,20 @@ export const uploadBeat = async (presignedUrl: string, bufferFile: Buffer) => {
 };
 
 export const convertBeat = async (beatKey: string) => {
+  console.log('beatKey:', beatKey);
   return await axios
-    .post('http://43.200.7.58:8001/api/v1/convert-beat', {
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
+    .post(
+      'http://43.200.7.58:8001/api/v1/convert-beat',
+      {
+        key: beatKey,
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       },
-      key: beatKey,
-    })
+    )
     .then((res) => {
-      console.log('DB 저장 성공:', res.data);
+      // console.log('DB 저장 성공:', res.data);
       return res.data;
     })
     .catch(() => {

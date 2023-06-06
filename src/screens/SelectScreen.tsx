@@ -20,15 +20,16 @@ interface IInstrument {
 }
 
 const instrument: IInstrument = {
-  base: require('../assets/images/base.png'),
+  bass: require('../assets/images/bass.png'),
   piano: require('../assets/images/piano.png'),
   drum: require('../assets/images/drum.png'),
 };
+
 const SelectScreen = ({ navigation }: any) => {
   const [selectInstBeat, setSelectInstBeat] = useRecoilState(
     recoilSelectInstBeatState,
   );
-  const playBeat = (beat: IConvertBeat) => {
+  const movePlayerScreen = (beat: IConvertBeat) => {
     console.log('SelectScreen playBeat item:', beat);
     navigation.navigate('Player', {
       BeatType: beat.BeatType,
@@ -55,7 +56,7 @@ const SelectScreen = ({ navigation }: any) => {
             marginBottom: 20,
           }}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => playBeat(item)}>
+            <TouchableOpacity onPress={() => movePlayerScreen(item)}>
               <View style={styles.container}>
                 <Image style={styles.inst} source={instrument[item.BeatType]} />
                 <Text style={styles.instTypeText}>{item.BeatType}</Text>

@@ -31,7 +31,6 @@ const BeatListModal = (props: any) => {
     audioRecorderPlayer,
     playing,
     setPlaying,
-    playerDuration,
     navigation,
   } = props;
   const [beats, setBeats] = useRecoilState(recoilBeatState);

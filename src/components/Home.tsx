@@ -13,6 +13,7 @@ import {
   StatusBar,
   Animated,
   Button,
+  Image,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import RecordBtn from '../common/button/RecordBtn';
@@ -45,10 +46,6 @@ const Home = (props: any) => {
   const { navigation, route } = props;
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-
-  const [selectInstBeat, setSelectInstBeat] = useRecoilState(
-    recoilSelectInstBeatState,
-  );
   const [converting, setConverting] = useState(false);
   const [recording, setRecording] = useState(false);
   const [recordDuration, setRecordDuration] = useState({
@@ -57,12 +54,6 @@ const Home = (props: any) => {
   });
 
   const [playing, setPlaying] = useState(false);
-  const [playerDuration, setPlayerDuration] = useState({
-    currentPositionSec: 0,
-    currentDurationSec: 0,
-    playTime: '00:00:00',
-    duration: '00:00:00',
-  });
   const recoPath = useRef('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({
@@ -72,7 +63,7 @@ const Home = (props: any) => {
     name: '',
   });
   const [bpm, setBpm] = useState(120);
-  let timerId: number | NodeJS.Timeout | undefined;
+  const [audioKey, setAudioKey] = useState('');
 
   const handleStartRecord = async () => {
     try {
@@ -83,14 +74,6 @@ const Home = (props: any) => {
         checkPermission[1] === 'granted'
       ) {
         setRecording(true);
-        setPlayerDuration({
-          ...playerDuration,
-          currentPositionSec: 0,
-          currentDurationSec: 0,
-          playTime: '00:00:00',
-          duration: '00:00:00',
-        });
-
         const path = Platform.select({
           ios: 'record.m4a',
         });
@@ -119,12 +102,10 @@ const Home = (props: any) => {
     try {
       if (audioRecorderPlayer) {
         setRecording(false);
-        uploadFile(recoPath.current);
-        clearTimeout(timerId);
         await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setRecordDuration({ ...recordDuration, recordSecs: 0 });
-        setConverting(true);
+        await uploadFile(recoPath.current);
       }
     } catch (e) {
       setRecording(false);
@@ -164,15 +145,15 @@ const Home = (props: any) => {
 
   const uploadFile = async (recordingPath: string) => {
     try {
+      setConverting(true);
       const fetchData = await getPresignedUrl();
       const AUDIO_KEY = fetchData.data['key'];
       const PRESIGNED_URL = fetchData.data['presigned_url'];
       const fileData = await RNFS.readFile(recordingPath, 'base64');
       const bufferFile = Buffer.from(fileData, 'base64');
-
+      console.log('HOME audio key:', AUDIO_KEY);
+      setAudioKey(AUDIO_KEY);
       await uploadBeat(PRESIGNED_URL, bufferFile);
-      const convert = await convertBeat(AUDIO_KEY);
-      setSelectInstBeat(convert);
     } catch (e: any) {
       if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
       if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');
@@ -217,7 +198,11 @@ const Home = (props: any) => {
             bpm={bpm}
           />
         ) : converting ? (
-          <Converting navigation={navigation} setConverting={setConverting} />
+          <Converting
+            navigation={navigation}
+            setConverting={setConverting}
+            audioKey={audioKey}
+          />
         ) : (
           <>
             <View style={styles.recordBody}>
@@ -247,7 +232,6 @@ const Home = (props: any) => {
         <BeatListModal
           playing={playing}
           setPlaying={setPlaying}
-          playerDuration={playerDuration}
           audioRecorderPlayer={audioRecorderPlayer}
           navigation={navigation}
         />

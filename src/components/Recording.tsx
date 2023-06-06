@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RecordLoading from './RecordLoading';
 
 const Recording = (props: any) => {
