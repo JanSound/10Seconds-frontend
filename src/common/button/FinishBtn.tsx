@@ -9,8 +9,8 @@ const FinishBtn = (props: any) => {
   return (
     <TouchableOpacity
       style={styles.mergeBtnContainer}
-      onPress={() => {
-        handleFinishMerge();
+      onPress={async () => {
+        await handleFinishMerge();
         // setBeats( // 데모때매 주석
         //   beats.map((beat: any) => {
         //     return { ...beat, checked: false };

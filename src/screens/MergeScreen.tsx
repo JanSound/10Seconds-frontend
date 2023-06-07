@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil';
 interface IBeat {
   id: string;
   name: string;
+  key: string;
   beatType: string;
   presignedUrl: string;
   createdAt: string;
@@ -56,15 +57,12 @@ const MergeScreen = (props: any) => {
   }, []);
 
   const handleFinishMerge = async () => {
-    // const restBeats = beats.map((beat: IBeat) => {
-    //   return { ...beat, checked: false };
-    // });
-
     try {
       const checkedBeats = beats.filter((beat: IBeat) => beat.checked === true);
-      const checkedID = checkedBeats.map((beat: IBeat) => beat.id);
-      const mergeBeat = await getMergeBeat(checkedID);
-      console.log(mergeBeat);
+      const checkedBeatsKey = checkedBeats.map((beat: IBeat) => ({
+        key: beat.key,
+      }));
+      await getMergeBeat(checkedBeatsKey);
     } catch (error) {
       console.log('병합 error:', error);
     }

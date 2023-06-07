@@ -43,14 +43,12 @@ const PlayerScreen = (props: any) => {
     name: '',
   });
   let timerId: number | NodeJS.Timeout | undefined;
-
   const playBeat = async () => {
     try {
       setPlaying(true);
       timerId = setTimeout(() => {
         if (timerId) setPlaying(false);
       }, 10000);
-      console.log('pre-url:', PresignedUrl);
       await audioRecorderPlayer.startPlayer(PresignedUrl);
       audioRecorderPlayer.addPlayBackListener(() => {});
     } catch (err) {
@@ -122,6 +120,7 @@ const PlayerScreen = (props: any) => {
     };
     return () => {
       if (timerId) {
+        console.log('STOP PLAYING 발동 !');
         stopPlay();
         clearTimeout(timerId);
       }

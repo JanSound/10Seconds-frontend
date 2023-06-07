@@ -63,9 +63,11 @@ export const convertBeat = async (beatKey: string) => {
       },
     })
     .then((res) => {
+      console.log('convert 성공 data:', res.data);
       return res.data;
     })
-    .catch(() => {
+    .catch((e) => {
+      console.log('convertBeat error:', e);
       throw '비트변환 ERROR';
     });
 };
@@ -92,7 +94,12 @@ export const deleteBeats = async (deleteBeats: IBeat[]) => {
 };
 
 export const getMergeBeat = async (checkedBeats: []) => {
-  return await axios.post('http://43.200.7.58:8001/api/v1/stack-beats', {
-    beats: checkedBeats,
+  return await fetch('http://43.200.7.58:8001/api/v1/stack-beat', {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(checkedBeats),
   });
 };

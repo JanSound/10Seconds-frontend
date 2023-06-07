@@ -145,6 +145,7 @@ const Home = (props: any) => {
 
   const uploadFile = async (recordingPath: string) => {
     try {
+      if (audioKey) setAudioKey(''); // 두번째 녹음할 때 중복호출 방지
       setConverting(true); // ConvertLoading 렌더링
       const fetchData = await getPresignedUrl();
       const AUDIO_KEY = fetchData.data['key'];
@@ -152,9 +153,8 @@ const Home = (props: any) => {
       const fileData = await RNFS.readFile(recordingPath, 'base64');
       const bufferFile = Buffer.from(fileData, 'base64');
       console.log('HOME audio key:', AUDIO_KEY);
-      setAudioKey(AUDIO_KEY); // ConvertLoading 리렌더링
       await uploadBeat(PRESIGNED_URL, bufferFile);
-      setAudioKey(''); // 두번째 녹음할 때 중복호출 방지
+      setAudioKey(AUDIO_KEY); // ConvertLoading 리렌더링
     } catch (e: any) {
       if (e === 'PRESIGNED-ERROR') console.log('presigned-url 가져오기 실패');
       if (e === 'UPLOAD-ERROR') console.log('AWS S3 업로드 실패');

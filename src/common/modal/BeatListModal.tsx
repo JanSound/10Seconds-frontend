@@ -27,12 +27,7 @@ import { useIsFocused } from '@react-navigation/native';
 //   clicked: false,
 
 const BeatListModal = (props: any) => {
-  const {
-    audioRecorderPlayer,
-    playing,
-    setPlaying,
-    navigation,
-  } = props;
+  const { audioRecorderPlayer, playing, setPlaying, navigation } = props;
   const [beats, setBeats] = useRecoilState(recoilBeatState);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -119,11 +114,11 @@ const BeatListModal = (props: any) => {
         Array.isArray(beatArray) &&
           setBeats(
             beatArray.map((fetchBeat: any) => {
-              console.log(fetchBeat);
-              const { ID, BeatType, PresignedUrl, RegTs } = fetchBeat;
+              const { ID, BeatType, Key, PresignedUrl, RegTs } = fetchBeat;
               return {
                 id: ID,
                 name: BeatType + ID.toString(),
+                key: Key,
                 beatType: BeatType,
                 presignedUrl: PresignedUrl,
                 createdAt: RegTs,
@@ -140,6 +135,7 @@ const BeatListModal = (props: any) => {
 
   useEffect(() => {
     if (isFocused) {
+      setIsEditing(false);
       getBeats();
     }
   }, [isFocused]);
