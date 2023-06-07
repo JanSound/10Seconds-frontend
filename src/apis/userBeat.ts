@@ -55,22 +55,18 @@ export const uploadBeat = async (presignedUrl: string, bufferFile: Buffer) => {
 export const convertBeat = async (beatKey: string) => {
   console.log('beatKey:', beatKey);
   return await axios
-    .post(
-      'http://43.200.7.58:8001/api/v1/convert-beat',
-      {
-        key: beatKey,
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+    .post('http://43.200.7.58:8001/api/v1/convert-beat', {
+      key: beatKey,
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    )
+    })
     .then((res) => {
-      // console.log('DB 저장 성공:', res.data);
       return res.data;
     })
     .catch(() => {
-      throw 'DB 저장 ERROR';
+      throw '비트변환 ERROR';
     });
 };
 
