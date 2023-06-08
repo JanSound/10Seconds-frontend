@@ -33,7 +33,6 @@ const ConvertLoading = (props: any) => {
               text: '확인',
               onPress: () => {
                 setConverting(false);
-                navigation.navigate('Home');
               },
             },
           ],

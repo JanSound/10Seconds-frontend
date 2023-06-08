@@ -36,11 +36,14 @@ import { useRecoilState } from 'recoil';
 import { recoilSelectInstBeatState } from '@/recoil/Beat';
 import { shareBeat } from '@/apis/kakaoShare';
 import BpmSlider from './BpmSlider';
+import { useIsFocused } from '@react-navigation/native';
 
 StatusBar.setBarStyle('light-content');
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 audioRecorderPlayer.setSubscriptionDuration(0.08);
+
+let demoCount = 0;
 
 const Home = (props: any) => {
   const { navigation, route } = props;
@@ -68,7 +71,6 @@ const Home = (props: any) => {
   const handleStartRecord = async () => {
     try {
       const checkPermission: any = await checkRecordPermission();
-      // shareBeat();
       if (
         checkPermission[0] === 'granted' &&
         checkPermission[1] === 'granted'
@@ -105,7 +107,9 @@ const Home = (props: any) => {
         await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setRecordDuration({ ...recordDuration, recordSecs: 0 });
-        await uploadFile(recoPath.current);
+        // await uploadFile(recoPath.current);
+        if (demoCount > 3) await uploadFile(recoPath.current); // 데모발표용
+        else getDemoFile(demoCount);
       }
     } catch (e) {
       setRecording(false);
@@ -145,6 +149,7 @@ const Home = (props: any) => {
 
   const uploadFile = async (recordingPath: string) => {
     try {
+      console.log('uploadFile 실행 demoCount:', demoCount);
       if (audioKey) setAudioKey(''); // 두번째 녹음할 때 중복호출 방지
       setConverting(true); // ConvertLoading 렌더링
       const fetchData = await getPresignedUrl();
@@ -162,12 +167,31 @@ const Home = (props: any) => {
     }
   };
 
-  const getLoginToken = async () => {
-    if ((await getOAuthToken()) !== null) {
-      GoogleSignin.signInSilently();
-      setIsLoggedIn(true);
-    }
+  // 데모용 음성파일 재생 후 그 음성파일에 대한 키 값 필요
+  // https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/voice/case1_voice.m4a
+  // demoCount: `voice/case${demoCount}_voice.m4a`
+  const getDemoFile = async (id: number) => {
+    console.log('getDemo 실행 demoCount:', demoCount);
+    if (audioKey) setAudioKey(''); // 두번째 녹음할 때 중복호출 방지
+    setConverting(true); // ConvertLoading 렌더링
+    setAudioKey(`voice/case${id}_voice.m4a`);
   };
+  // demoCount가 3 이하일 때 -> getDemoFile(s3음성파일가져오기), else -> uploadFile (녹음)
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      demoCount += 1;
+      console.log(demoCount);
+    }
+  }, [isFocused]);
+
+  // const getLoginToken = async () => {
+  //   if ((await getOAuthToken()) !== null) {
+  //     GoogleSignin.signInSilently();
+  //     setIsLoggedIn(true);
+  //   }
+  // };
 
   useEffect(() => {
     const subscription = checkCurrentScreen();
@@ -179,7 +203,7 @@ const Home = (props: any) => {
   useEffect(() => {
     requestRecordPermission();
     googleConfigureSignIn();
-    getLoginToken();
+    // getLoginToken();
   }, []);
 
   useEffect(() => {

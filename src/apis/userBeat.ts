@@ -5,6 +5,8 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
+const baseUrl = 'https://cau-tensecond.s3.ap-northeast-2.amazonaws.com/';
+
 export const getUserBeats = async () => {
   try {
     const fetchData = await axios.get('http://43.200.7.58:8001/api/v1/beats');
@@ -29,12 +31,12 @@ export const getPresignedUrl = async () => {
   }
 };
 
-export const playBeat = async (path: string) => {
+export const playVoice = async (path: string) => {
   try {
-    await audioRecorderPlayer.startPlayer(path);
+    await audioRecorderPlayer.startPlayer(`${baseUrl}${path}`);
     audioRecorderPlayer.addPlayBackListener(() => {});
   } catch (err) {
-    console.log('playBeat 오류:', err);
+    console.log('playVoice 오류:', err);
   }
 };
 
@@ -83,14 +85,22 @@ export const saveBeat = async (beatType: string, key: string) => {
   });
 };
 
-export const deleteBeats = async (deleteBeats: IBeat[]) => {
-  deleteBeats.map((beat: IBeat) => {
-    axios.delete(`http://43.200.7.58:8001/api/v1/beats/${beat.id}`, {
+const deleteBeatFunction = async (id: string) => {
+  console.log('delete id:', id);
+  return await axios
+    .delete(`http://43.200.7.58:8001/api/v1/beats/${id}`, {
       headers: {
         accept: 'application/json',
       },
-    });
-  });
+    })
+    .catch((e) => console.log('delete ERROR:', e));
+};
+export const deleteBeats = async (deleteBeats: IBeat[]) => {
+  const promises = deleteBeats.map((beat: IBeat) =>
+    deleteBeatFunction(beat.id),
+  );
+  Promise.all(promises);
+  console.log('delete 완료 !');
 };
 
 export const getMergeBeat = async (checkedBeats: []) => {

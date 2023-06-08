@@ -51,9 +51,11 @@ const BeatListModal = (props: any) => {
   };
 
   const playBeat = async (id: string) => {
+    console.log('BeatListModal playBeat id:', id);
     try {
       beats.map(async (beat: IBeat) => {
         if (beat.id === id) {
+          console.log('BeatListModal playBeat url:', beat.presignedUrl);
           await audioRecorderPlayer.startPlayer(beat.presignedUrl);
         }
       });
@@ -89,7 +91,7 @@ const BeatListModal = (props: any) => {
   };
 
   const handleDeleteBeats = async () => {
-    const checkedBeats = beats.filter((beat: IBeat) => beat.checked === false);
+    const checkedBeats = beats.filter((beat: IBeat) => beat.checked === true);
     await deleteBeats(checkedBeats);
     setBeats(beats.filter((beat: IBeat) => beat.checked === false));
   };
@@ -134,6 +136,7 @@ const BeatListModal = (props: any) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    console.log('BeatListModal isFocused:', isFocused);
     if (isFocused) {
       setIsEditing(false);
       getBeats();

@@ -26,6 +26,8 @@ import { saveBeat } from '@/apis/userBeat';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
+let demoCount = 1;
+
 const PlayerScreen = (props: any) => {
   const [beats, setBeats] = useRecoilState(recoilBeatState);
   const { route, navigation } = props;
@@ -136,6 +138,11 @@ const PlayerScreen = (props: any) => {
       });
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    demoCount += 1;
+  }, []);
+
   return (
     <>
       <LinearGradient
