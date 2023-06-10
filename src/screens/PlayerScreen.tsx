@@ -90,7 +90,6 @@ const PlayerScreen = (props: any) => {
       await AsyncStorage.setItem('token', JSON.stringify(result));
       // [ access_token 서버로 넘겨서 이중 보안 코드 작성 ]
       setIsLoggedIn(true);
-      handleSaveSync();
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         return;
@@ -118,15 +117,15 @@ const PlayerScreen = (props: any) => {
 
   const handleSaveSync = async () => {
     if (isLoggedIn) {
-      console.log('save sync');
-      await handleSaveButtonClick();
-      console.log('save 완료');
-      navigation.navigate('Home', {
-        isLoggedIn,
-        userInfo,
-      });
+      await handleSaveButtonClick().then(
+        navigation.navigate('Home', {
+          isLoggedIn,
+          userInfo,
+        }),
+      );
     }
   };
+
   useEffect(() => {
     googleConfigureSignIn();
     const stopPlay = async () => {
@@ -140,6 +139,10 @@ const PlayerScreen = (props: any) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    handleSaveSync();
+  }, [isLoggedIn]);
 
   useEffect(() => {
     demoCount += 1;
@@ -161,7 +164,7 @@ const PlayerScreen = (props: any) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.downloadBtn}
-            onPress={isLoggedIn ? handleSaveSync : requestGoogleLogin}
+            onPress={requestGoogleLogin}
           >
             <Text style={styles.downloadBtnText}>저장하기</Text>
           </TouchableOpacity>

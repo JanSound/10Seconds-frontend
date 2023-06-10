@@ -75,14 +75,16 @@ export const convertBeat = async (beatKey: string) => {
 };
 
 export const saveBeat = async (beatType: string, key: string) => {
-  axios.post('http://43.200.7.58:8001/api/v1/beats', {
-    headers: {
-      accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    beatType: beatType,
-    key: key,
-  });
+  axios
+    .post('http://43.200.7.58:8001/api/v1/beats', {
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      beatType: beatType,
+      key: key,
+    })
+    .then((res) => console.log('디비 저장 성공'));
 };
 
 const deleteBeatFunction = async (id: string) => {
